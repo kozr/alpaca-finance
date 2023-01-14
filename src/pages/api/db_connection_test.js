@@ -7,9 +7,10 @@ export default async function handler(req, res) {
     .select()
 
   if (error) {
-    console.error(`error: ${error}`)
-  } else {
-    console.log(`data: ${data}`)
+    console.error(`error: ${JSON.stringify(error)}`)
+    return res.status(500).json({ error: error })
   }
-  res.status(200).json({ name: data })
+
+  console.log(`successfully connected to database.`)
+  res.status(200)
 }
