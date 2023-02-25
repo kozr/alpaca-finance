@@ -12,5 +12,5 @@ export default async function handler(req, res) {
   }
 
   console.log(`successfully connected to database.`)
-  res.status(200)
+  res.status(200).json({ data: data })
 }
