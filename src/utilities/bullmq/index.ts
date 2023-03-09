@@ -2,14 +2,14 @@ import { emailQueue } from "./queues/emailQueue";
 import emailWorker from "./workers/emailWorker"
 
 // Email functions
-async function emailCancelRequest(email, requesterName, amount) {
+async function emailCancelRequest(requesterEmail: string, requesterName: string, amountOwed: number) {
   try {
     await emailQueue.add(
       "emailCancelRequest",
       {
-        email,
         requesterName,
-        amount,
+        requesterEmail,
+        amountOwed,
       },
     );
     return { isSuccessful: true, error: null };
@@ -28,8 +28,10 @@ async function listJobs(queueName) {
         return { isSuccessful: false, error: "Invalid queue name.", jobs: null };
     }
   } catch (error) {
-    return { isSuccessful: false, error: error, jobs };
+    return { isSuccessful: false, error: error, jobs: null };
   }
 }
+
+emailWorker.run()
 
 export { emailCancelRequest, listJobs };

@@ -2,7 +2,7 @@ import { emailCancelRequest } from '@/utilities/bullmq'
 
 export default async function handler(req, res) {
   // async function emailCancelRequest(email, requesterName, amount) {
-  const { isSuccessful, error } = await emailCancelRequest('heigold128+test@gmail.com', 'nick', 100)
+  const { isSuccessful, error } = await emailCancelRequest('woody.andygrant@gmail.com', 'Andy', 100)
 
   if (!isSuccessful) {
     console.error(`emailCancelRequest: ${JSON.stringify(error)}`)
