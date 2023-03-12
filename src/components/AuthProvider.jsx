@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useCallback } from "react";
 import { useRouter } from "next/router";
 import supabaseClient from "@/utilities/supabase/frontend";
 
@@ -54,8 +54,8 @@ export const AuthProvider = ({ children }) => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              },
-              body: JSON.stringify(user),
+            },
+            body: JSON.stringify(user)
             });
         }
         const { data, error } = await fetch(`/api/users/${user.id}`);

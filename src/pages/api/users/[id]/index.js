@@ -1,5 +1,5 @@
 import get from './get'
-import create from './create'
+import create from '../create'
 
 export default async function handler(req, res) {
     switch (req.method) {
@@ -7,16 +7,16 @@ export default async function handler(req, res) {
             await get(req, res)
             break
         case 'POST':
-            await create(req, res)
-            break
+            // await create(req, res)
+            // break
         case 'PUT':
             // await update(req, res)
-            break
+            // break
         case 'DELETE':
             // await remove(req, res)
-            break
+            // break
         default:
-            res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE'])
+            res.setHeader('Allow', ['GET'])
             res.status(405).end(`Method ${req.method} Not Allowed`)
     }
 }
