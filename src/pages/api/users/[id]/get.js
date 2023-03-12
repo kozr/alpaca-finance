@@ -15,5 +15,5 @@ export default async function handler(req, res) {
   }
 
   console.log(`dummy: get user.`);
-  res.status(200).json({ data: data });
+  res.status(200).json({ data: data[0] });
 }

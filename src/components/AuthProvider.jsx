@@ -11,15 +11,16 @@ import supabaseClient from "@/utilities/supabase/frontend";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [googleContext, setGoogleContext] = useState(null);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   // Redirect user to appropriate page based on auth status
   const userAuthStatusHandler = useCallback(
-    async (user) => {
-      if (user !== null) {
-        setUser(user);
+    async (context) => {
+      if (context !== null) {
+        setGoogleContext(context);
         if (router.pathname == "/") await router.replace("/feed");
       } else {
         await router.replace("/");
@@ -53,11 +54,10 @@ export const AuthProvider = ({ children }) => {
 
   // Fetch user data if user is logged in
   useEffect(() => {
-    if (user) {
-      console.log(JSON.stringify(user));
-      const getOrCreateUser = async (user) => {
+    if (googleContext) {
+      const getOrCreateUser = async (googleContext) => {
         const createdWithinLastSecond =
-          new Date() - new Date(user.created_at) <= 1000;
+          new Date() - new Date(googleContext.created_at) <= 1000;
         if (createdWithinLastSecond) {
           // first time user
           const { data, error } = await fetch(`/api/users`, {
@@ -65,18 +65,19 @@ export const AuthProvider = ({ children }) => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(user),
+            body: JSON.stringify(googleContext),
           });
           if (error) console.error(error);
-          return data;
+          setUser(data);
+        } else {
+          const { data, error } = await fetch(`/api/users/${googleContext.id}`);
+          if (error) console.error(error);
+          setUser(data);
         }
-        const { data, error } = await fetch(`/api/users/${user.id}`);
-        if (error) console.error(error);
-        return data;
       };
-      getOrCreateUser(user);
+      getOrCreateUser(googleContext);
     }
-  }, [user]);
+  }, [googleContext]);
 
   const signInWithGoogle = async () => {
     const { data, error } = await supabaseClient.auth.signInWithOAuth({
