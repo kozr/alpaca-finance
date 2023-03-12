@@ -11,9 +11,10 @@ export default async function handler(req, res) {
 
   if (error) {
     console.error(`error: ${JSON.stringify(error)}`);
-    return res.status(500).json({ error: error });
+    return res.status(500).json({ data: null, error: error });
   }
 
   console.log(`dummy: get user.`);
-  res.status(200).json({ data: data[0] });
+  console.log(data)
+  res.status(200).json({ data: data[0], error: null });
 }
