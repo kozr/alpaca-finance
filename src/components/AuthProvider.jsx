@@ -1,4 +1,10 @@
-import { createContext, useState, useEffect, useContext, useCallback } from "react";
+import {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from "react";
 import { useRouter } from "next/router";
 import supabaseClient from "@/utilities/supabase/frontend";
 
@@ -10,15 +16,18 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   // Redirect user to appropriate page based on auth status
-  const userAuthStatusHandler = useCallback(async (user) => {
-    if (user !== null) {
-      setUser(user);
-      if (router.pathname == "/") await router.replace("/feed");
-    } else {
-      await router.replace("/");
-    }
-    setIsLoading(false);
-  }, [router]);
+  const userAuthStatusHandler = useCallback(
+    async (user) => {
+      if (user !== null) {
+        setUser(user);
+        if (router.pathname == "/") await router.replace("/feed");
+      } else {
+        await router.replace("/");
+      }
+      setIsLoading(false);
+    },
+    [router]
+  );
 
   // Check if user is already logged in
   useEffect(() => {
@@ -47,7 +56,8 @@ export const AuthProvider = ({ children }) => {
     if (user) {
       console.log(JSON.stringify(user));
       const getOrCreateUser = async (user) => {
-        const createdWithinLastSecond = new Date() - new Date(user.created_at) <= 1000;
+        const createdWithinLastSecond =
+          new Date() - new Date(user.created_at) <= 1000;
         if (createdWithinLastSecond) {
           // first time user
           const { data, error } = await fetch(`/api/users`, {
@@ -55,10 +65,14 @@ export const AuthProvider = ({ children }) => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(user)
-            });
+            body: JSON.stringify(user),
+          });
+          if (error) console.error(error);
+          return data;
         }
         const { data, error } = await fetch(`/api/users/${user.id}`);
+        if (error) console.error(error);
+        return data;
       };
       getOrCreateUser(user);
     }
