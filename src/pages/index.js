@@ -1,5 +1,6 @@
 import { useAuth } from "@/components/AuthProvider";
 import Wallet from "@/components/Wallet";
+import Button from "@/components/Button";
 
 export default function Home() {
   const { signInWithGoogle } = useAuth();
@@ -30,7 +31,14 @@ export default function Home() {
       </button>
       <button onClick={testEmail}>Send Email</button>
       <button onClick={listEmailJobs}>List Email Jobs</button>
-      <Wallet balance={1000.1} />
+      <Button
+        size="small"
+        iconLink="/deposit.svg" 
+        backgroundColor="blue-500"
+        destination="/feed"
+        buttonName="Deposit"
+      />
+      <Button size="large" backgroundColor="blue-500" destination="/feed">Cancel</Button>
     </div>
   );
 }
