@@ -53,10 +53,8 @@ export const AuthProvider = ({ children }) => {
     if (googleContext) {
       const firstTimerUser = new Date() - new Date(googleContext.created_at) <= 3000;
       if (firstTimerUser) {
-        debugger
         setUser(await createUser(googleContext));
       } else {
-        debugger
         setUser(await getUser(googleContext));
       }
     }
@@ -76,7 +74,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const { data } = supabaseClient.auth.onAuthStateChange(
       async (event, session) => {
-        debugger
         if (event === "SIGNED_IN") {
           await throwGoogleContextToBackend(session.user);
         } else if (event === "SIGNED_OUT") {
