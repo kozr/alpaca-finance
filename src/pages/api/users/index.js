@@ -1,7 +1,11 @@
 import create from './create'
+import get from './get'
 
 export default async function handler(req, res) {
   switch (req.method) {
+    case "GET":
+      await get(req, res);
+      break;
     case "POST":
       await create(req, res);
       break;
