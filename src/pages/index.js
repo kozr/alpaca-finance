@@ -1,6 +1,6 @@
 import { useAuth } from "@/components/AuthProvider";
 import Wallet from "@/components/Wallet";
-import Button from "@/components/Button";
+import DestinationButton from "@/components/DestinationButton";
 
 export default function Home() {
   const { signInWithGoogle } = useAuth();
@@ -31,14 +31,14 @@ export default function Home() {
       </button>
       <button onClick={testEmail}>Send Email</button>
       <button onClick={listEmailJobs}>List Email Jobs</button>
-      <Button
+      <DestinationButton
         size="small"
         iconLink="/deposit.svg" 
         backgroundColor="blue-500"
         destination="/feed"
         buttonName="Deposit"
       />
-      <Button size="large" backgroundColor="blue-500" destination="/feed">Cancel</Button>
+      <DestinationButton size="large" backgroundColor="blue-500" destination="/feed">Cancel</Button>
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import Image from 'next/image'
 
 const BUTTON_WIDTH_ENUM = Object.freeze({
@@ -6,7 +5,7 @@ const BUTTON_WIDTH_ENUM = Object.freeze({
   'large': 'w-40'
 })
 
-type ButtonProps = {
+type DestinationButtonProps = {
   size: 'small' | 'large',
   iconLink?: string,
   backgroundColor: string,
@@ -15,7 +14,7 @@ type ButtonProps = {
   children?: React.ReactNode
 }
 
-const Button = ({ size, iconLink, backgroundColor, destination, buttonName, children }: ButtonProps) => {
+const Button = ({ size, iconLink, backgroundColor, destination, buttonName, children }: DestinationButtonProps) => {
   return (
     <div className={`h-max w-max`}>
       <div className={`flex justify-center items-center content-center ${backgroundColor} h-14 ${BUTTON_WIDTH_ENUM[size]} rounded-lg p-2`}>

@@ -2,7 +2,7 @@ import { useAuth } from "@/components/AuthProvider";
 import Wallet from "@/components/Wallet";
 import supabase from "@/utilities/supabase/frontend";
 import FriendRow from "@/components/FriendRow";
-import Button from "@/components/Button";
+import DestinationButton from "@/components/DestinationButton";
 import Page from "@/components/Page";
 
 const Feed = () => {
@@ -16,28 +16,28 @@ const Feed = () => {
       <div className="font-bold text-20xl">{user?.email}</div>
       <Wallet />
       <div className="flex flex-row justify-between">
-        <Button
+        <DestinationButton
           size="small"
           iconLink="/request.svg"
           backgroundColor="bg-button-grey"
           destination="/request"
           buttonName="Request"
         />
-        <Button
+        <DestinationButton
           size="small"
           iconLink="/send.svg"
           backgroundColor="bg-button-grey"
           destination="/"
           buttonName="Send"
         />
-        <Button
+        <DestinationButton
           size="small"
           iconLink="/deposit.svg"
           backgroundColor="bg-button-grey"
           destination="/"
           buttonName="Deposit"
         />
-        <Button
+        <DestinationButton
           size="small"
           iconLink="/withdrawal.svg"
           backgroundColor="bg-button-grey"

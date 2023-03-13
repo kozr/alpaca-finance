@@ -11,7 +11,7 @@ const MoneyDisplay = ({total}) => {
 
     return (
     <>
-        <h2 className="text-4xl pt-5">${dollars.toLocaleString("en-US")}.{cents}</h2>
+        <h2 className="text-4xl pt-3">${dollars.toLocaleString("en-US")}.{cents}</h2>
     </>
 )};
 
