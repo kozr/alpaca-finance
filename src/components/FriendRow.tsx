@@ -32,13 +32,13 @@ const FriendRow = ({ user, payment, transaction, onClick }: FriendRowProps) => {
         <div className="pl-3 font-medium">
           {user.first_name} {user.last_name} {currentUser?.id === user.id && "(You)"}
         </div>
-        <div>
+        <div className="neutral-grey-500">
           {transaction && transaction.type} &nbsp;
         </div>
       </div>
       <div className="flex flex-col">
         <div className={`${amountColor}`}>{amount}</div>
-        <div>{payment && new Date(payment?.created_at).toString()}</div>
+        <div className="neutral-grey-500">{payment && new Date(payment?.created_at).toString()}</div>
       </div>
     </div>
   );

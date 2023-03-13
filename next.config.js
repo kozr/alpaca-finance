@@ -11,6 +11,7 @@ const nextConfig = {
       'money-grey': '#81818199',
       'positive-green': '#B9EAB3',
       'negative-red': '#EA6B6A',
+      'neutral-grey': '#818181',
     }
   }
 }
