@@ -66,6 +66,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const res = await supabaseClient.auth.getUser();
+      await throwGoogleContextToBackend(res.data.user);
       await userAuthStatusHandler(!!res.data.user);
     };
     fetchUser();
@@ -78,6 +79,8 @@ export const AuthProvider = ({ children }) => {
         debugger
         if (event === "SIGNED_IN") {
           await throwGoogleContextToBackend(session.user);
+        } else if (event === "SIGNED_OUT") {
+          setUser(null);
         }
         await userAuthStatusHandler(!!session?.user);
       }

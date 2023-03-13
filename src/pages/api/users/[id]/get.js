@@ -14,7 +14,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ data: null, error: error });
   }
 
-  console.log(`dummy: get user.`);
-  console.log(data)
   res.status(200).json({ data: data[0], error: null });
 }
