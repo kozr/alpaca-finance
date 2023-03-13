@@ -15,7 +15,7 @@ const Feed = () => {
       <div onClick={signOut}> Log out </div>
       <div className="font-bold text-20xl">{user?.email}</div>
       <Wallet />
-      <div className="flex flex-row justify-between m-10 ">
+      <div className="flex flex-row justify-between">
         <Button
           size="small"
           iconLink="/request.svg"

@@ -24,7 +24,9 @@ const Page = ({ children, title }: PageProps) => {
           destination="/"
         />
       </div>
-      {children}
+      <div className="mx-10">
+        {children}
+      </div>
     </>
   );
 };
