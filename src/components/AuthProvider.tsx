@@ -7,11 +7,12 @@ import {
 } from "react";
 import { useRouter } from "next/router";
 import supabaseClient from "@/utilities/supabase/frontend";
+import type User from "@/types/schema/User";
 
-const AuthContext = createContext();
+const AuthContext = createContext({ user: null, signInWithGoogle: () => {} });
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
@@ -51,7 +52,9 @@ export const AuthProvider = ({ children }) => {
   // Fetch user data if user is logged in
   const throwGoogleContextToBackend = useCallback(async (googleContext) => {
     if (googleContext) {
-      const firstTimerUser = new Date() - new Date(googleContext.created_at) <= 3000;
+      const firstTimerUser =
+        new Date().getTime() - new Date(googleContext.created_at).getTime() <=
+        3000;
       if (firstTimerUser) {
         setUser(await createUser(googleContext));
       } else {
