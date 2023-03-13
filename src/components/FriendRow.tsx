@@ -18,8 +18,8 @@ const FriendRow = ({ user, payment, transaction, onClick }: FriendRowProps) => {
   const amount = payment?.amount < 0 ? `-${payment?.amount}` : payment?.amount;
 
   return (
-    <div className="flex flex-row items-center justify-center" onClick={onClick}>
-      <div className="flex-none w-16 h-16 bg-gray-100">
+    <div className="flex flex-row items-center flex-start" onClick={onClick}>
+      <div className="flex-none float-left w-16 h-16 bg-gray-100">
         <Image
           className="object-cover w-16 h-16 rounded-md"
           src={user.avatar_url}
