@@ -37,29 +37,30 @@ export const AuthProvider = ({ children }) => {
       },
       body: JSON.stringify(googleContext),
     });
+    return res;
+  };
+
+  const getUser = async (googleContext) => fetch(`/api/users/${googleContext.id}`);
+
+  const processFetchResponse = async (res) => {
     const { data, error } = await res.json();
     if (error) console.error(error);
     return data;
-  };
-
-  const getUser = async (googleContext) => {
-    const res = await fetch(`/api/users/${googleContext.id}`);
-    const { data, error } = await res.json();
-    if (error) console.error(error);
-    return data;
-  };
-
+  }
+ 
   // Fetch user data if user is logged in
   const throwGoogleContextToBackend = useCallback(async (googleContext) => {
     if (googleContext) {
-      const firstTimerUser =
-        new Date().getTime() - new Date(googleContext.created_at).getTime() <=
-        3000;
-      if (firstTimerUser) {
-        setUser(await createUser(googleContext));
+      let user;
+      const getUserResponse = await getUser(googleContext);
+      if (getUserResponse.status === 404) {
+        const createUserResponse = await createUser(googleContext);
+        user = await processFetchResponse(createUserResponse);
       } else {
-        setUser(await getUser(googleContext));
+        user = await processFetchResponse(getUserResponse);
       }
+      
+      setUser(user);
     }
   }, []);
 
