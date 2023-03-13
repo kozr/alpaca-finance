@@ -16,11 +16,8 @@ const Feed = () => {
             <div className="font-bold text-20xl">
                 {user?.email}
             </div>
-<<<<<<< HEAD
             <Wallet />
-=======
             <FriendRow user={user} />
->>>>>>> origin/main
         </>
     )
 }
