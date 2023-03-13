@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const MoneyDisplay = ({total, customDollarsClass, customCentsClass}) => {
+const MoneyDisplay = ({total}) => {
     const [dollars, setDollars] = useState(0);
     const [cents, setCents] = useState(0);
 
@@ -11,7 +11,7 @@ const MoneyDisplay = ({total, customDollarsClass, customCentsClass}) => {
 
     return (
     <>
-        <div {...customDollarsClass}>${dollars}</div>.<div {...customCentsClass}>{cents}</div>
+        <h2 className="text-4xl pt-5">${dollars.toLocaleString("en-US")}.{cents}</h2>
     </>
 )};
 

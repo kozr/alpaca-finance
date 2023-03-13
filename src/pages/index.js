@@ -30,7 +30,6 @@ export default function Home() {
       </button>
       <button onClick={testEmail}>Send Email</button>
       <button onClick={listEmailJobs}>List Email Jobs</button>
-      <Wallet balance={1000.1} />
     </div>
   );
 }

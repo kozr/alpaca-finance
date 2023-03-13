@@ -1,4 +1,5 @@
 import { useAuth } from "@/components/AuthProvider"
+import Wallet from "@/components/Wallet";
 import supabase from "@/utilities/supabase/frontend"
 
 const Feed = () => {
@@ -14,6 +15,7 @@ const Feed = () => {
             <div className="font-bold text-20xl">
                 {user?.email}
             </div>
+            <Wallet />
         </>
     )
 }
