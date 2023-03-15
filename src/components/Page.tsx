@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "./DestinationButton";
+import Button from "./Button";
 
 type PageProps = {
   title: string;
