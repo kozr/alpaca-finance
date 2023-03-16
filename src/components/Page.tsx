@@ -8,8 +8,8 @@ type PageProps = {
 
 const Page = ({ children, title }: PageProps) => {
   return (
-    <>
-      <div className="flex flex-row items-center content-center justify-between m-10 ">
+    <div className="min-h-screen overflow-y-hidden">
+      <div className="flex flex-row items-center content-center justify-between m-10">
         <Button
           size="small"
           iconLink="/vertical.svg"
@@ -24,10 +24,10 @@ const Page = ({ children, title }: PageProps) => {
           destination="/"
         />
       </div>
-      <div className="mx-10">
+      <div className="mx-10 flex-1">
         {children}
       </div>
-    </>
+    </div>
   );
 };
 

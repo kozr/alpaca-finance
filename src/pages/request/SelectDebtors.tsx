@@ -13,20 +13,19 @@ const SelectDebtors = () => {
   const { state, dispatch } = useContext(RequestContext);
 
   useEffect(() => {
-    const getUsers = async () => {
-      const response = await fetch("/api/users", { method: "GET" });
-      const { data, error } = await response.json();
-      if (error) console.error(`error: ${JSON.stringify(error)}`);
-      data.forEach((user: User) => {
-        dispatch({ type: ActionType.ADD_USER, payload: user });
-      });
-    };
-    getUsers();
-
-    return () => {
-      dispatch({ type: ActionType.RESET, payload: null });
-    };
-  }, [dispatch]);
+    if (!state.moneyRequests.length) {
+      const getUsers = async () => {
+        const response = await fetch("/api/users", { method: "GET" });
+        const { data, error } = await response.json();
+        if (error) console.error(`error: ${JSON.stringify(error)}`);
+        data.forEach((user: User) => {
+          dispatch({ type: ActionType.ADD_USER, payload: user });
+        });
+      };
+      getUsers();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const unselectedUsers = state.moneyRequests.filter(
@@ -40,22 +39,12 @@ const SelectDebtors = () => {
     setTotal(selectedUsers.reduce((acc, request) => acc + request.amount, 0));
   }, [state]);
 
-  const onClickSelectedUser = (user: User) => {
-    dispatch({
-      type: ActionType.SET_MONEY_REQ_AMOUNT,
-      payload: { user, amount: 0 },
-    });
+  const onClickDebtors = (user: User) => {
+    dispatch({ type: ActionType.EDIT_MONEY_REQ, payload: user });
   };
 
-  const onClickUnselectedUser = (user: User) => {
-    dispatch({
-      type: ActionType.SET_MONEY_REQ_AMOUNT,
-      payload: { user, amount: 1 },
-    });
-  };
-
-  const onClickNavigateToConfirm = () => {
-    dispatch({ type: ActionType.SET_CURRENT_PAGE, payload: Page.Confirm });
+  const onClickNavigateToPage = (page) => {
+    dispatch({ type: ActionType.SET_CURRENT_PAGE, payload: page });
   };
 
   return (
@@ -64,8 +53,13 @@ const SelectDebtors = () => {
         <MoneyDisplay total={total}></MoneyDisplay>
       </div>
       <div className="flex justify-center my-10">
-        <Button size="large" backgroundColor="bg-positive-green" onClick={onClickNavigateToConfirm}>
+        <Button size="large" backgroundColor="bg-positive-green" onClick={() => onClickNavigateToPage(Page.Confirm)}>
           Confirm
+        </Button>
+      </div>
+      <div className="flex justify-center my-10">
+        <Button size="large" backgroundColor="bg-positive-green" onClick={() => onClickNavigateToPage(Page.SelectAmount)}>
+          Next
         </Button>
       </div>
       <div className="text-xl font-semibold my-3">Selected</div>
@@ -73,7 +67,7 @@ const SelectDebtors = () => {
         <div
           key={user.id}
           className="py-2"
-          onClick={() => onClickSelectedUser(user)}
+          onClick={() => onClickDebtors(user)}
         >
           <FriendRow user={user} />
         </div>
@@ -83,7 +77,7 @@ const SelectDebtors = () => {
         <div
           key={user.id}
           className="py-2"
-          onClick={() => onClickUnselectedUser(user)}
+          onClick={() => onClickDebtors(user)}
         >
           <FriendRow user={user} />
         </div>

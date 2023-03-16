@@ -14,6 +14,7 @@ export enum Page {
 
 type State = {
   moneyRequests: Array<MoneyRequest>;
+  selectedMoneyRequest: MoneyRequest | null;
   currentPage: Page;
 };
 
@@ -27,6 +28,7 @@ export enum ActionType {
   ADD_USER = "ADD_USER",
   RESET = "RESET",
   SET_CURRENT_PAGE = "SET_CURRENT_PAGE",
+  EDIT_MONEY_REQ = "EDIT_MONEY_REQ",
 }
 
 export const requestReducer = (state: State, action: Payload): State => {
@@ -56,8 +58,20 @@ export const requestReducer = (state: State, action: Payload): State => {
     case ActionType.SET_CURRENT_PAGE:
       return {
         ...state,
+        selectedMoneyRequest: null,
         currentPage: action.payload,
       };
+    case ActionType.EDIT_MONEY_REQ:
+      for (const request of state.moneyRequests) {
+        if (request.user.id === action.payload.id) {
+          return {
+            ...state,
+            selectedMoneyRequest: request,
+            currentPage: Page.SelectAmount,
+          };
+        }
+      }
+      return state
     default:
       return state;
   }
@@ -65,6 +79,7 @@ export const requestReducer = (state: State, action: Payload): State => {
 
 export const requestInitState = {
   moneyRequests: [],
+  selectedMoneyRequest: null,
   currentPage: Page.SelectDebtors,
 };
 
