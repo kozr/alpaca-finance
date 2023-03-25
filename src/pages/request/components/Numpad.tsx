@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 type NumPadProps = {
   onChange: (value: string) => void;
+  customClass?: string;
 };
 
 enum NumPadValue {
@@ -19,7 +20,7 @@ enum NumPadValue {
   BACKSPACE = "⌫",
 }
 
-const NumPad = ({ onChange }: NumPadProps) => {
+const NumPad = ({ onChange, customClass }: NumPadProps) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleClick = (value) => {
@@ -75,7 +76,7 @@ const NumPad = ({ onChange }: NumPadProps) => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-x-4 gap-y-10 text-5xl font-light">
+    <div className={`grid grid-cols-3 gap-x-4 gap-y-10 text-5xl font-light ${customClass}`}>
       {buttons.map((button, index) => (
         <button
           key={index}

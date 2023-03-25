@@ -1,16 +1,19 @@
-import FriendRow from "@/components/FriendRow";
+import MoneyRequestRow from "@/pages/request/components/MoneyRequestRow";
 import React, { useState, useEffect, useContext } from "react";
 import type { User } from "@/types";
 import MoneyDisplay from "@/components/MoneyDisplay";
 import Button from "@/components/Button";
 import { Page, RequestContext } from "./requestContext";
 import { ActionType } from "./requestContext";
+import { useAuth } from "@/components/AuthProvider";
 
 const SelectDebtors = () => {
   const [unselectedUser, setUnselectedUser] = useState<Array<User>>([]);
   const [selectedUser, setSelectedUser] = useState<Array<User>>([]);
   const [total, setTotal] = useState<number>(0);
   const { state, dispatch } = useContext(RequestContext);
+  const authContext = useAuth();
+  const currentUser = authContext.user;
 
   useEffect(() => {
     if (!state.moneyRequests.length) {
@@ -19,6 +22,7 @@ const SelectDebtors = () => {
         const { data, error } = await response.json();
         if (error) console.error(`error: ${JSON.stringify(error)}`);
         data.forEach((user: User) => {
+          if (user.id !== currentUser.id)
           dispatch({ type: ActionType.ADD_USER, payload: user });
         });
       };
@@ -53,7 +57,7 @@ const SelectDebtors = () => {
         <MoneyDisplay total={total}></MoneyDisplay>
       </div>
       <div className="flex justify-center my-10">
-        <Button size="large" backgroundColor="bg-positive-green" onClick={() => onClickNavigateToPage(Page.Confirm)}>
+        <Button size="large" backgroundColor="bg-positive-green" onClick={() => onClickNavigateToPage(Page.Confirmation)}>
           Confirm
         </Button>
       </div>
@@ -69,7 +73,8 @@ const SelectDebtors = () => {
           className="py-2"
           onClick={() => onClickDebtors(user)}
         >
-          <FriendRow user={user} />
+          {/* Optimize */}
+          <MoneyRequestRow moneyRequest={state.moneyRequests.find((mr) => mr.user.id === user.id)} />
         </div>
       ))}
       <div className="text-xl font-semibold my-3">Not Selected</div>
@@ -79,7 +84,8 @@ const SelectDebtors = () => {
           className="py-2"
           onClick={() => onClickDebtors(user)}
         >
-          <FriendRow user={user} />
+          {/* Optimize */}
+          <MoneyRequestRow moneyRequest={state.moneyRequests.find((mr) => mr.user.id === user.id)} />
         </div>
       ))}
     </>

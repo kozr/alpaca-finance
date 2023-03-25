@@ -1,7 +1,7 @@
 import { useAuth } from "@/components/AuthProvider";
 import Wallet from "@/components/Wallet";
 import supabase from "@/utilities/supabase/frontend";
-import FriendRow from "@/components/FriendRow";
+import FriendRow from "@/pages/request/components/MoneyRequestRow";
 import Button from "@/components/Button";
 import Page from "@/components/Page";
 
@@ -45,7 +45,6 @@ const Feed = () => {
           buttonName="Withdraw"
         />
       </div>
-      <FriendRow user={user} />
     </Page>
   );
 };

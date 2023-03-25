@@ -3,7 +3,7 @@ import {default as PageWrapper }from "@/components/Page";
 import { Page } from "./requestContext";
 import SelectDebtors from "./SelectDebtors";
 import SelectAmount from "./SelectAmount";
-import Confirm from "./Confirm";
+import Confirm from "./Confirmation";
 import { RequestProvider, RequestContext } from "./requestContext";
 
 const CurrentPage = () => {
@@ -13,7 +13,7 @@ const CurrentPage = () => {
       return <SelectDebtors />;
     case Page.SelectAmount:
       return <SelectAmount />;
-    case Page.Confirm:
+    case Page.Confirmation:
       return <Confirm />;
   }
 }

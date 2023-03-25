@@ -1,7 +1,9 @@
 import { createContext, useReducer } from 'react';
 import type { User } from '@/types';
 
-type MoneyRequest = {
+// need to type Payload
+
+export type MoneyRequest = {
   user: User;
   amount: number;
 };
@@ -9,7 +11,7 @@ type MoneyRequest = {
 export enum Page {
   SelectDebtors = 0,
   SelectAmount = 1,
-  Confirm = 2,
+  Confirmation = 2,
 }
 
 type State = {
@@ -35,8 +37,8 @@ export const requestReducer = (state: State, action: Payload): State => {
   switch (action.type) {
     case ActionType.SET_MONEY_REQ_AMOUNT:
       const requests = state.moneyRequests.map((request) => {
-        if (request.user.id === action.payload.user.id) {
-          request.amount = action.payload.amount;
+        if (request.user.id === action.payload.id) {
+          request.amount = Number(action.payload.amount);
         }
         return request;
       });

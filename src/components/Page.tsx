@@ -8,7 +8,7 @@ type PageProps = {
 
 const Page = ({ children, title }: PageProps) => {
   return (
-    <div className="min-h-screen overflow-y-hidden">
+    <div className="flex flex-col min-h-screen">
       <div className="flex flex-row items-center content-center justify-between m-10">
         <Button
           size="small"
