@@ -1,4 +1,4 @@
-import MoneyRequestRow from "@/pages/request/components/MoneyRequestRow";
+import PaymentRequestRow from "@/pages/request/components/PaymentRequestRow";
 import React, { useState, useEffect, useContext } from "react";
 import type { User } from "@/types";
 import MoneyDisplay from "@/components/MoneyDisplay";
@@ -7,7 +7,7 @@ import { Page, RequestContext } from "./requestContext";
 import { ActionType } from "./requestContext";
 import { useAuth } from "@/components/AuthProvider";
 
-const SelectDebtors = () => {
+const SelectPayees = () => {
   const [unselectedUser, setUnselectedUser] = useState<Array<User>>([]);
   const [selectedUser, setSelectedUser] = useState<Array<User>>([]);
   const [total, setTotal] = useState<number>(0);
@@ -16,7 +16,7 @@ const SelectDebtors = () => {
   const currentUser = authContext.user;
 
   useEffect(() => {
-    if (!state.moneyRequests.length) {
+    if (!state.paymentRequests.length) {
       const getUsers = async () => {
         const response = await fetch("/api/users", { method: "GET" });
         const { data, error } = await response.json();
@@ -32,24 +32,45 @@ const SelectDebtors = () => {
   }, []);
 
   useEffect(() => {
-    const unselectedUsers = state.moneyRequests.filter(
+    const unselectedUsers = state.paymentRequests.filter(
       (request) => request.amount === 0
     );
     setUnselectedUser(unselectedUsers.map((request) => request.user));
-    const selectedUsers = state.moneyRequests.filter(
+    const selectedUsers = state.paymentRequests.filter(
       (request) => request.amount > 0
     );
     setSelectedUser(selectedUsers.map((request) => request.user));
     setTotal(selectedUsers.reduce((acc, request) => acc + request.amount, 0));
   }, [state]);
 
-  const onClickDebtors = (user: User) => {
-    dispatch({ type: ActionType.EDIT_MONEY_REQ, payload: user });
+  const onClickPayees = async (user: User) => {
+    await dispatch({ type: ActionType.EDIT_PAYMENT_REQ, payload: user });
   };
 
   const onClickNavigateToPage = (page) => {
     dispatch({ type: ActionType.SET_CURRENT_PAGE, payload: page });
   };
+
+  const onClickProcessRequest = async () => {
+    try {
+      const response = await fetch("/api/transactions", {
+        method: "POST",
+        body: JSON.stringify({
+          payee: currentUser,
+          type: 'request',
+          paymentRequests: state.paymentRequests.filter((request) => request.amount > 0),
+        }),
+      });
+      const { data, error } = await response.json();
+      if (error) console.error(`error: ${JSON.stringify(error)}`);
+
+      console.log(data)
+
+      onClickNavigateToPage(Page.Confirmation);
+    } catch (error) {
+      alert(JSON.stringify(error))
+    }
+  }
 
   return (
     <>
@@ -57,13 +78,8 @@ const SelectDebtors = () => {
         <MoneyDisplay total={total}></MoneyDisplay>
       </div>
       <div className="flex justify-center my-10">
-        <Button size="large" backgroundColor="bg-positive-green" onClick={() => onClickNavigateToPage(Page.Confirmation)}>
+        <Button size="large" backgroundColor="bg-positive-green" onClick={() => onClickProcessRequest()}>
           Confirm
-        </Button>
-      </div>
-      <div className="flex justify-center my-10">
-        <Button size="large" backgroundColor="bg-positive-green" onClick={() => onClickNavigateToPage(Page.SelectAmount)}>
-          Next
         </Button>
       </div>
       <div className="text-xl font-semibold my-3">Selected</div>
@@ -71,10 +87,10 @@ const SelectDebtors = () => {
         <div
           key={user.id}
           className="py-2"
-          onClick={() => onClickDebtors(user)}
+          onClick={() => onClickPayees(user)}
         >
           {/* Optimize */}
-          <MoneyRequestRow moneyRequest={state.moneyRequests.find((mr) => mr.user.id === user.id)} />
+          <PaymentRequestRow paymentRequest={state.paymentRequests.find((mr) => mr.user.id === user.id)} />
         </div>
       ))}
       <div className="text-xl font-semibold my-3">Not Selected</div>
@@ -82,14 +98,14 @@ const SelectDebtors = () => {
         <div
           key={user.id}
           className="py-2"
-          onClick={() => onClickDebtors(user)}
+          onClick={async () => await onClickPayees(user)}
         >
           {/* Optimize */}
-          <MoneyRequestRow moneyRequest={state.moneyRequests.find((mr) => mr.user.id === user.id)} />
+          <PaymentRequestRow paymentRequest={state.paymentRequests.find((mr) => mr.user.id === user.id)} />
         </div>
       ))}
     </>
   );
 };
 
-export default SelectDebtors;
+export default SelectPayees;

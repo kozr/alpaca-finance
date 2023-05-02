@@ -5,11 +5,8 @@ import { RequestContext } from './requestContext';
 
 export default function Confirm() {
   const { state, dispatch } = useContext(RequestContext);
-  const total = state.moneyRequests.reduce((acc, request) => {
-    acc += request.amount;
-    return acc;
-  }, 0);
-
+  const total = state.paymentRequests.reduce((acc, request) => acc + request.amount, 0);
+  
   return (
     <div className="flex flex-col h-[75vh] justify-between items-center">
       <div className="flex-none">

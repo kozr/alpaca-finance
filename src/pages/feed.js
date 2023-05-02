@@ -1,7 +1,7 @@
 import { useAuth } from "@/components/AuthProvider";
 import Wallet from "@/components/Wallet";
 import supabase from "@/utilities/supabase/frontend";
-import FriendRow from "@/pages/request/components/MoneyRequestRow";
+import FriendRow from "@/pages/request/components/PaymentRequestRow";
 import Button from "@/components/Button";
 import Page from "@/components/Page";
 

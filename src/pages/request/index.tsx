@@ -1,7 +1,7 @@
 import React, { useContext, useReducer } from "react";
 import {default as PageWrapper }from "@/components/Page";
 import { Page } from "./requestContext";
-import SelectDebtors from "./SelectDebtors";
+import SelectPayees from "./SelectPayees";
 import SelectAmount from "./SelectAmount";
 import Confirm from "./Confirmation";
 import { RequestProvider, RequestContext } from "./requestContext";
@@ -9,8 +9,8 @@ import { RequestProvider, RequestContext } from "./requestContext";
 const CurrentPage = () => {
   const { state } = useContext(RequestContext);
   switch (state.currentPage) {
-    case Page.SelectDebtors:
-      return <SelectDebtors />;
+    case Page.SelectPayees:
+      return <SelectPayees />;
     case Page.SelectAmount:
       return <SelectAmount />;
     case Page.Confirmation:

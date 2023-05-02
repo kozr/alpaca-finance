@@ -1,18 +1,18 @@
 import React from "react";
 import Image from "next/image";
-import { MoneyRequest } from "../requestContext";
+import { PaymentRequest } from "../requestContext";
 import { useAuth } from "../../../components/AuthProvider";
 
-type MoneyRequestRowProps = {
-  moneyRequest: MoneyRequest
+type PaymentRequestRowProps = {
+  paymentRequest: PaymentRequest
   onClick?: () => void;
 };
 
-const MoneyRequestRow = ({ moneyRequest, onClick }: MoneyRequestRowProps) => {
+const PaymentRequestRow = ({ paymentRequest, onClick }: PaymentRequestRowProps) => {
   const authContext = useAuth()
   const currentUser = authContext.user
 
-  const { user, amount } = moneyRequest;
+  const { user, amount } = paymentRequest;
 
   const amountColor = amount > 0 ? "money-green-500" : "money-red-500";
   const signedAmount = amount < 0 ? `-${amount}` : amount;
@@ -40,4 +40,4 @@ const MoneyRequestRow = ({ moneyRequest, onClick }: MoneyRequestRowProps) => {
   );
 };
 
-export default MoneyRequestRow;
+export default PaymentRequestRow;

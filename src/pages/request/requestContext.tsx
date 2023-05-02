@@ -3,20 +3,20 @@ import type { User } from '@/types';
 
 // need to type Payload
 
-export type MoneyRequest = {
+export type PaymentRequest = {
   user: User;
   amount: number;
 };
 
 export enum Page {
-  SelectDebtors = 0,
+  SelectPayees = 0,
   SelectAmount = 1,
   Confirmation = 2,
 }
 
 type State = {
-  moneyRequests: Array<MoneyRequest>;
-  selectedMoneyRequest: MoneyRequest | null;
+  paymentRequests: Array<PaymentRequest>;
+  selectedPaymentRequest: PaymentRequest | null;
   currentPage: Page;
 };
 
@@ -26,17 +26,17 @@ type Payload = {
 };
 
 export enum ActionType {
-  SET_MONEY_REQ_AMOUNT = "SET_MONEY_REQ_AMOUNT",
+  SET_PAYMENT_REQ_AMOUNT = "SET_PAYMENT_REQ_AMOUNT",
   ADD_USER = "ADD_USER",
   RESET = "RESET",
   SET_CURRENT_PAGE = "SET_CURRENT_PAGE",
-  EDIT_MONEY_REQ = "EDIT_MONEY_REQ",
+  EDIT_PAYMENT_REQ = "EDIT_PAYMENT_REQ",
 }
 
-export const requestReducer = (state: State, action: Payload): State => {
+export const requestReducer = (state: State, action: Payload = null): State => {
   switch (action.type) {
-    case ActionType.SET_MONEY_REQ_AMOUNT:
-      const requests = state.moneyRequests.map((request) => {
+    case ActionType.SET_PAYMENT_REQ_AMOUNT:
+      const requests = state.paymentRequests.map((request) => {
         if (request.user.id === action.payload.id) {
           request.amount = Number(action.payload.amount);
         }
@@ -44,31 +44,31 @@ export const requestReducer = (state: State, action: Payload): State => {
       });
       return {
         ...state,
-        moneyRequests: requests,
+        paymentRequests: requests,
       };
     case ActionType.ADD_USER:
-      const newMoneyRequest = {
+      const newPaymentRequest = {
         user: action.payload,
         amount: 0,
       };
       return {
         ...state,
-        moneyRequests: [...state.moneyRequests, newMoneyRequest],
+        paymentRequests: [...state.paymentRequests, newPaymentRequest],
       };
     case ActionType.RESET:
       return requestInitState;
     case ActionType.SET_CURRENT_PAGE:
       return {
         ...state,
-        selectedMoneyRequest: null,
+        selectedPaymentRequest: null,
         currentPage: action.payload,
       };
-    case ActionType.EDIT_MONEY_REQ:
-      for (const request of state.moneyRequests) {
+    case ActionType.EDIT_PAYMENT_REQ:
+      for (const request of state.paymentRequests) {
         if (request.user.id === action.payload.id) {
           return {
             ...state,
-            selectedMoneyRequest: request,
+            selectedPaymentRequest: request,
             currentPage: Page.SelectAmount,
           };
         }
@@ -80,9 +80,9 @@ export const requestReducer = (state: State, action: Payload): State => {
 };
 
 export const requestInitState = {
-  moneyRequests: [],
-  selectedMoneyRequest: null,
-  currentPage: Page.SelectDebtors,
+  paymentRequests: [],
+  selectedPaymentRequest: null,
+  currentPage: Page.SelectPayees,
 };
 
 const RequestContext = createContext<{

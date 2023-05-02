@@ -10,7 +10,7 @@ export default function SelectAmount() {
   const { state, dispatch } = useContext(RequestContext);
 
   const {
-    selectedMoneyRequest: { amount: _selectedAmount, user: selectedUser },
+    selectedPaymentRequest: { amount: _selectedAmount, user: selectedUser },
   } = state;
 
   const handleChange = (value) => {
@@ -19,7 +19,7 @@ export default function SelectAmount() {
 
   const onClick = () => {
     dispatch({
-      type: ActionType.SET_MONEY_REQ_AMOUNT,
+      type: ActionType.SET_PAYMENT_REQ_AMOUNT,
       payload: {
         id: selectedUser.id,
         amount: amount,
@@ -27,7 +27,7 @@ export default function SelectAmount() {
     });
     dispatch({
       type: ActionType.SET_CURRENT_PAGE,
-      payload: Page.SelectDebtors,
+      payload: Page.SelectPayees,
     })
   };
 
@@ -35,7 +35,7 @@ export default function SelectAmount() {
     <div className="flex flex-col justify-between">
       <div className="flex flex-row justify-evenly my-5">
         <Image
-          src={state.selectedMoneyRequest.user.avatar_url}
+          src={state.selectedPaymentRequest.user.avatar_url}
           className="rounded-xl"
           width={75}
           height={75}
