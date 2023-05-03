@@ -6,7 +6,7 @@ export default function Home() {
   const { signInWithGoogle } = useAuth();
 
   const testEmail = async () => {
-    const response = await fetch("/api/emailCancelRequest", { method: "POST" });
+    const response = await fetch("/api/sendPaymentRequestedNotice", { method: "POST" });
     const data = await response.json();
     alert(JSON.stringify(data));
   };

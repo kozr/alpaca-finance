@@ -1,12 +1,12 @@
-import { emailCancelRequest, listJobs } from '@/utilities/bullmq'
+import { sendPaymentRequestedNotice, listJobs } from '@/utilities/bullmq'
 
 export default async function handler(req, res) {
-  // async function emailCancelRequest(email, requesterName, amount)
+  // async function sendPaymentRequestedNotice(email, requesterName, amount)
   const data = JSON.parse(req.body)
   const { isSuccessful, error, jobs } = await listJobs(data['queueName'])
 
   if (!isSuccessful) {
-    console.error(`emailCancelRequest: ${JSON.stringify(error)}`)
+    console.error(`sendPaymentRequestedNotice: ${JSON.stringify(error)}`)
     return res.status(500).json({ error: error })
   }
 

@@ -2,10 +2,10 @@ import { emailQueue } from "./queues/emailQueue";
 import emailWorker from "./workers/emailWorker"
 
 // Email functions
-async function emailCancelRequest(requesterEmail: string, requesterName: string, amountOwed: number) {
+async function sendPaymentRequestedNotice(requesterEmail: string, requesterName: string, amountOwed: number) {
   try {
     await emailQueue.add(
-      "emailCancelRequest",
+      "sendPaymentRequestedNotice",
       {
         requesterName,
         requesterEmail,
@@ -34,4 +34,4 @@ async function listJobs(queueName) {
 
 emailWorker.run()
 
-export { emailCancelRequest, listJobs };
+export { sendPaymentRequestedNotice, listJobs };
