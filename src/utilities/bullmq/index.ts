@@ -26,6 +26,17 @@ async function sendCancelledPaymentNotice(paymentId) {
   }
 }
 
+async function sendRejectedPaymentNotice(paymentId) {
+  try {
+    await emailQueue.add("sendRejectedPaymentNotice", {
+      paymentId,
+    });
+    return { isSuccessful: true, error: null };
+  } catch (error) {
+    return { isSuccessful: false, error: error };
+  }
+}
+
 async function listJobs(queueName) {
   try {
     switch (queueName) {
@@ -70,4 +81,5 @@ export {
   listJobs,
   sendCancelledPaymentNotice,
   executeTransaction,
+  sendRejectedPaymentNotice,
 };

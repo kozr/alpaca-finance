@@ -2,6 +2,7 @@ import { Worker } from "bullmq";
 import { redisConfiguration } from "@/utilities/redis";
 import sendCancelledPaymentNotice from "@/utilities/jobs/emails/payments/send-cancelled-payment-notice";
 import sendPaymentRequestedNotice from "@/utilities/jobs/emails/payments/send-payment-requested-notice";
+import sendRejectedPaymentNotice from "@/utilities/jobs/emails/payments/send-rejected-payment-notice";
 
 const emailWorkerJob = async (job) => {
   switch (job.name) {
@@ -11,6 +12,8 @@ const emailWorkerJob = async (job) => {
     case "sendCancelledPaymentNotice":
       await sendCancelledPaymentNotice(job.data);
       break;
+    case "sendRejectedPaymentNotice":
+      await sendRejectedPaymentNotice(job.data);
     default:
       console.log(`Email Job: ${job.id} processed. No email sent.`);
   }
