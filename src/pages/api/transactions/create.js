@@ -1,64 +1,95 @@
 import supabaseClient from "@/utilities/supabase/backend";
-import { sendPaymentRequestedNotice } from '@/utilities/bullmq'
+import {
+  executeTransaction,
+  sendPaymentRequestedNotice,
+} from "@/utilities/bullmq";
 
-const handlePaymentError = async (transactionId, error) => {
-  console.error(`error: ${JSON.stringify(error)}`);
-  await supabaseClient.from("transaction").update({ state: "failed", failure_reason: "unknown payment issue" }).match({ id: transactionId });
+const handleTransactionIssue = async (transactionId, error) => {
+  await supabaseClient
+    .from("transaction")
+    .update({ state: "failed", failure_reason: error })
+    .match({ id: transactionId });
   throw new Error(error);
-}
+};
 
 export default async function handler(req, res) {
-  console.log(req.body)
+  console.log(req.body);
   try {
-    const body = JSON.parse(req.body)
-    const payee = body["payee"]
-    const type = body["type"]
-    const paymentRequests = body["paymentRequests"]
+    const body = JSON.parse(req.body);
+    const payee = body["payee"];
+    const type = body["type"];
+    const paymentRequests = body["paymentRequests"];
 
     if (type !== "request") {
-      throw new Error("Transaction type must be request")
+      throw new Error("Transaction type must be request");
     }
 
-    const transactionRes = await supabaseClient.from("transaction").insert({
-      requester_user_id: payee.id,
-      type: type,
-      state: "pending",
-    }).select("id");
+    const transactionRes = await supabaseClient
+      .from("transaction")
+      .insert({
+        requester_user_id: payee.id,
+        type: type,
+        state: "pending",
+      })
+      .select("id");
 
     if (transactionRes["error"]) throw new Error(transactionRes["error"]);
 
-    const transactionId = transactionRes["data"][0]['id'];
+    const transactionId = transactionRes["data"][0]["id"];
     const associatedPayments = paymentRequests.map(({ user, amount }) => {
       return {
         payee_user_id: payee.id,
         payer_user_id: user.id,
         transaction_id: transactionId,
         amount: amount,
-        state: 'pending',
-        currency: 'CAD',
-      }
+        state: "pending",
+        currency: "CAD",
+      };
     });
-    const paymentRes = await supabaseClient.from("payment").insert(associatedPayments).select();
-  
-    if (paymentRes["error"]) await handlePaymentError(transactionId, paymentRes["error"]);
 
-    const total = paymentRes["data"].reduce((acc, curr) => acc + curr["amount"], 0);
+    const paymentRes = await supabaseClient
+      .from("payment")
+      .insert(associatedPayments)
+      .select();
 
-    const expectedTotal = paymentRequests.reduce((acc, curr) => acc + curr["amount"], 0);
+    if (paymentRes["error"])
+      await handleTransactionIssue(transactionId, paymentRes["error"]);
+
+    const total = paymentRes["data"].reduce(
+      (acc, curr) => acc + curr["amount"],
+      0
+    );
+
+    const expectedTotal = paymentRequests.reduce(
+      (acc, curr) => acc + curr["amount"],
+      0
+    );
 
     if (total !== expectedTotal) {
-      await handlePaymentError(transactionId, `total: ${total} !== expectedTotal: ${expectedTotal}`);
+      await handleTransactionIssue(
+        transactionId,
+        `total: ${total} !== expectedTotal: ${expectedTotal}`
+      );
+    }
+
+    // set transaction to execute after 2 days
+    const milisecondsInADay = 24 * 60 * 60 * 1000;
+    const { isSuccessful: success, error: jobError } = await executeTransaction(transactionId, 2 * milisecondsInADay);
+    if (!success) {
+      await handleTransactionIssue(transactionId, jobError);
     }
 
     // call job to send emails to each payer with payment id
     for (const payment of paymentRes["data"]) {
-      console.log(payment['id'])
-      await sendPaymentRequestedNotice(payment['id'])
+      const { isSuccessful: success2, error: jobError2 } = await sendPaymentRequestedNotice(payment["id"]);
+      if (!success2) {
+        await handleTransactionIssue(transactionId, jobError2);
+      }
     }
 
     res.status(200).json({ total });
   } catch (error) {
-    console.error(`error: ${error}`);
+    console.error(`Transaction create error: ${error}`);
     return res.status(500).json({ error: error });
   }
 }

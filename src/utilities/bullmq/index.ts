@@ -45,10 +45,12 @@ async function listJobs(queueName) {
 }
 
 // Transaction functions
-async function executeTransaction(transactionId) {
+async function executeTransaction(transactionId, delay = 0) {
   try {
     await transactionQueue.add("executeTransaction", {
       transactionId,
+    }, {
+      delay
     });
     return { isSuccessful: true, error: null };
   } catch (error) {
