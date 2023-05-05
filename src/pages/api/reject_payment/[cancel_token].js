@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import supabase from "@/utilities/supabase/backend";
-import { sendCancelledTransactionNotice } from "@/utilities/bullmq";
+import { sendCancelledPaymentNotice } from "@/utilities/bullmq";
 
 // Can be optimized where update returns the updated row
 export default async function handler(req, res) {
@@ -66,10 +66,10 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: updateError });
   }
 
-  // call sendCancelledTransactionNotice(updatedData[0].id) in the next line to send email to payee in the background with bullmq
-  const { isSuccessful, error: emailError } = await sendCancelledTransactionNotice(updatedData[0].id);
+  // call sendCancelledPaymentNotice(updatedData[0].id) in the next line to send email to payee in the background with bullmq
+  const { isSuccessful, error: emailError } = await sendCancelledPaymentNotice(updatedData[0].id);
   if (!isSuccessful) {
-    console.error(`sendCancelledTransactionNotice: ${JSON.stringify(emailError)}`);
+    console.error(`sendCancelledPaymentNotice: ${JSON.stringify(emailError)}`);
     return res.status(500).json({ error: emailError });
   }  
 

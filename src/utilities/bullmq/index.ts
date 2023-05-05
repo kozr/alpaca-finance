@@ -16,10 +16,10 @@ async function sendPaymentRequestedNotice(paymentId) {
   }
 }
 
-async function sendCancelledTransactionNotice(paymentId) {
+async function sendCancelledPaymentNotice(paymentId) {
   try {
     await emailQueue.add(
-      "sendCancelledTransactionNotice",
+      "sendCancelledPaymentNotice",
       {
         paymentId,
       },
@@ -46,4 +46,4 @@ async function listJobs(queueName) {
 
 emailWorker.run()
 
-export { sendPaymentRequestedNotice, listJobs, sendCancelledTransactionNotice };
+export { sendPaymentRequestedNotice, listJobs, sendCancelledPaymentNotice };
