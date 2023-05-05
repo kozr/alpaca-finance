@@ -1,4 +1,4 @@
-import executeTransaction from "../../jobs/transactions/executeTransaction";
+import executeTransaction from "../../jobs/transactions/execute-transaction";
 import { Worker } from "bullmq";
 import { redisConfiguration } from "@/utilities/redis";
 
