@@ -5,12 +5,6 @@ import Button from "@/components/Button";
 export default function Home() {
   const { signInWithGoogle } = useAuth();
 
-  const testEmail = async () => {
-    const response = await fetch("/api/sendPaymentRequestedNotice", { method: "POST" });
-    const data = await response.json();
-    alert(JSON.stringify(data));
-  };
-
   const listEmailJobs = async () => {
     const response = await fetch("/api/listQueueJobs", {
       method: "POST",
@@ -29,7 +23,6 @@ export default function Home() {
       >
         Login
       </button>
-      <button onClick={testEmail}>Send Email</button>
       <button onClick={listEmailJobs}>List Email Jobs</button>
       <Button
         size="small"

@@ -1,5 +1,5 @@
 import supabaseClient from "@/utilities/supabase/backend";
-import sendPaymentRequestedNotice from '@/utilities/jobs/emails/sendPaymentRequestedNotice'
+import sendPaymentRequestedNotice from '@/utilities/jobs/emails/send-payment-requested-notice'
 
 const handlePaymentError = async (transactionId, error) => {
   console.error(`error: ${JSON.stringify(error)}`);

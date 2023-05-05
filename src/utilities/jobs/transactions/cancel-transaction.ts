@@ -1,4 +1,4 @@
-import supabaseClient from '../supabase/backend';
+import supabaseClient from '../../supabase/backend';
 
 // WARNING: no rollback logic for failed payments
 

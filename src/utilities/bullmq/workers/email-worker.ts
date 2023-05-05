@@ -1,4 +1,4 @@
-import sendPaymentRequestedNotice from "../../jobs/emails/sendPaymentRequestedNotice";
+import sendPaymentRequestedNotice from "../../jobs/emails/send-payment-requested-notice";
 import { Worker } from "bullmq";
 import { redisConfiguration } from "@/utilities/redis";
 
