@@ -32,6 +32,9 @@ async function listJobs(queueName) {
       case "emailQueue":
         const jobs = await emailQueue.getJobs();
         return { isSuccessful: true, error: null, jobs };
+      case "transactionQueue":
+        const transactionJobs = await transactionQueue.getJobs();
+        return { isSuccessful: true, error: null, jobs: transactionJobs };
       default:
         return {
           isSuccessful: false,

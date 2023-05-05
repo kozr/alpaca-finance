@@ -77,6 +77,8 @@ export default async function handler(req, res) {
     const { isSuccessful: success, error: jobError } = await executeTransaction(transactionId, 2 * milisecondsInADay);
     if (!success) {
       await handleTransactionIssue(transactionId, jobError);
+    } else {
+      console.log(`Transaction ${transactionId} scheduled to execute in 2 days`)
     }
 
     // call job to send emails to each payer with payment id
