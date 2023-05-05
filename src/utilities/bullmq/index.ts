@@ -1,15 +1,14 @@
 import { emailQueue } from "./queues/email-queue";
-import emailWorker from "./workers/email-worker"
+import { transactionQueue } from "./queues/transaction-queue";
+import emailWorker from "./workers/email-worker";
+import transactionWorker from "./workers/transaction-worker";
 
 // Email functions
 async function sendPaymentRequestedNotice(paymentId) {
   try {
-    await emailQueue.add(
-      "sendPaymentRequestedNotice",
-      {
-        paymentId,
-      },
-    );
+    await emailQueue.add("sendPaymentRequestedNotice", {
+      paymentId,
+    });
     return { isSuccessful: true, error: null };
   } catch (error) {
     return { isSuccessful: false, error: error };
@@ -18,12 +17,9 @@ async function sendPaymentRequestedNotice(paymentId) {
 
 async function sendCancelledPaymentNotice(paymentId) {
   try {
-    await emailQueue.add(
-      "sendCancelledPaymentNotice",
-      {
-        paymentId,
-      },
-    );
+    await emailQueue.add("sendCancelledPaymentNotice", {
+      paymentId,
+    });
     return { isSuccessful: true, error: null };
   } catch (error) {
     return { isSuccessful: false, error: error };
@@ -37,13 +33,36 @@ async function listJobs(queueName) {
         const jobs = await emailQueue.getJobs();
         return { isSuccessful: true, error: null, jobs };
       default:
-        return { isSuccessful: false, error: "Invalid queue name.", jobs: null };
+        return {
+          isSuccessful: false,
+          error: "Invalid queue name.",
+          jobs: null,
+        };
     }
   } catch (error) {
     return { isSuccessful: false, error: error, jobs: null };
   }
 }
 
-emailWorker.run()
+// Transaction functions
+async function executeTransaction(transactionId) {
+  try {
+    await transactionQueue.add("executeTransaction", {
+      transactionId,
+    });
+    return { isSuccessful: true, error: null };
+  } catch (error) {
+    return { isSuccessful: false, error: error };
+  }
+}
 
-export { sendPaymentRequestedNotice, listJobs, sendCancelledPaymentNotice };
+// Start the workers
+emailWorker.run();
+transactionWorker.run();
+
+export {
+  sendPaymentRequestedNotice,
+  listJobs,
+  sendCancelledPaymentNotice,
+  executeTransaction,
+};
