@@ -1,15 +1,27 @@
-import { emailQueue } from "./queues/emailQueue";
-import emailWorker from "./workers/emailWorker"
+import { emailQueue } from "./queues/email-queue";
+import emailWorker from "./workers/email-worker"
 
 // Email functions
-async function sendPaymentRequestedNotice(requesterEmail: string, requesterName: string, amountOwed: number) {
+async function sendPaymentRequestedNotice(paymentId) {
   try {
     await emailQueue.add(
       "sendPaymentRequestedNotice",
       {
-        requesterName,
-        requesterEmail,
-        amountOwed,
+        paymentId,
+      },
+    );
+    return { isSuccessful: true, error: null };
+  } catch (error) {
+    return { isSuccessful: false, error: error };
+  }
+}
+
+async function sendCancelledTransactionNotice(paymentId) {
+  try {
+    await emailQueue.add(
+      "sendCancelledTransactionNotice",
+      {
+        paymentId,
       },
     );
     return { isSuccessful: true, error: null };
@@ -34,4 +46,4 @@ async function listJobs(queueName) {
 
 emailWorker.run()
 
-export { sendPaymentRequestedNotice, listJobs };
+export { sendPaymentRequestedNotice, listJobs, sendCancelledTransactionNotice };

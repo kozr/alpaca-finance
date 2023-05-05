@@ -1,5 +1,5 @@
 import supabaseClient from "@/utilities/supabase/backend";
-import sendPaymentRequestedNotice from '@/utilities/jobs/emails/send-payment-requested-notice'
+import { sendPaymentRequestedNotice } from '@/utilities/bullmq'
 
 const handlePaymentError = async (transactionId, error) => {
   console.error(`error: ${JSON.stringify(error)}`);
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         currency: 'CAD',
       }
     });
-    const paymentRes = await supabaseClient.from("payment").insert(associatedPayments).select("amount");
+    const paymentRes = await supabaseClient.from("payment").insert(associatedPayments).select();
   
     if (paymentRes["error"]) await handlePaymentError(transactionId, paymentRes["error"]);
 
@@ -50,16 +50,11 @@ export default async function handler(req, res) {
       await handlePaymentError(transactionId, `total: ${total} !== expectedTotal: ${expectedTotal}`);
     }
 
-    // call job to send emails to each payer
-    // TODO: shove user logic into sendPaymentRequestedNotice
-    paymentRequests.forEach(async ({ user, amount }) => {
-      const payeeFullName = payer.first_name + " " + payer.last_name;
-      const { isSuccessful, error } = await sendPaymentRequestedNotice(user.email, payeeFullName, amount);
-      if (!isSuccessful) {
-        console.error(`sendPaymentRequestedNotice: ${JSON.stringify(error)}`);
-        throw new Error(error);
-      }
-    });
+    // call job to send emails to each payer with payment id
+    for (const payment of paymentRes["data"]) {
+      console.log(payment['id'])
+      await sendPaymentRequestedNotice(payment['id'])
+    }
 
     res.status(200).json({ total });
   } catch (error) {
