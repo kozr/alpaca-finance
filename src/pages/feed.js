@@ -1,7 +1,6 @@
 import { useAuth } from "@/components/AuthProvider";
 import Wallet from "@/components/Wallet";
 import supabase from "@/utilities/supabase/frontend";
-import FriendRow from "@/pages/request/components/PaymentRequestRow";
 import Button from "@/components/Button";
 import Page from "@/components/Page";
 
@@ -24,6 +23,7 @@ const Feed = () => {
           buttonName="Request"
         />
         <Button
+          disabled
           size="small"
           iconLink="/send.svg"
           backgroundColor="bg-button-grey"
@@ -31,6 +31,7 @@ const Feed = () => {
           buttonName="Send"
         />
         <Button
+          disabled
           size="small"
           iconLink="/deposit.svg"
           backgroundColor="bg-button-grey"
@@ -38,6 +39,7 @@ const Feed = () => {
           buttonName="Deposit"
         />
         <Button
+          disabled
           size="small"
           iconLink="/withdrawal.svg"
           backgroundColor="bg-button-grey"

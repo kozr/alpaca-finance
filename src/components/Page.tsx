@@ -11,6 +11,7 @@ const Page = ({ children, title }: PageProps) => {
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-row items-center content-center justify-between m-10">
         <Button
+          disabled
           size="small"
           iconLink="/vertical.svg"
           backgroundColor="bg-button-grey"
@@ -18,6 +19,7 @@ const Page = ({ children, title }: PageProps) => {
         />
         <h1 className="text-md">{title}</h1>
         <Button
+          disabled
           size="small"
           iconLink="/person.svg"
           backgroundColor="bg-button-grey"

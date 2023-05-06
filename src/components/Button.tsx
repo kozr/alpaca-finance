@@ -10,8 +10,9 @@ type ButtonProps = {
   iconLink?: string;
   backgroundColor: string;
   destination?: string;
-  onClick?: () => void;
   buttonName?: string;
+  onClick?: (e) => void;
+  disabled?: boolean;
   children?: React.ReactNode;
 };
 
@@ -21,25 +22,29 @@ const Button = ({
   backgroundColor,
   destination,
   buttonName,
-  onClick = () => {},
+  onClick = (e) => { e.preventDefault() },
+  disabled,
   children,
 }: ButtonProps) => {
 
+  const disabledStyle = disabled ? "opacity-50 cursor-not-allowed" : "";
+  const onClickHandler = disabled ? (e) => { e.preventDefault(); } : onClick;
+
   return (
-    <div className={`h-max w-max`}>
+    <div className={`${disabledStyle} h-max w-max`}>
       <div
         className={`flex justify-center items-center content-center ${backgroundColor} h-14 ${BUTTON_WIDTH_ENUM[size]} rounded-lg p-2 cursor-pointer`}
       >
         {destination ? (
-          <a href={destination}>
+          <a href={destination} onClick={onClickHandler}>
             {iconLink ? (
-              <Image src={iconLink} onClick={onClick} alt="deposit" width={40} height={40} />
+              <Image src={iconLink} alt={buttonName} width={40} height={40} />
             ) : (
-                <div onClick={onClick} className="text-lg font-bold">{children}</div>
+              <div className="text-lg font-bold">{children}</div>
             )}
           </a>
         ) : (
-          <div onClick={onClick} className="text-lg font-bold">{children}</div>
+          <div onClick={onClickHandler} className="text-lg font-bold">{children}</div>
         )}
       </div>
       {buttonName && (
