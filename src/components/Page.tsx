@@ -19,11 +19,10 @@ const Page = ({ children, title }: PageProps) => {
         />
         <h1 className="text-md">{title}</h1>
         <Button
-          disabled
           size="small"
           iconLink="/person.svg"
           backgroundColor="bg-button-grey"
-          destination="/"
+          destination="/feed"
         />
       </div>
       <div className="mx-10 flex-1">

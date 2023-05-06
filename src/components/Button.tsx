@@ -22,13 +22,20 @@ const Button = ({
   backgroundColor,
   destination,
   buttonName,
-  onClick = (e) => { e.preventDefault() },
+  onClick = () => {},
   disabled,
   children,
 }: ButtonProps) => {
 
   const disabledStyle = disabled ? "opacity-50 cursor-not-allowed" : "";
-  const onClickHandler = disabled ? (e) => { e.preventDefault(); } : onClick;
+
+  const onClickHandler = (e) => {
+    if (disabled) {
+      e.preventDefault();
+    } else {
+      onClick(e);
+    }
+  };
 
   return (
     <div className={`${disabledStyle} h-max w-max`}>
