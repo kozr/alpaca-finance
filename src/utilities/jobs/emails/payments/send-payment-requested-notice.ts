@@ -76,7 +76,7 @@ const sendPaymentRequestedNotice = async ({
         You have <strong>${daysToCancel} days</strong> to decline this request, otherwise it will be automatically accepted.
       </p>
       <p>
-        Please click the following link to decline if this is a mistake: <a href="http://localhost:3000/reject-payment/${cancelToken}">Decline Payment Request</a>.
+        Please click the following link to decline if this is a mistake: <a href="http://localhost:3000/api/reject-payment/${cancelToken}">Decline Payment Request</a>.
       </p>
     `,
   });
