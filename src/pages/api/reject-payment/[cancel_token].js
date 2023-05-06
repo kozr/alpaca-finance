@@ -1,13 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import supabase from "@/utilities/supabase/backend";
-import { sendCancelledPaymentNotice } from "@/utilities/bullmq";
+import { sendCancelledPaymentNotice, sendRejectedPaymentNotice } from "@/utilities/bullmq";
 
 // Can be optimized where update returns the updated row
 export default async function handler(req, res) {
   const { cancel_token } = req.query;
 
   if (!cancel_token) {
-    const errorMessage = `No cancel_token provided.`;
+    const errorMessage = `reject-payment: No cancel_token provided.`;
     console.error(errorMessage);
     return res.status(400).json({ data: null, error: errorMessage });
   }
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     .eq("state", "pending");
 
   if (error) {
-    console.error(`error: ${JSON.stringify(error)}`);
+    console.error(`reject-payment error: ${JSON.stringify(error)}`);
     return res.status(500).json({ error: error });
   }
 
@@ -62,16 +62,21 @@ export default async function handler(req, res) {
 
   console.log(updateError, updatedData);
   if (updateError) {
-    console.error(`updateError: ${JSON.stringify(updateError)}`);
+    console.error(`reject-payment update error: ${JSON.stringify(updateError)}`);
     return res.status(500).json({ error: updateError });
   }
 
   // call sendCancelledPaymentNotice(updatedData[0].id) in the next line to send email to payee in the background with bullmq
   const { isSuccessful, error: emailError } = await sendCancelledPaymentNotice(updatedData[0].id);
   if (!isSuccessful) {
-    console.error(`sendCancelledPaymentNotice: ${JSON.stringify(emailError)}`);
-    return res.status(500).json({ error: emailError });
-  }  
+    console.error(`reject-payment sendCancelledPaymentNotice: ${JSON.stringify(emailError)}`);
+  }
+
+  // use sendRejectedPaymentNotice to send email to payer
+  const { isSuccessful2, error: emailError2 } = await sendRejectedPaymentNotice(updatedData[0].id);
+  if (!isSuccessful2) {
+    console.error(`reject-payment sendRejectedPaymentNotice: ${JSON.stringify(emailError2)}`);
+  }
 
   console.log(`Successfully cancelled payment: ${cancel_token}`);
 

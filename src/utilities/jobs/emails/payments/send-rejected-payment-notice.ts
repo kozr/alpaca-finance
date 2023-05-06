@@ -34,10 +34,15 @@ const sendRejectedPaymentNotice = async ({
     to: payerEmail,
     subject: `WARNING: Request to reimburse $${amountOwed} from ${payer_name} has been rejected.`,
     html: `
-      <p>Request to reimburse $${amountOwed} from ${payer_name} has been rejected.</p>
+      <h1>Rejected Payment Request</h1>
+      <p>
+        The request to reimburse <strong>$${amountOwed}</strong> from <strong>${payer_name}</strong> has been rejected.
+      </p>
       <p>This payment has been cancelled.</p>
       <p>If you have any questions, please contact the payee.</p>
-      <p>This warning will strike your account for 7 days.</p>
+      <p>
+        <strong>Note:</strong> This warning will leave a strike on your account for a period of time.
+      </p>
     `,
   });
 };

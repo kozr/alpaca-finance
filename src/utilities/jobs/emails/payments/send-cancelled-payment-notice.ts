@@ -39,10 +39,13 @@ const sendCancelledPaymentNotice = async ({
 
   sendEmail({
     to: payerEmail,
-    subject: `NOTICE: Request to reimburse $${amountOwed} to ${payeeName} has been cancelled.`,
+    subject: `NOTICE: Request to reimburse $${amountOwed} to ${payeeName} has been successfully cancelled.`,
     html: `
-      <p>Request to reimburse $${amountOwed} to ${payeeName} has been cancelled.</p>
-      <p>There is no further action from your part.</p>
+      <h1>Cancelled Payment Request</h1>
+      <p>
+        The request to reimburse <strong>$${amountOwed}</strong> to <strong>${payeeName}</strong> has been cancelled.
+      </p>
+      <p>There is no further action required on your part.</p>
     `,
   });
 };
