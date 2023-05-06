@@ -29,8 +29,13 @@ const PaymentRequestRow = ({ paymentRequest, onClick }: PaymentRequestRowProps) 
             height={128}
           />
         </div>
-        <div className="pl-3 font-medium">
-          {user.first_name} {user.last_name} {currentUser?.id === user.id && "(You)"}
+        <div className="pl-3 flex flex-col">
+          <div className="font-medium">
+            {user.first_name} {user.last_name} {currentUser?.id === user.id && "(You)"}
+          </div>
+          <div className="text-sm font-light text-gray-600">
+            Balance: {user.balance}
+          </div>
         </div>
       </div>
       <div className="flex flex-col">
