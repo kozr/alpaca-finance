@@ -74,7 +74,7 @@ export default async function handler(req, res) {
 
     // set transaction to execute after 2 days
     const milisecondsInADay = 24 * 60 * 60 * 1000;
-    const { isSuccessful: success, error: jobError } = await executeTransaction(transactionId, 2 * milisecondsInADay);
+    const { isSuccessful: success, error: jobError } = await executeTransaction(transactionId, 0);
     if (!success) {
       await handleTransactionIssue(transactionId, jobError);
     } else {

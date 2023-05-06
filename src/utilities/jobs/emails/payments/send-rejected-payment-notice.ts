@@ -5,7 +5,7 @@ interface SendRejectedPaymentNoticeProps {
   paymentId: number;
 }
 
-// send email to payer notifying them that their payment has been rejected
+// send email to payee notifying them that their payment has been rejected
 const sendRejectedPaymentNotice = async ({
   paymentId
 }: SendRejectedPaymentNoticeProps) => {
@@ -15,28 +15,28 @@ const sendRejectedPaymentNotice = async ({
     return;
   }
 
-  // the payment table has payer_user_id and payee_user_id and also the amountOwed
-  const payerUserId = paymentData[0].payer_user_id;
+  // the payment table has payee_user_id and payee_user_id and also the amountOwed
+  const payeeUserId = paymentData[0].payee_user_id;
   const amountOwed = paymentData[0].amount;
 
-  // get payer's email and full name
-  const { data: payerData, error: payerError } = await supabase.from("user").select("email, first_name, last_name").eq("id", payerUserId);
-  if (payerError) {
-    console.log("SendRejectedPaymentNoticeProps: Error getting payer's email: ", payerError);
+  // get payee's email and full name
+  const { data: payeeData, error: payeeError } = await supabase.from("user").select("email, first_name, last_name").eq("id", payeeUserId);
+  if (payeeError) {
+    console.log("SendRejectedPaymentNoticeProps: Error getting payee's email: ", payeeError);
     return;
   }
-  const payerEmail = payerData[0].email;
-  const payer_name = `${payerData[0].first_name} ${payerData[0].last_name}`;
+  const payeeEmail = payeeData[0].email;
+  const payeeName = `${payeeData[0].first_name} ${payeeData[0].last_name}`;
 
-  console.log("SendRejectedPaymentNoticeProps: email sent to " + payerEmail)
+  console.log("SendRejectedPaymentNoticeProps: email sent to " + payeeEmail)
 
   sendEmail({
-    to: payerEmail,
-    subject: `WARNING: Request to reimburse $${amountOwed} from ${payer_name} has been rejected.`,
+    to: payeeEmail,
+    subject: `WARNING: Request to reimburse $${amountOwed} from ${payeeName} has been rejected.`,
     html: `
       <h1>Rejected Payment Request</h1>
       <p>
-        The request to reimburse <strong>$${amountOwed}</strong> from <strong>${payer_name}</strong> has been rejected.
+        The request to reimburse <strong>$${amountOwed}</strong> from <strong>${payeeName}</strong> has been rejected.
       </p>
       <p>This payment has been cancelled.</p>
       <p>If you have any questions, please contact the payee.</p>

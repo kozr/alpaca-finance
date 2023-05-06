@@ -72,7 +72,7 @@ export default async function handler(req, res) {
     console.error(`reject-payment sendCancelledPaymentNotice: ${JSON.stringify(emailError)}`);
   }
 
-  // use sendRejectedPaymentNotice to send email to payer
+  // use sendRejectedPaymentNotice to send email to payee
   const { isSuccessful2, error: emailError2 } = await sendRejectedPaymentNotice(updatedData[0].id);
   if (!isSuccessful2) {
     console.error(`reject-payment sendRejectedPaymentNotice: ${JSON.stringify(emailError2)}`);

@@ -10,9 +10,9 @@ interface CancelTransactionProps {
 // Cancel transaction by calling CancelPayment on each payment asscociated with the transaction that is in "pending" state
 // then if all payments are successfully cancelled, update transaction state to "cancelled" and add reason
 const cancelTransaction = async ({ transaction_id, reason }: CancelTransactionProps) => {
-  const { data: paymentsData, error: paymentsError } = await supabaseClient.from("payments").select("*").eq("transaction_id", transaction_id).eq("state", "pending");
+  const { data: paymentsData, error: paymentsError } = await supabaseClient.from("payment").select("*").eq("transaction_id", transaction_id).eq("state", "pending");
   if (paymentsError) {
-    console.log("Error getting payments: ", paymentsError);
+    console.log("cancelTransaction error getting payments: ", paymentsError);
     return;
   }
 
@@ -37,13 +37,13 @@ interface CancelPaymentProps {
 const cancelPayment = async ({
   payment_id,
 }: CancelPaymentProps) => {
-  const { data: paymentData, error: paymentError } = await supabaseClient.from("payments").select("*").eq("id", payment_id);
+  const { data: paymentData, error: paymentError } = await supabaseClient.from("payment").select("*").eq("id", payment_id);
   if (paymentError) {
     console.log("Error getting payment: ", paymentError);
     return;
   }
 
-  const { data: updatedPaymentData, error: updatedPaymentError } = await supabaseClient.from("payments").update({
+  const { data: updatedPaymentData, error: updatedPaymentError } = await supabaseClient.from("payment").update({
     state: "cancelled",
   }).eq("id", payment_id);
   if (updatedPaymentError) {

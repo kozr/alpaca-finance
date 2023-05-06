@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import MoneyInput from "./components/MoneyInput";
-import NumPad from "./components/Numpad";
-import { RequestContext, ActionType, Page } from "./requestContext";
+import MoneyInput from "../components/MoneyInput";
+import NumPad from "../components/Numpad";
+import { RequestContext, ActionType, Page } from "../context/requestContext";
 import Image from "next/image";
 import Button from "@/components/Button";
 

@@ -28,7 +28,7 @@ const Button = ({
   return (
     <div className={`h-max w-max`}>
       <div
-        className={`flex justify-center items-center content-center ${backgroundColor} h-14 ${BUTTON_WIDTH_ENUM[size]} rounded-lg p-2`}
+        className={`flex justify-center items-center content-center ${backgroundColor} h-14 ${BUTTON_WIDTH_ENUM[size]} rounded-lg p-2 cursor-pointer`}
       >
         {destination ? (
           <a href={destination}>
