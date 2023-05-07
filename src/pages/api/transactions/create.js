@@ -3,6 +3,7 @@ import {
   executeTransaction,
   sendPaymentRequestedNotice,
 } from "@/utilities/bullmq";
+import authMiddleware from "@/utilities/auth-middleware";
 
 const handleTransactionIssue = async (transactionId, error) => {
   await supabaseClient
@@ -12,10 +13,9 @@ const handleTransactionIssue = async (transactionId, error) => {
   throw new Error(error);
 };
 
-export default async function handler(req, res) {
-  console.log(req.body);
+async function handler(req, res) {
   try {
-    const body = JSON.parse(req.body);
+    const body = req.body;
     const payee = body["payee"];
     const type = body["type"];
     const paymentRequests = body["paymentRequests"];
@@ -95,3 +95,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: error });
   }
 }
+
+export default authMiddleware(handler);

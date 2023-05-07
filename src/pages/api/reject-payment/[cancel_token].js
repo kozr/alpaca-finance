@@ -3,7 +3,7 @@ import supabase from "@/utilities/supabase/backend";
 import { sendCancelledPaymentNotice, sendRejectedPaymentNotice } from "@/utilities/bullmq";
 
 // Can be optimized where update returns the updated row
-export default async function handler(req, res) {
+async function handler(req, res) {
   const { cancel_token } = req.query;
 
   if (!cancel_token) {
@@ -82,3 +82,5 @@ export default async function handler(req, res) {
 
   res.status(200).json(true);
 }
+
+export default handler;

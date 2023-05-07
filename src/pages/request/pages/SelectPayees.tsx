@@ -6,6 +6,7 @@ import Button from "@/components/Button";
 import { Page, RequestContext } from "../context/requestContext";
 import { ActionType } from "../context/requestContext";
 import { useAuth } from "@/components/AuthProvider";
+import api from "@/utilities/api";
 
 const SelectPayees = () => {
   const [unselectedUser, setUnselectedUser] = useState<Array<User>>([]);
@@ -53,7 +54,7 @@ const SelectPayees = () => {
 
   const onClickProcessRequest = async () => {
     try {
-      const response = await fetch("/api/transactions", {
+      const response = await api.fetch("/api/transactions", {
         method: "POST",
         body: JSON.stringify({
           payee: currentUser,
