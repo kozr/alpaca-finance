@@ -21,7 +21,11 @@ async function handler(req, res) {
     const paymentRequests = body["paymentRequests"];
 
     if (type !== "request") {
-      throw new Error("Transaction type must be request");
+      throw new Error("Transaction type for now must be request");
+    }
+
+    if (req.user.id === payee.id) {
+      console.log("Payee must be the same as the user making the request")
     }
 
     const transactionRes = await supabaseClient

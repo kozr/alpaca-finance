@@ -1,7 +1,6 @@
-import { getServerSupabaseClient } from '../supabase/server'
+import supabase from '../supabase/backend'
 
 export async function getSession(accessToken) {
-  const supabase = getServerSupabaseClient();
   const { data, error } = await supabase.auth.getUser(accessToken);
   console.log(data);
   if (error) {

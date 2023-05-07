@@ -4,6 +4,10 @@ const api = {
   async fetch(url, options = {}) {
     console.log("api.fetch")
     const { data, error } = await supabaseClient.auth.getSession();
+    if (error) {
+      console.error('Error getting session:', error.message);
+      throw new Error(error.message);
+    }
     const accessToken = data?.session?.access_token;
     console.log(accessToken);
 
