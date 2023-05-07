@@ -1,7 +1,7 @@
 import supabase from "@utility/supabase/backend";
 
 export default async function handler(req, res) {
-  const user = req.params.user;
+  const user = req.query.user;
 
   if (user !== req.user.id) {
     console.log(
