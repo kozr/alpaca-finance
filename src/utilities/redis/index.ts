@@ -1,4 +1,4 @@
-import Redis, { RedisOptions } from 'ioredis';
+import Redis from 'ioredis';
 import url from 'url';
 
 const redisUrl = url.parse(process.env.REDIS_URL);
