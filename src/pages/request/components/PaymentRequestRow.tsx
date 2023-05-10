@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { PaymentRequest } from "../context/requestContext";
+import { PaymentRequest } from "../../../contexts/request/requestContext";
 import { useAuth } from "../../../components/AuthProvider";
 
 type PaymentRequestRowProps = {

@@ -1,10 +1,10 @@
 import React, { useContext, useReducer } from "react";
 import {default as PageWrapper }from "@/components/Page";
-import { Page } from "./context/requestContext";
+import { Page } from "../../contexts/request/requestContext";
 import SelectPayees from "./pages/SelectPayees";
 import SelectAmount from "./pages/SelectAmount";
 import Confirm from "./pages/Confirmation";
-import { RequestProvider, RequestContext } from "./context/requestContext";
+import { RequestProvider, RequestContext } from "../../contexts/request/requestContext";
 
 const CurrentPage = () => {
   const { state } = useContext(RequestContext);

@@ -3,8 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import type { User } from "@/types";
 import MoneyDisplay from "@/components/MoneyDisplay";
 import Button from "@/components/Button";
-import { Page, RequestContext } from "../context/requestContext";
-import { ActionType } from "../context/requestContext";
+import { Page, RequestContext } from "../../../contexts/request/requestContext";
+import { ActionType } from "../../../contexts/request/requestContext";
 import { useAuth } from "@/components/AuthProvider";
 import api from "@/utilities/api";
 

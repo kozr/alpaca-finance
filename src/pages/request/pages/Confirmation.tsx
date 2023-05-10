@@ -1,7 +1,7 @@
 import Button from '@/components/Button';
 import MoneyDisplay from '@/components/MoneyDisplay';
 import React, { useContext } from 'react';
-import { RequestContext } from '../context/requestContext';
+import { RequestContext } from '../../../contexts/request/requestContext';
 
 export default function Confirm() {
   const { state } = useContext(RequestContext);
