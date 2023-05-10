@@ -65,8 +65,6 @@ const SelectPayees = () => {
       const { data, error } = await response.json();
       if (error) console.error(`error: ${JSON.stringify(error)}`);
 
-      console.log(data)
-
       onClickNavigateToPage(Page.Confirmation);
     } catch (error) {
       alert(JSON.stringify(error))

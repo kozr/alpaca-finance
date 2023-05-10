@@ -6,8 +6,8 @@ export type Payment = {
   amount: number;
   currency: string;
   failure_reason: string;
-  payer_user_id: number;
-  payee_user_id: number;
+  payer_user_id: string;
+  payee_user_id: string;
   transaction_id: number;
 }
 

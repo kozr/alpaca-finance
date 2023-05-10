@@ -33,7 +33,7 @@ async function handler(req, res) {
     const transactionRes = await supabaseClient
       .from("transaction")
       .insert({
-        requester_user_id: payee.id,
+        user_id: payee.id,
         type: type,
         state: "pending",
       })

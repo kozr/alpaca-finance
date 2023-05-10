@@ -5,7 +5,7 @@ export type Transaction = {
   state: string;
   type: string;
   failure_reason: string;
-  requester_user_id: number;
+  user_id: number;
 }
 
 export default Transaction;
