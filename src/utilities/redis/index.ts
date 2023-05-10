@@ -1,6 +1,1 @@
-export const redisConfiguration = {
-  connection: {
-    host: "localhost",
-    port: 6379,
-  },
-};
+export const redisConfiguration = process.env.REDIS_URL
