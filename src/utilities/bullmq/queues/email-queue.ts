@@ -1,9 +1,9 @@
 import { Queue } from "bullmq";
-import { redisConnection } from "@/utilities/redis";
+import { redisOptions } from "@/utilities/redis";
 
 // Queues
 const emailQueue = new Queue("emailSchedule", {
-  connection: redisConnection
+  connection: redisOptions
 });
 
 export {
