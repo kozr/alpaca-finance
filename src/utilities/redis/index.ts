@@ -1,1 +1,3 @@
-export const redisConfiguration = process.env.REDIS_URL
+export const redisConfiguration = {
+  connection: process.env.REDIS_URL
+};
