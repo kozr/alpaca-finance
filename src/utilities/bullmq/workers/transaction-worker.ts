@@ -1,6 +1,6 @@
 import executeTransaction from "../../jobs/transactions/execute-transaction";
 import { Worker } from "bullmq";
-import { redisConfiguration } from "@/utilities/redis";
+import { redisConnection } from "@/utilities/redis";
 
 const transactionWorkerJob = async (job) => {
   switch (job.name) {
@@ -13,7 +13,7 @@ const transactionWorkerJob = async (job) => {
 };
 
 const transactionWorker = new Worker("transactionSchedule", transactionWorkerJob, {
-  connection: redisConfiguration.connection,
+  connection: redisConnection,
   autorun: false
 });
 

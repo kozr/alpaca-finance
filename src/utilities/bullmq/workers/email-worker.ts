@@ -1,5 +1,5 @@
 import { Worker } from "bullmq";
-import { redisConfiguration } from "@/utilities/redis";
+import { redisConnection } from "@/utilities/redis";
 import sendCancelledPaymentNotice from "@/utilities/jobs/emails/payments/send-cancelled-payment-notice";
 import sendPaymentRequestedNotice from "@/utilities/jobs/emails/payments/send-payment-requested-notice";
 import sendRejectedPaymentNotice from "@/utilities/jobs/emails/payments/send-rejected-payment-notice";
@@ -20,7 +20,7 @@ const emailWorkerJob = async (job) => {
 };
 
 const emailWorker = new Worker("emailSchedule", emailWorkerJob, {
-  connection: redisConfiguration.connection,
+  connection: redisConnection,
   autorun: false
 });
 

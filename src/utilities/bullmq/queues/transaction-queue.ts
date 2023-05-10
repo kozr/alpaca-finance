@@ -1,8 +1,10 @@
 import { Queue } from "bullmq";
-import { redisConfiguration } from "@/utilities/redis";
+import { redisConnection } from "@/utilities/redis";
 
 // Queues
-const transactionQueue = new Queue("transactionSchedule", redisConfiguration);
+const transactionQueue = new Queue("transactionSchedule", {
+  connection: redisConnection
+});
 
 export {
   transactionQueue,
