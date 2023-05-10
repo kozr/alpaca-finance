@@ -5,16 +5,6 @@ import Button from "@/components/Button";
 export default function Home() {
   const { signInWithGoogle } = useAuth();
 
-  const listEmailJobs = async () => {
-    const response = await fetch("/api/listQueueJobs", {
-      method: "POST",
-      body: JSON.stringify({ queueName: "emailQueue" }),
-      contentType: "application/json",
-    });
-    const data = await response.json();
-    alert(JSON.stringify(data));
-  };
-
   return (
     <div className="px-10">
       <button
@@ -23,15 +13,6 @@ export default function Home() {
       >
         Login
       </button>
-      <button onClick={listEmailJobs}>List Email Jobs</button>
-      <Button
-        size="small"
-        iconLink="/deposit.svg" 
-        backgroundColor="blue-500"
-        destination="/feed"
-        buttonName="Deposit"
-      />
-      <Button size="large" backgroundColor="blue-500" destination="/feed">Cancel</Button>
     </div>
   );
 }
