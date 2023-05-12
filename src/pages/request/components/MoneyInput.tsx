@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 
 const MoneyInput = ({ value, ...props }) => {
   const [inputValue, setInputValue] = useState(value || "");
+  const [prefix, setPrefix] = useState("$");
 
   useEffect(() => {
-    setInputValue(value);
+    if (value < 0) {
+      setPrefix("-$");
+    }
+    setInputValue(Math.abs(value));
   }, [value]);
 
   return (
