@@ -24,7 +24,7 @@ const executeTransaction = async ({ transactionId }: ExecuteTransactionProps) =>
   }
 
   // update transaction state to "paid"
-  await supabaseClient.from("transactions").update({
+  await supabaseClient.from("transaction").update({
     state: "paid",
   }).eq("id", transactionId);
 }
