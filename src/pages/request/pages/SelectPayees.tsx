@@ -12,6 +12,7 @@ const SelectPayees = () => {
   const [unselectedUser, setUnselectedUser] = useState<Array<User>>([]);
   const [selectedUser, setSelectedUser] = useState<Array<User>>([]);
   const [total, setTotal] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { state, dispatch } = useContext(RequestContext);
   const authContext = useAuth();
   const currentUser = authContext.user;
@@ -24,12 +25,12 @@ const SelectPayees = () => {
         if (error) console.error(`error: ${JSON.stringify(error)}`);
         data.forEach((user: User) => {
           if (user.id !== currentUser.id)
-          dispatch({ type: ActionType.ADD_USER, payload: user });
+            dispatch({ type: ActionType.ADD_USER, payload: user });
         });
       };
       getUsers();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -54,22 +55,31 @@ const SelectPayees = () => {
 
   const onClickProcessRequest = async () => {
     try {
+      if (isLoading) return;
+      setIsLoading(true);
       const response = await api.fetch("/api/transactions", {
         method: "POST",
         body: JSON.stringify({
           payee: currentUser,
-          type: 'request',
-          paymentRequests: state.paymentRequests.filter((request) => request.amount > 0),
+          type: "request",
+          paymentRequests: state.paymentRequests.filter(
+            (request) => request.amount > 0
+          ),
         }),
       });
       const { data, error } = await response.json();
-      if (error) console.error(`error: ${JSON.stringify(error)}`);
-
+      if (error) {
+        alert("Something went wrong, please try again later.");
+        console.error(`error: ${JSON.stringify(error)}`);
+        setIsLoading(false);
+        return;
+      }
       onClickNavigateToPage(Page.Confirmation);
     } catch (error) {
-      alert(JSON.stringify(error))
+      alert(JSON.stringify(error));
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <>
@@ -77,19 +87,46 @@ const SelectPayees = () => {
         <MoneyDisplay total={total}></MoneyDisplay>
       </div>
       <div className="flex justify-center my-10">
-        <Button size="large" backgroundColor="bg-positive-green" onClick={() => onClickProcessRequest()}>
-          Confirm
+        <Button
+          size="large"
+          backgroundColor="bg-positive-green"
+          onClick={() => onClickProcessRequest()}
+        >
+          {isLoading ? (
+            <svg
+              className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          ) : (
+            "Confirm"
+          )}
         </Button>
       </div>
       <div className="text-xl font-semibold my-3">Selected</div>
       {selectedUser.map((user: User) => (
-        <div
-          key={user.id}
-          className="py-2"
-          onClick={() => onClickPayees(user)}
-        >
+        <div key={user.id} className="py-2" onClick={() => onClickPayees(user)}>
           {/* Optimize */}
-          <PaymentRequestRow paymentRequest={state.paymentRequests.find((mr) => mr.user.id === user.id)} />
+          <PaymentRequestRow
+            paymentRequest={state.paymentRequests.find(
+              (mr) => mr.user.id === user.id
+            )}
+          />
         </div>
       ))}
       <div className="text-xl font-semibold my-3">Not Selected</div>
@@ -100,7 +137,11 @@ const SelectPayees = () => {
           onClick={async () => await onClickPayees(user)}
         >
           {/* Optimize */}
-          <PaymentRequestRow paymentRequest={state.paymentRequests.find((mr) => mr.user.id === user.id)} />
+          <PaymentRequestRow
+            paymentRequest={state.paymentRequests.find(
+              (mr) => mr.user.id === user.id
+            )}
+          />
         </div>
       ))}
     </>
