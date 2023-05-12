@@ -8,7 +8,7 @@ interface ExecuteTransactionProps {
 }
 
 // execute transaction by calling executePayment on each payment asscociated with the transaction that is in "pending" state
-// then if all payments are successful, update transaction state to "paid"
+// then if all payments are successful, update transaction state to "successful"
 const executeTransaction = async ({ transactionId }: ExecuteTransactionProps) => {
   console.log(`executeTransaction: transactionId: ${transactionId}`)
   const { data: paymentsData, error: paymentsError } = await supabaseClient.from("payment").select("*").eq("transaction_id", transactionId).eq("state", "pending");
@@ -23,9 +23,9 @@ const executeTransaction = async ({ transactionId }: ExecuteTransactionProps) =>
     });
   }
 
-  // update transaction state to "paid"
+  // update transaction state to "successful"
   await supabaseClient.from("transaction").update({
-    state: "paid",
+    state: "successful",
   }).eq("id", transactionId);
 }
 

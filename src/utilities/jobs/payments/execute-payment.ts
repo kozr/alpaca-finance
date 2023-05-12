@@ -52,9 +52,9 @@ const executePayment = async ({
     return;
   }
 
-  // update payment state to "paid"
+  // update payment state to "successful"
   await supabaseClient.from("payment").update({
-    state: "paid",
+    state: "successful",
   }).eq("payer_user_id", payer_id).eq("payee_user_id", payee_id).eq("amount", amount);
 };
 
