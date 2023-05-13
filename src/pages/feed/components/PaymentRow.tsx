@@ -24,13 +24,10 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
       method: "POST",
     });
     const { data, error } = await res.json();
-    if (error) console.error(`error: ${JSON.stringify(error)}`);
-    if (data) {
-      // refresh page
-      window.location.reload();
-    } else {
-      console.error("error accepting payment");
+    if (error) {
+      console.error(`error: ${JSON.stringify(error)}`);
     }
+    window.location.reload();
   };
   
 
