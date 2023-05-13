@@ -14,7 +14,7 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
   const authContext = useAuth()
   const currentUser = authContext.user
 
-  const { id, payeeUserId, payerUserId, amount, payeeName, payerName, state, payeeAvatarUrl, payerAvatarUrl, cancelToken } = paymentDetails;
+  const { id, payeeUserId, payerUserId, amount, payeeName, payerName, state, payeeAvatarUrl, payerAvatarUrl } = paymentDetails;
   const userIsPayee = currentUser?.id === payeeUserId;
   const targetName = userIsPayee ? payerName : payeeName;
   const targetAvatarUrl = userIsPayee ? payerAvatarUrl : payeeAvatarUrl;
