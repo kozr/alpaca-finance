@@ -6,10 +6,14 @@ const RejectPayment = () => {
   const router = useRouter();
   const { cancel_token } = router.query;
 
+  const onClickCancel = () => {
+    router.push(`/api/payments/${cancel_token}`)
+  };
+
   return (
     <Button
       size="large"
-      destination={`/api/reject-payment/${cancel_token}`}
+      onClick={onClickCancel}
       backgroundColor="bg-negative-red"
     >
       Reject Payment
