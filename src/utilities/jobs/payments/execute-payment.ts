@@ -5,7 +5,7 @@ interface ExecutePaymentProps {
 }
 
 // transfer balance from payer to payee from user table's "balance"
-// update payment state to "paid"
+// update payment state to "successful"
 const executePayment = async ({
   payment_id,
 }: ExecutePaymentProps) => {

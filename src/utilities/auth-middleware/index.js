@@ -5,14 +5,16 @@ const authMiddleware = (handler) => {
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
-      res.status(401).json({ message: 'Unauthorized' });
+      console.log('No token')
+      res.status(401).json({ message: 'Unauthorized, incident has been noted' });
       return;
     }
 
     const session = await getSession(token);
 
     if (!session) {
-      res.status(401).json({ message: 'Unauthorized' });
+      console.log('No session')
+      res.status(401).json({ message: 'Unauthorized, incident has been noted' });
       return;
     }
 

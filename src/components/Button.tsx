@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 const BUTTON_WIDTH_ENUM = Object.freeze({
-  small: "w-14",
+  small: "w-18",
   large: "w-40",
 });
 
@@ -28,6 +28,7 @@ const Button = ({
 }: ButtonProps) => {
 
   const disabledStyle = disabled ? "opacity-50 cursor-not-allowed" : "";
+  const fontStyles = size === "small" ? "text-sm" : "text-lg font-bold";
 
   const onClickHandler = (e) => {
     if (disabled) {
@@ -47,11 +48,11 @@ const Button = ({
             {iconLink ? (
               <Image src={iconLink} alt={buttonName} width={40} height={40} />
             ) : (
-              <div className="text-lg font-bold">{children}</div>
+              <div className={fontStyles}>{children}</div>
             )}
           </a>
         ) : (
-          <div onClick={onClickHandler} className="text-lg font-bold">{children}</div>
+          <div onClick={onClickHandler} className={fontStyles}>{children}</div>
         )}
       </div>
       {buttonName && (
