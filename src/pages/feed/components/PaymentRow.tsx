@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { PaymentDetails } from "@/serializers/payments/payment-details-serializer";
 import { useAuth } from "@/components/AuthProvider";
@@ -14,18 +14,25 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
   const authContext = useAuth()
   const currentUser = authContext.user
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const { id, payeeUserId, payerUserId, amount, payeeName, payerName, state, payeeAvatarUrl, payerAvatarUrl } = paymentDetails;
   const userIsPayee = currentUser?.id === payeeUserId;
   const targetName = userIsPayee ? payerName : payeeName;
   const targetAvatarUrl = userIsPayee ? payerAvatarUrl : payeeAvatarUrl;
 
   const onClickAccept = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
     const res = await api.fetch(`/api/payments/${id}/accept`, {
       method: "POST",
     });
     const { data, error } = await res.json();
     if (error) {
       console.error(`error: ${JSON.stringify(error)}`);
+      alert("Something went wrong. Please contact the dev.")
+      setIsLoading(false);
+      return;
     }
     window.location.reload();
   };
