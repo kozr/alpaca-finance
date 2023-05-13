@@ -30,15 +30,22 @@ const sendRejectedPaymentNotice = async ({
 
   console.log("SendRejectedPaymentNoticeProps: email sent to " + payeeEmail)
 
+  // get payer's name
+  const { data: payerData, error: payerError } = await supabase.from("user").select("first_name, last_name").eq("id", paymentData[0].payer_user_id);
+  if (payerError) {
+    console.log("SendRejectedPaymentNoticeProps: Error getting payer's name: ", payerError);
+    return;
+  }
+  const payerName = `${payerData[0].first_name} ${payerData[0].last_name}`;
+
   sendEmail({
     to: payeeEmail,
-    subject: `WARNING: Request to reimburse $${amountOwed} from ${payeeName} has been rejected.`,
+    subject: `WARNING: Request for $${amountOwed} from ${payerName} has been rejected.`,
     html: `
       <h1>Rejected Payment Request</h1>
       <p>
-        The request to reimburse <strong>$${amountOwed}</strong> from <strong>${payeeName}</strong> has been rejected.
+        The request for <strong>$${amountOwed}</strong> from <strong>${payeeName}</strong> has been rejected.
       </p>
-      <p>This payment has been cancelled.</p>
       <p>If you have any questions, please contact the payee.</p>
       <p>
         <strong>Note:</strong> This warning will leave a strike on your account for a period of time.

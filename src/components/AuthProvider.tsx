@@ -17,18 +17,21 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   // Redirect user to appropriate page based on auth status
+  const unauthenticatedPath = "/reject-payment";  // hack for now. will write HOC later.
+
   const userAuthStatusHandler = useCallback(
     async (isLoggedIn) => {
       if (isLoggedIn) {
         if (router.pathname == "/") await router.replace("/feed");
       } else {
-        await router.replace("/");
+        if (unauthenticatedPath == router.pathname) {
+          await router.replace("/");
+        }
       }
       setIsLoading(false);
     },
     [router]
   );
-
   const createUser = async (googleContext) => {
     const res = await fetch(`/api/users`, {
       method: "POST",
