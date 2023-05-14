@@ -81,12 +81,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const { data } = supabaseClient.auth.onAuthStateChange(
       async (event, session) => {
+        let isLoggedIn = false;
         if (event === "SIGNED_IN") {
           await throwGoogleContextToBackend(session.user);
+          isLoggedIn = !!session?.user;
         } else if (event === "SIGNED_OUT") {
           setUser(null);
+          isLoggedIn = false;
         }
-        await userAuthStatusHandler(!!session?.user);
+        await userAuthStatusHandler(isLoggedIn);
       }
     );
 
