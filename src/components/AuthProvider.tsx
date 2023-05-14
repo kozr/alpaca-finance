@@ -8,6 +8,7 @@ import {
 import { useRouter } from "next/router";
 import supabaseClient from "@/utilities/supabase/frontend";
 import type User from "@/types/schema/User";
+import LoadingSpinner from "./LoadingSpinner";
 
 const AuthContext = createContext({ user: null, signInWithGoogle: () => {} });
 
@@ -17,16 +18,18 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   // Redirect user to appropriate page based on auth status
-  const unauthenticatedPath = "/reject-payment";  // hack for now. will write HOC later.
+  const unauthenticatedPath = "/reject-payment"; // hack for now. will write HOC later.
 
   const userAuthStatusHandler = useCallback(
     async (isLoggedIn) => {
       if (isLoggedIn) {
         if (router.pathname == "/") await router.replace("/feed");
       } else {
-        if (unauthenticatedPath == router.pathname) {
-          await router.replace("/");
+        if (router.pathname.startsWith(unauthenticatedPath)) {
+          setIsLoading(false);
+          return;
         }
+        await router.replace("/");
       }
       setIsLoading(false);
     },
@@ -43,14 +46,15 @@ export const AuthProvider = ({ children }) => {
     return res;
   };
 
-  const getUser = async (googleContext) => fetch(`/api/users/${googleContext.id}`);
+  const getUser = async (googleContext) =>
+    fetch(`/api/users/${googleContext.id}`);
 
   const processFetchResponse = async (res) => {
     const { data, error } = await res.json();
     if (error) console.error(error);
     return data;
-  }
- 
+  };
+
   // Fetch user data if user is logged in
   const throwGoogleContextToBackend = useCallback(async (googleContext) => {
     if (googleContext) {
@@ -62,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         user = await processFetchResponse(getUserResponse);
       }
-      
+
       setUser(user);
     }
   }, []);
@@ -71,8 +75,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const res = await supabaseClient.auth.getUser();
-      await throwGoogleContextToBackend(res.data.user);
-      await userAuthStatusHandler(!!res.data.user);
+      if (res.error) {
+        console.error(res.error);
+        await userAuthStatusHandler(false);
+      } else {
+        await throwGoogleContextToBackend(res.data.user);
+        await userAuthStatusHandler(!!res.data.user);
+      }
     };
     fetchUser();
   }, []);
@@ -84,7 +93,7 @@ export const AuthProvider = ({ children }) => {
         let isLoggedIn = false;
         if (event === "SIGNED_IN") {
           await throwGoogleContextToBackend(session.user);
-          isLoggedIn = !!session?.user;
+          isLoggedIn = true;
         } else if (event === "SIGNED_OUT") {
           setUser(null);
           isLoggedIn = false;
@@ -111,7 +120,13 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, signInWithGoogle }}>
-      {isLoading ? <div className="font-bold">LOADING...</div> : children}
+      {isLoading ? (
+        <div className="flex justify-center items-center min-h-screen">
+          <LoadingSpinner />
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };
