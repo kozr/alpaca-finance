@@ -5,8 +5,8 @@ const MoneyDisplay = ({ total }) => {
   const [cents, setCents] = useState(0);
 
   useEffect(() => {
-    setDollars(Math.floor(total));
-    setCents((total * 100) % 100);
+    setDollars(Math.trunc(total));
+    setCents(Math.trunc(Math.abs((total * 100) % 100)));
   }, [total]);
 
   return (
