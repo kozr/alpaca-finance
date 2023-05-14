@@ -7,7 +7,7 @@ const RejectPayment = () => {
   const { cancel_token } = router.query;
 
   const onClickCancel = () => {
-    router.push(`/api/payments/${cancel_token}`)
+    router.push(`/api/reject-payment/${cancel_token}`)
   };
 
   return (
