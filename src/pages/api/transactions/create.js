@@ -95,7 +95,7 @@ async function handler(req, res) {
       }
     }
 
-    res.status(200).json({ total });
+    return res.status(200).json({ total });
   } catch (error) {
     console.error(`Transaction create error: ${error}`);
     return res.status(500).json({ error: error });
