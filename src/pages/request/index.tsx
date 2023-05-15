@@ -12,7 +12,7 @@ const CurrentPage = () => {
     case Page.SelectPayees:
       return <SelectPayees />;
     case Page.SelectAmount:
-      return <SelectAmount />;
+      return <SelectAmount existingReason={state.selectedPaymentRequest.reason}/>;
     case Page.Confirmation:
       return <Confirm />;
   }

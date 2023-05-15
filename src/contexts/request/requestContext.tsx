@@ -6,6 +6,7 @@ import type { User } from '@/types';
 export type PaymentRequest = {
   user: User;
   amount: number;
+  reason: string;
 };
 
 export enum Page {
@@ -18,6 +19,7 @@ type State = {
   paymentRequests: Array<PaymentRequest>;
   selectedPaymentRequest: PaymentRequest | null;
   currentPage: Page;
+  defaultReason: string;
 };
 
 type Payload = {
@@ -31,6 +33,7 @@ export enum ActionType {
   RESET = "RESET",
   SET_CURRENT_PAGE = "SET_CURRENT_PAGE",
   EDIT_PAYMENT_REQ = "EDIT_PAYMENT_REQ",
+  SET_DEFAULT_REASON = "SET_DEFAULT_REASON",
 }
 
 export const requestReducer = (state: State, action: Payload = null): State => {
@@ -39,6 +42,7 @@ export const requestReducer = (state: State, action: Payload = null): State => {
       const requests = state.paymentRequests.map((request) => {
         if (request.user.id === action.payload.id) {
           request.amount = Number(action.payload.amount);
+          request.reason = action.payload.reason
         }
         return request;
       });
@@ -50,6 +54,7 @@ export const requestReducer = (state: State, action: Payload = null): State => {
       const newPaymentRequest = {
         user: action.payload,
         amount: 0,
+        reason: '',
       };
       return {
         ...state,
@@ -68,12 +73,20 @@ export const requestReducer = (state: State, action: Payload = null): State => {
         if (request.user.id === action.payload.id) {
           return {
             ...state,
-            selectedPaymentRequest: request,
+            selectedPaymentRequest: {
+              ...request,
+              reason: request.reason || state.defaultReason
+            },
             currentPage: Page.SelectAmount,
           };
         }
       }
       return state
+    case ActionType.SET_DEFAULT_REASON:
+      return {
+        ...state,
+        defaultReason: action.payload.reason
+      }
     default:
       return state;
   }
@@ -83,6 +96,7 @@ export const requestInitState = {
   paymentRequests: [],
   selectedPaymentRequest: null,
   currentPage: Page.SelectPayees,
+  defaultReason: "",
 };
 
 const RequestContext = createContext<{

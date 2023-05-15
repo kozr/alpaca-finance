@@ -5,8 +5,9 @@ import { RequestContext, ActionType, Page } from "../../../contexts/request/requ
 import Image from "next/image";
 import Button from "@/components/Button";
 
-export default function SelectAmount() {
+export default function SelectAmount({ existingReason }) {
   const [amount, setAmount] = React.useState("");
+  const [reason, setReason] = React.useState(existingReason || "");
   const { state, dispatch } = useContext(RequestContext);
 
   const {
@@ -23,6 +24,7 @@ export default function SelectAmount() {
       payload: {
         id: selectedUser.id,
         amount: amount,
+        reason: reason,
       },
     });
     dispatch({
@@ -48,6 +50,15 @@ export default function SelectAmount() {
           alt="right arrow"
         />
         <MoneyInput value={amount} />
+      </div>
+      <div className="flex justify-center my-10">
+        <input
+            className="p-2 border-2 border-gray-300 rounded"
+            type="text"
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            placeholder="Enter reason"
+        />
       </div>
       <div className="flex flex-row justify-evenly my-5">
         <Button

@@ -9,11 +9,12 @@ import { useAuth } from "@/components/AuthProvider";
 import api from "@/utilities/api";
 
 const SelectPayees = () => {
+  const { state, dispatch } = useContext(RequestContext);
   const [unselectedUser, setUnselectedUser] = useState<Array<User>>([]);
   const [selectedUser, setSelectedUser] = useState<Array<User>>([]);
   const [total, setTotal] = useState<number>(0);
+  const [defaultReason, setDefaultReason] = useState<string>(state.defaultReason);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { state, dispatch } = useContext(RequestContext);
   const authContext = useAuth();
   const currentUser = authContext.user;
 
@@ -53,6 +54,15 @@ const SelectPayees = () => {
     dispatch({ type: ActionType.SET_CURRENT_PAGE, payload: page });
   };
 
+  const onTextboxChange = (e) => {
+    const reason = e.target.value
+    setDefaultReason(reason)
+    dispatch({
+      type: ActionType.SET_DEFAULT_REASON, payload: {
+      reason: reason
+    }})
+  }
+
   const onClickProcessRequest = async () => {
     try {
       if (isLoading) return;
@@ -85,6 +95,15 @@ const SelectPayees = () => {
     <>
       <div className="flex justify-center my-10">
         <MoneyDisplay total={total}></MoneyDisplay>
+      </div>
+      <div className="flex justify-center my-10">
+        <input
+            className="p-2 border-2 border-gray-300 rounded"
+            type="text"
+            value={defaultReason}
+            onChange={onTextboxChange}
+            placeholder="Enter reason"
+        />
       </div>
       <div className="flex justify-center my-10">
         <Button

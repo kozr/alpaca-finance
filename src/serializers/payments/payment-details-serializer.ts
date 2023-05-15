@@ -11,6 +11,7 @@ export interface PaymentDetails {
   state: string;
   payeeAvatarUrl: string;
   payerAvatarUrl: string;
+  reason: string;
 }
 
 const paymentDetailsSerializer = (payment: Payment, payee: User, payer: User): PaymentDetails => {
@@ -25,6 +26,7 @@ const paymentDetailsSerializer = (payment: Payment, payee: User, payer: User): P
     state: payment.state,
     payeeAvatarUrl: payee.avatar_url,
     payerAvatarUrl: payer.avatar_url,
+    reason: payment.reason,
   }
 }
 
