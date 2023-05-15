@@ -12,7 +12,7 @@ const Page = ({ children, title }: PageProps) => {
       <div className="flex flex-row items-center content-center justify-between m-10">
         <Button
           size="small"
-          iconLink="/vertical.svg"
+          iconLink="/home.svg"
           backgroundColor="bg-button-grey"
           destination="/feed"
         />
