@@ -1,4 +1,5 @@
-import executeTransaction from "../../jobs/transactions/execute-transaction";
+import executeTransaction from "@/utilities/jobs/transactions/execute-transaction";
+import attemptConfirmTransaction from "@/utilities/jobs/transactions/attempt-confirm-transaction"
 import { Worker } from "bullmq";
 import { redisConnection } from "@/utilities/redis";
 
@@ -7,6 +8,8 @@ const transactionWorkerJob = async (job) => {
     case "executeTransaction":
       await executeTransaction(job.data);
       break;
+    case "attemptConfirmTransaction":
+      await attemptConfirmTransaction(job.data);
     default:
       console.log(`Transaction Job: ${job.id} processed. No transaction executed.`)
   }

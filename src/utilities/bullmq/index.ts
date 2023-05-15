@@ -72,6 +72,17 @@ async function executeTransaction(transactionId, delay = 0) {
   }
 }
 
+async function attemptConfirmTransaction(transactionId) {
+  try {
+    await transactionQueue.add("attemptConfirmTransaction", {
+      transactionId
+    })
+    return { isSuccessful: true, error: null };
+  } catch (error) {
+    return { isSuccessful: false, error: error };
+  }
+}
+
 // Start the workers
 emailWorker.run();
 transactionWorker.run();
@@ -82,4 +93,5 @@ export {
   sendCancelledPaymentNotice,
   executeTransaction,
   sendRejectedPaymentNotice,
+  attemptConfirmTransaction
 };
