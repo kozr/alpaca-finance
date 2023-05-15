@@ -42,7 +42,7 @@ async function handler(req, res) {
     if (transactionRes["error"]) throw new Error(transactionRes["error"]);
 
     const transactionId = transactionRes["data"][0]["id"];
-    const associatedPayments = paymentRequests.map(({ user, amount }) => {
+    const associatedPayments = paymentRequests.map(({ user, amount, reason }) => {
       return {
         payee_user_id: payee.id,
         payer_user_id: user.id,
@@ -50,6 +50,7 @@ async function handler(req, res) {
         amount: amount,
         state: "pending",
         currency: "CAD",
+        reason: reason,
       };
     });
 
