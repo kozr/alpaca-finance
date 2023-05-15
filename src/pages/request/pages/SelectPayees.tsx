@@ -102,7 +102,7 @@ const SelectPayees = () => {
             type="text"
             value={defaultReason}
             onChange={onTextboxChange}
-            placeholder="Enter reason"
+            placeholder="Enter default reason"
         />
       </div>
       <div className="flex justify-center my-10">
