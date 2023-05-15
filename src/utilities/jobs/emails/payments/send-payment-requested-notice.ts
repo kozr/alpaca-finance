@@ -14,7 +14,7 @@ const sendPaymentRequestedNotice = async ({
     .from("payment")
     .select("*")
     .eq("id", paymentId)
-    .single
+    .single()
   if (paymentError) {
     console.log(
       "SendPaymentRequestedNotice: Error getting payment: ",
