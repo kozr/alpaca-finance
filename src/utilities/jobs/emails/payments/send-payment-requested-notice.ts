@@ -13,7 +13,8 @@ const sendPaymentRequestedNotice = async ({
   const { data: paymentData, error: paymentError } = await supabase
     .from("payment")
     .select("*")
-    .eq("id", paymentId);
+    .eq("id", paymentId)
+    .single
   if (paymentError) {
     console.log(
       "SendPaymentRequestedNotice: Error getting payment: ",
@@ -23,16 +24,18 @@ const sendPaymentRequestedNotice = async ({
   }
 
   // the payment table has payer_user_id and payee_user_id and also the amountOwed
-  const payerUserId = paymentData[0].payer_user_id;
-  const payeeUserId = paymentData[0].payee_user_id;
-  const amountOwed = paymentData[0].amount;
-  const cancelToken = paymentData[0].cancel_token;
+  const payerUserId = paymentData.payer_user_id;
+  const payeeUserId = paymentData.payee_user_id;
+  const amountOwed = paymentData.amount;
+  const cancelToken = paymentData.cancel_token;
+  const reason = paymentData.reason
 
   // get payer's email
   const { data: payerData, error: payerError } = await supabase
     .from("user")
     .select("email")
-    .eq("id", payerUserId);
+    .eq("id", payerUserId)
+    .single();
   if (payerError) {
     console.log(
       "SendPaymentRequestedNotice: Error getting payer's email: ",
@@ -43,13 +46,14 @@ const sendPaymentRequestedNotice = async ({
 
   console.warn(payerData);
 
-  const payerEmail = payerData[0].email;
+  const payerEmail = payerData.email;
 
   // get payee's name
   const { data: payeeData, error: payeeError } = await supabase
     .from("user")
     .select("first_name, last_name")
-    .eq("id", payeeUserId);
+    .eq("id", payeeUserId)
+    .single();
   if (payeeError) {
     console.log(
       "SendPaymentRequestedNotice: Error getting payee's name: ",
@@ -60,7 +64,7 @@ const sendPaymentRequestedNotice = async ({
 
   console.warn(payeeData);
 
-  const payeeName = `${payeeData[0].first_name} ${payeeData[0].last_name}`;
+  const payeeName = `${payeeData.first_name} ${payeeData.last_name}`;
 
   console.log("SendPaymentRequestedNotice: email sent to " + payerEmail);
 
@@ -70,7 +74,7 @@ const sendPaymentRequestedNotice = async ({
     html: `
       <h1>Payment Request</h1>
       <p>
-        You have been requested to reimburse <strong>$${amountOwed}</strong> to <strong>${payeeName}</strong>.
+        You have been requested to reimburse <strong>$${amountOwed}</strong> to <strong>${payeeName} for "${reason}"</strong>.
       </p>
       <p>
         You have <strong>${daysToCancel} days</strong> to decline this request, otherwise it will be automatically accepted.
