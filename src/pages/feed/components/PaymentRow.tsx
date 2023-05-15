@@ -26,6 +26,7 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
     state,
     payeeAvatarUrl,
     payerAvatarUrl,
+    reason,
   } = paymentDetails;
   const userIsPayee = currentUser?.id === payeeUserId;
   const targetName = userIsPayee ? payerName : payeeName;
@@ -64,7 +65,15 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
         </div>
         <div className="pl-3 flex flex-col">
           <div className="font-medium">{targetName}</div>
-          <div className="text-sm font-light text-gray-600">{state}</div>
+          {reason ? (
+            <div className="flex justify-between text-sm font-light text-gray-600">
+              <div>{reason}</div>
+              <div>&nbsp;</div>
+              <div>({state})</div>
+            </div>
+          ) : (
+            <div className="text-sm font-light text-gray-600">({state})</div>
+          )}
         </div>
       </div>
       <div className="flex flex-row items-center justify-end">
