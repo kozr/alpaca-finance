@@ -39,12 +39,12 @@ const Button = ({
   };
 
   return (
-    <div className={`${disabledStyle} h-max w-max`}>
+    <div className={`${disabledStyle} h-max w-max`} onClick={onClickHandler}>
       <div
         className={`flex justify-center items-center content-center ${backgroundColor} h-14 ${BUTTON_WIDTH_ENUM[size]} rounded-lg p-2 cursor-pointer`}
       >
         {destination ? (
-          <a href={destination} onClick={onClickHandler}>
+          <a href={destination}>
             {iconLink ? (
               <Image src={iconLink} alt={buttonName} width={40} height={40} />
             ) : (
@@ -52,7 +52,7 @@ const Button = ({
             )}
           </a>
         ) : (
-          <div onClick={onClickHandler} className={fontStyles}>{children}</div>
+          <div className={fontStyles}>{children}</div>
         )}
       </div>
       {buttonName && (
