@@ -61,11 +61,15 @@ async function listJobs(queueName) {
 // Transaction functions
 async function executeTransaction(transactionId, delay = 0) {
   try {
-    await transactionQueue.add("executeTransaction", {
-      transactionId,
-    }, {
-      delay
-    });
+    await transactionQueue.add(
+      "executeTransaction",
+      {
+        transactionId,
+      },
+      {
+        delay,
+      }
+    );
     return { isSuccessful: true, error: null };
   } catch (error) {
     return { isSuccessful: false, error: error };
@@ -74,9 +78,15 @@ async function executeTransaction(transactionId, delay = 0) {
 
 async function attemptConfirmTransaction(transactionId) {
   try {
-    await transactionQueue.add("attemptConfirmTransaction", {
-      transactionId
-    })
+    await transactionQueue.add(
+      "attemptConfirmTransaction",
+      {
+        transactionId,
+      },
+      {
+        attempts: 1,
+      }
+    );
     return { isSuccessful: true, error: null };
   } catch (error) {
     return { isSuccessful: false, error: error };
@@ -93,5 +103,5 @@ export {
   sendCancelledPaymentNotice,
   executeTransaction,
   sendRejectedPaymentNotice,
-  attemptConfirmTransaction
+  attemptConfirmTransaction,
 };
