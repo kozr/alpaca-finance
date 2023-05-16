@@ -17,7 +17,8 @@ const transactionWorkerJob = async (job) => {
 
 const transactionWorker = new Worker("transactionSchedule", transactionWorkerJob, {
   connection: redisConnection,
-  autorun: false
+  autorun: false,
+  lockDuration: 120000
 });
 
 console.log("Email Worker started.");
