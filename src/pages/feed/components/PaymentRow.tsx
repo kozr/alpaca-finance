@@ -66,7 +66,7 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
         <div className="pl-3 flex flex-col">
           <div className="font-medium">{targetName}</div>
           {reason ? (
-            <div className="flex justify-between text-sm font-light text-gray-600">
+            <div className="flex items-start text-sm font-light text-gray-600">
               <div>{reason}</div>
               <div>&nbsp;</div>
               <div>({state})</div>
