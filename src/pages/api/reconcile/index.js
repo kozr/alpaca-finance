@@ -70,6 +70,8 @@ export default async function handler(req, res) {
     const total = payee - payer - u.balance
     if (Math.abs(total) > 0.01) {
       reconcileData[key] = total;
+    } else {
+      reconcileData[key] = 0;
     }
   });
 
