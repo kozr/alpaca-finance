@@ -23,9 +23,15 @@ async function handler(req, res) {
     return res.status(404).json({ error: "Payment not found" });
   }
 
-  await executePayment({
+  console.log("payment: ", payment.id)
+
+  const { error: executionError } = await executePayment({
     payment_id: payment.id,
   });
+  if (executionError) {
+    console.log("executionError: ", executionError)
+    return res.status(500).json({ executionError });
+  }
 
   return res.status(200).json({ message: "Payment approved" });
 }
