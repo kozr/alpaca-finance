@@ -1,31 +1,15 @@
-import React, { useContext, useReducer } from "react";
-import {default as PageWrapper }from "@/components/Page";
-import { Page } from "../../contexts/request/requestContext";
-import SelectPayees from "./pages/SelectPayees";
-import SelectAmount from "./pages/SelectAmount";
-import Confirm from "./pages/Confirmation";
-import { RequestProvider, RequestContext } from "../../contexts/request/requestContext";
+import Button from '@/components/Button'
+import Page from '@/components/Page'
 
-const CurrentPage = () => {
-  const { state } = useContext(RequestContext);
-  switch (state.currentPage) {
-    case Page.SelectPayees:
-      return <SelectPayees />;
-    case Page.SelectAmount:
-      return <SelectAmount existingReason={state.selectedPaymentRequest.reason}/>;
-    case Page.Confirmation:
-      return <Confirm />;
-  }
+const RequestOptions = () => {
+  return (
+    <Page title="request options">
+      <div className="flex flex-col items-center justify-center">
+        <Button size={'large'} backgroundColor='bg-positive-green' destination='/request/evenly' buttonName="Split evenly" />
+        <Button size={'large'} backgroundColor='bg-positive-green' destination='/request/individually' buttonName="Select individually" />
+      </div>
+    </Page>
+  )
 }
 
-const Request = () => {
-  return (
-    <PageWrapper title="Request">
-      <RequestProvider>
-        <CurrentPage />
-      </RequestProvider>
-    </PageWrapper>
-  );
-};
-
-export default Request;
+export default RequestOptions
