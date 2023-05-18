@@ -67,7 +67,10 @@ export default async function handler(req, res) {
     const u = data.find((user) => user.first_name + user.last_name === key);
     const payee = payeeAmount[key];
     const payer = payerAmount[key];
-    reconcileData[key] = payee - payer - u.balance;
+    const total = payee - payer - u.balance
+    if (Math.abs(total) > 0.01) {
+      reconcileData[key] = total;
+    }
   });
 
   res.status(200).json({ data: reconcileData });
