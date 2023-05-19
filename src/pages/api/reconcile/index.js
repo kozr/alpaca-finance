@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const deposits = {
     AndyMa: 2000,
     LeonLin: 0,
-    HenryShang: 896,
+    HenryShang: 1500,
     NicholasWong: 1150,
     MatthewArinanta: 2000,
     KevinZhu: 2000,
