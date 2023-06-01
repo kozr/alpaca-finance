@@ -6,14 +6,14 @@ export default async function handler(req, res) {
 
   const deposits = {
     AndyMa: 3500,
-    LeonLin: -3850,
+    LeonLin: -7850,
     HenryShang: 2300,
-    NicholasWong: 1450,
+    NicholasWong: 1950,
     MatthewArinanta: 2600,
     KevinZhu: 2000,
-    AdrianLam: -3000,
+    AdrianLam: -5000,
     VivianXu: 200,
-    AndyKwan: 0,
+    AndyKwan: 500,
     PhillipLiu: 2900,
   };
 
