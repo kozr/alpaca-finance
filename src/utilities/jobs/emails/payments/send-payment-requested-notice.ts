@@ -20,7 +20,10 @@ const sendPaymentRequestedNotice = async ({
       "SendPaymentRequestedNotice: Error getting payment: ",
       paymentError
     );
-    return;
+    return {
+      isSuccessful: false,
+      error: paymentError,
+    }
   }
 
   // the payment table has payer_user_id and payee_user_id and also the amountOwed
@@ -41,7 +44,10 @@ const sendPaymentRequestedNotice = async ({
       "SendPaymentRequestedNotice: Error getting payer's email: ",
       payerError
     );
-    return;
+    return {
+      isSuccessful: false,
+      error: payerError,
+    }
   }
 
   console.warn(payerData);
@@ -59,16 +65,17 @@ const sendPaymentRequestedNotice = async ({
       "SendPaymentRequestedNotice: Error getting payee's name: ",
       payeeError
     );
-    return;
+    return {
+      isSuccessful: false,
+      error: payeeError,
+    };
   }
-
-  console.warn(payeeData);
 
   const payeeName = `${payeeData.first_name} ${payeeData.last_name}`;
 
   console.log("SendPaymentRequestedNotice: email sent to " + payerEmail);
 
-  sendEmail({
+  await sendEmail({
     to: payerEmail,
     subject: `NOTICE: You have been requested to reimburse $${amountOwed} to ${payeeName}.`,
     html: `
@@ -84,6 +91,11 @@ const sendPaymentRequestedNotice = async ({
       </p>
     `,
   });
+
+  return {
+    isSuccessful: true,
+    error: null,
+  }
 };
 
 export default sendPaymentRequestedNotice;
