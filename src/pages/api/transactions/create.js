@@ -1,8 +1,8 @@
 import supabaseClient from "@/utilities/supabase/backend";
 import {
   executeTransaction,
-  sendPaymentRequestedNotice,
 } from "@/utilities/bullmq";
+import sendPaymentRequestedNotice from '@/utilities/jobs/emails/payments/send-payment-requested-notice'
 import authMiddleware from "@/utilities/auth-middleware";
 
 const handleTransactionIssue = async (transactionId, error) => {
@@ -90,7 +90,7 @@ async function handler(req, res) {
 
     // call job to send emails to each payer with payment id
     for (const payment of paymentRes["data"]) {
-      const { isSuccessful: success2, error: jobError2 } = await sendPaymentRequestedNotice(payment["id"]);
+      const { isSuccessful: success2, error: jobError2 } = await sendPaymentRequestedNotice({paymentId: payment["id"]});
       if (!success2) {
         await handleTransactionIssue(transactionId, jobError2);
       }
