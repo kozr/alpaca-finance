@@ -21,7 +21,6 @@ const sendPaymentRequestedNotice = async ({
       paymentError
     );
     return {
-      isSuccessful: false,
       error: paymentError,
     }
   }
@@ -45,7 +44,6 @@ const sendPaymentRequestedNotice = async ({
       payerError
     );
     return {
-      isSuccessful: false,
       error: payerError,
     }
   }
@@ -66,14 +64,11 @@ const sendPaymentRequestedNotice = async ({
       payeeError
     );
     return {
-      isSuccessful: false,
       error: payeeError,
     };
   }
 
   const payeeName = `${payeeData.first_name} ${payeeData.last_name}`;
-
-  console.log("SendPaymentRequestedNotice: email sent to " + payerEmail);
 
   await sendEmail({
     to: payerEmail,
@@ -92,8 +87,9 @@ const sendPaymentRequestedNotice = async ({
     `,
   });
 
+  console.log("SendPaymentRequestedNotice: email sent to " + payerEmail);
+
   return {
-    isSuccessful: true,
     error: null,
   }
 };

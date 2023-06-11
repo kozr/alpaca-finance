@@ -81,8 +81,8 @@ async function handler(req, res) {
 
     // set transaction to execute after 2 days
     const milisecondsInADay = 24 * 60 * 60 * 1000;
-    const { isSuccessful: success, error: jobError } = await executeTransaction(transactionId, 2 * milisecondsInADay);
-    if (!success) {
+    const { error: jobError } = await executeTransaction(transactionId, 2 * milisecondsInADay);
+    if (jobError) {
       await handleTransactionIssue(transactionId, jobError);
     } else {
       console.log(`Transaction ${transactionId} scheduled to execute in 2 days`)
@@ -90,9 +90,9 @@ async function handler(req, res) {
 
     // call job to send emails to each payer with payment id
     for (const payment of paymentRes["data"]) {
-      const { isSuccessful: success2, error: jobError2 } = await sendPaymentRequestedNotice({paymentId: payment["id"]});
-      if (!success2) {
-        await handleTransactionIssue(transactionId, jobError2);
+      const { error: transactionMailer } = await sendPaymentRequestedNotice({paymentId: payment["id"]});
+      if (transactionMailer) {
+        await handleTransactionIssue(transactionId, transactionMailer);
       }
     }
 
