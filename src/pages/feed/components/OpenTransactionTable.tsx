@@ -24,7 +24,7 @@ const OpenTransactionTable = () => {
   return (
     <>
       <div className="text-xl font-bold text-gray-800 mt-4">All Open Transactions</div>
-      {transactions.map((transaction) => (
+      {transactions?.map((transaction) => (
         <TransactionRow key={transaction.id} transactionDetails={transaction} />
       ))}
     </>

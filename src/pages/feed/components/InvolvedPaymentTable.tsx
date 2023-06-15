@@ -29,7 +29,7 @@ const InvolvedPaymentTable = () => {
   return (
     <>
       <div className="text-xl font-bold text-gray-800 mt-4">Payments Record</div>
-      {payments.map((transaction) => (
+      {payments?.map((transaction) => (
         <PaymentRow key={transaction.id} paymentDetails={transaction} />
       ))}
     </>

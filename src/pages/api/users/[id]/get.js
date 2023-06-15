@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     .select()
     .eq("id", id);
 
-  if (data.length == 0) {
+  if (data?.length == 0) {
     const errorMessage = `Cannot find user with ID: ${id}`
     console.error(errorMessage)
     return res.status(404).json({ data: null, error: errorMessage})
