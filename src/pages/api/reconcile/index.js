@@ -5,14 +5,14 @@ export default async function handler(req, res) {
   const { data, _error } = await supabase.from("user").select("*");
 
   const deposits = {
-    AndyMa: 3500,
-    LeonLin: -7850,
-    HenryShang: 2300,
+    AndyMa: 4800,
+    LeonLin: -8850,
+    HenryShang: 2966,
     NicholasWong: 2250,
-    MatthewArinanta: 2600,
+    MatthewArinanta: 2625,
     KevinZhu: 1000,
     AdrianLam: -5000,
-    VivianXu: 200,
+    VivianXu: 400,
     AndyKwan: 500,
     PhillipLiu: 2900,
   };
