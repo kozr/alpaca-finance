@@ -34,3 +34,5 @@ yarn-error.log*
 
 # snaplet
 .snaplet
+public/sw.js.map
+```
