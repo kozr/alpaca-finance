@@ -28,11 +28,13 @@ const OpenTransactionTable = () => {
       {(showAll ? transactions : transactions.slice(0, 5)).map((transaction) => (
         <TransactionRow key={transaction.id} transactionDetails={transaction} />
       ))}
-      <button 
-      style={{backgroundColor: 'gray', color: 'white', padding: '5px', borderRadius: '5px', marginTop: '10px', marginBottom: '10px'}}
-      onClick={() => setShowAll(!showAll)}>
-        {showAll ? "Show Less" : "Show All"}
-      </button>
+
+      {transactions.length >= 5 && ( // ONLY SHOWS THE BUTTON IF THERE ARE MORE THAN 5 TRANSACTIONS
+        <button className="w-full bg-gray-200 font-bold text-black py-2 my-2 rounded"
+        onClick={() => setShowAll(!showAll)}>
+          {showAll ? "Show Less" : "Show All"}
+        </button>
+      )}
     </>
   );
 };

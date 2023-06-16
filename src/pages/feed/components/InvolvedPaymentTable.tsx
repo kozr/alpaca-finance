@@ -33,11 +33,12 @@ const InvolvedPaymentTable = () => {
       {(showAll ? payments : payments.slice(0, 5)).map((transaction) => (
         <PaymentRow key={transaction.id} paymentDetails={transaction} />
       ))}
-      <button 
-      style={{backgroundColor: 'gray', color: 'white', padding: '5px', borderRadius: '5px', marginTop: '10px', marginBottom: '10px'}}
-      onClick={() => setShowAll(!showAll)}>
-        {showAll ? "Show Less" : "Show All"}
-      </button>
+      {payments.length >= 5 && ( // ONLY SHOWS THE BUTTON IF THERE ARE MORE THAN 5 PAYMENT RECORDS
+        <button className="w-full bg-gray-200 font-bold text-black py-2 my-2 rounded"
+        onClick={() => setShowAll(!showAll)}>
+          {showAll ? "Show Less" : "Show All"}
+        </button>
+      )}
     </>
   );
 };
