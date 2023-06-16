@@ -8,6 +8,7 @@ const InvolvedPaymentTable = () => {
   const currentUser = authContext.user
 
   const [payments, setPayments] = useState([]);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const getPayments = async () => {
@@ -29,9 +30,14 @@ const InvolvedPaymentTable = () => {
   return (
     <>
       <div className="text-xl font-bold text-gray-800 mt-4">Payments Record</div>
-      {payments.map((transaction) => (
+      {(showAll ? payments : payments.slice(0, 5)).map((transaction) => (
         <PaymentRow key={transaction.id} paymentDetails={transaction} />
       ))}
+      <button 
+      style={{backgroundColor: 'gray', color: 'white', padding: '5px', borderRadius: '5px', marginTop: '10px', marginBottom: '10px'}}
+      onClick={() => setShowAll(!showAll)}>
+        {showAll ? "Show Less" : "Show All"}
+      </button>
     </>
   );
 };

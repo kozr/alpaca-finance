@@ -4,6 +4,7 @@ import TransactionRow from "./TransactionRow";
 
 const OpenTransactionTable = () => {
   const [transactions, setTransactions] = useState([]);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -24,11 +25,17 @@ const OpenTransactionTable = () => {
   return (
     <>
       <div className="text-xl font-bold text-gray-800 mt-4">All Open Transactions</div>
-      {transactions.map((transaction) => (
+      {(showAll ? transactions : transactions.slice(0, 5)).map((transaction) => (
         <TransactionRow key={transaction.id} transactionDetails={transaction} />
       ))}
+      <button 
+      style={{backgroundColor: 'gray', color: 'white', padding: '5px', borderRadius: '5px', marginTop: '10px', marginBottom: '10px'}}
+      onClick={() => setShowAll(!showAll)}>
+        {showAll ? "Show Less" : "Show All"}
+      </button>
     </>
   );
 };
 
 export default OpenTransactionTable;
+
