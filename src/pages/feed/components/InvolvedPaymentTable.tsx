@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import api from "@/utilities/api";
 import { useAuth } from "@/components/AuthProvider";
 import PaymentRow from "./PaymentRow";
+import ExpandableList from "./ExpandableList";
 
 const InvolvedPaymentTable = () => {
-  const authContext = useAuth()
-  const currentUser = authContext.user
+  const authContext = useAuth();
+  const currentUser = authContext.user;
 
   const [payments, setPayments] = useState([]);
-  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const getPayments = async () => {
@@ -30,15 +30,15 @@ const InvolvedPaymentTable = () => {
   return (
     <>
       <div className="text-xl font-bold text-gray-800 mt-4">Payments Record</div>
-      {(showAll ? payments : payments.slice(0, 5)).map((transaction) => (
-        <PaymentRow key={transaction.id} paymentDetails={transaction} />
-      ))}
-      {payments.length >= 5 && ( // ONLY SHOWS THE BUTTON IF THERE ARE MORE THAN 5 PAYMENT RECORDS
-      <button className="w-full bg-button-grey font-semibold text-black py-2 my-5 rounded"
-        onClick={() => setShowAll(!showAll)}>
-          {showAll ? "Show Less" : "Show All"}
-        </button>
-      )}
+      <ExpandableList
+        items={payments}
+        limit={5}
+        className="w-full bg-button-grey font-semibold text-black py-2 mt-5 rounded"
+      >
+        {(payment) => (
+          <PaymentRow key={payment.id} paymentDetails={payment} />
+        )}
+      </ExpandableList>
     </>
   );
 };
