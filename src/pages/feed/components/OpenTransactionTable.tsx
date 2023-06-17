@@ -30,7 +30,7 @@ const OpenTransactionTable = () => {
       ))}
 
       {transactions.length >= 5 && ( // ONLY SHOWS THE BUTTON IF THERE ARE MORE THAN 5 TRANSACTIONS
-        <button className="w-full bg-gray-200 font-bold text-black py-2 my-2 rounded"
+        <button className="w-full bg-button-grey font-semibold text-black py-2 my-5 rounded"
         onClick={() => setShowAll(!showAll)}>
           {showAll ? "Show Less" : "Show All"}
         </button>
