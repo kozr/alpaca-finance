@@ -32,21 +32,24 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
   const targetName = userIsPayee ? payerName : payeeName;
   const targetAvatarUrl = userIsPayee ? payerAvatarUrl : payeeAvatarUrl;
 
-  const onClickAccept = async () => {
-    if (isLoading) return;
-    setIsLoading(true);
-    const res = await api.fetch(`/api/payments/${id}/accept`, {
-      method: "POST",
-    });
-    const { data, error } = await res.json();
-    if (error) {
-      console.error(`error: ${JSON.stringify(error)}`);
+  const onClickAccept = async (e) => {
+    e.preventDefault();
+    try {
+      if (isLoading) return;
+      setIsLoading(true);
+      const response = await api.fetch(`/api/payments/${id}/accept`, {
+        method: "POST",
+      });
+      if (!response.ok) {
+        throw new Error('HTTP error ' + response.status);
+      }
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
       alert("Something went wrong. Please contact the dev.");
       setIsLoading(false);
-      return;
     }
-    window.location.reload();
-  };
+};
 
   return (
     <div

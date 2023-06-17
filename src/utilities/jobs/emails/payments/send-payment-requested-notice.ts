@@ -20,7 +20,9 @@ const sendPaymentRequestedNotice = async ({
       "SendPaymentRequestedNotice: Error getting payment: ",
       paymentError
     );
-    return;
+    return {
+      error: paymentError,
+    }
   }
 
   // the payment table has payer_user_id and payee_user_id and also the amountOwed
@@ -41,7 +43,9 @@ const sendPaymentRequestedNotice = async ({
       "SendPaymentRequestedNotice: Error getting payer's email: ",
       payerError
     );
-    return;
+    return {
+      error: payerError,
+    }
   }
 
   console.warn(payerData);
@@ -59,16 +63,14 @@ const sendPaymentRequestedNotice = async ({
       "SendPaymentRequestedNotice: Error getting payee's name: ",
       payeeError
     );
-    return;
+    return {
+      error: payeeError,
+    };
   }
-
-  console.warn(payeeData);
 
   const payeeName = `${payeeData.first_name} ${payeeData.last_name}`;
 
-  console.log("SendPaymentRequestedNotice: email sent to " + payerEmail);
-
-  sendEmail({
+  await sendEmail({
     to: payerEmail,
     subject: `NOTICE: You have been requested to reimburse $${amountOwed} to ${payeeName}.`,
     html: `
@@ -80,10 +82,16 @@ const sendPaymentRequestedNotice = async ({
         You have <strong>${daysToCancel} days</strong> to decline this request, otherwise it will be automatically accepted.
       </p>
       <p>
-        Please click the following link to decline if this is a mistake: <a href="${process.env.PROD_URL}/reject-payment/${cancelToken}">Decline Payment Request</a>.
+        Please click the following link to decline if this is a mistake: <a href="${process.env.APP_URL}/reject-payment/${cancelToken}">Decline Payment Request</a>.
       </p>
     `,
   });
+
+  console.log("SendPaymentRequestedNotice: email sent to " + payerEmail);
+
+  return {
+    error: null,
+  }
 };
 
 export default sendPaymentRequestedNotice;

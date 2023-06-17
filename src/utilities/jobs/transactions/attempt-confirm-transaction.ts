@@ -29,7 +29,8 @@ const attemptConfirmTransaction = async ({
     .update({
       state: "successful",
     })
-    .eq("id", transactionId);
+    .eq("id", transactionId)
+    .eq("state", "pending");
 };
 
 export default attemptConfirmTransaction;

@@ -67,14 +67,20 @@ const SelectPayees = () => {
     try {
       if (isLoading) return;
       setIsLoading(true);
+      const activePaymentRequests = state.paymentRequests.filter(
+        (request) => request.amount > 0
+      )
+      if (!activePaymentRequests.length) {
+        alert("Please select at least one payee.");
+        setIsLoading(false);
+        return;
+      }
       const response = await api.fetch("/api/transactions", {
         method: "POST",
         body: JSON.stringify({
           payee: currentUser,
           type: "request",
-          paymentRequests: state.paymentRequests.filter(
-            (request) => request.amount > 0
-          ),
+          paymentRequests: activePaymentRequests,
         }),
       });
       const { data, error } = await response.json();

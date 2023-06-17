@@ -1,5 +1,4 @@
 import supabaseClient from '../../supabase/backend';
-import executePayment from '../payments/execute-payment';
 
 // WARNING: no rollback logic for failed payments
 
@@ -10,23 +9,18 @@ interface ExecuteTransactionProps {
 // execute transaction by calling executePayment on each payment asscociated with the transaction that is in "pending" state
 // then if all payments are successful, update transaction state to "successful"
 const executeTransaction = async ({ transactionId }: ExecuteTransactionProps) => {
-  console.log(`executeTransaction: transactionId: ${transactionId}`)
-  const { data: paymentsData, error: paymentsError } = await supabaseClient.from("payment").select("*").eq("transaction_id", transactionId).eq("state", "pending");
-  if (paymentsError) {
-    console.log("executeTransaction error getting payments: ", paymentsError);
-    return;
+  const { error } = await supabaseClient.rpc('execute_transaction', { p_transaction_id: transactionId });
+
+  if (error) {
+    console.log("Error executing transaction: ", error);
+    return {
+      error: error,
+    };
   }
 
-  for (const payment of paymentsData) {
-    await executePayment({
-      payment_id: payment.id,
-    });
+  return {
+    error: null
   }
-
-  // update transaction state to "successful"
-  await supabaseClient.from("transaction").update({
-    state: "successful",
-  }).eq("id", transactionId);
 }
 
 export default executeTransaction;

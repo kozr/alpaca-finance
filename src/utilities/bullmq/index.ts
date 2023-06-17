@@ -9,9 +9,9 @@ async function sendPaymentRequestedNotice(paymentId) {
     await emailQueue.add("sendPaymentRequestedNotice", {
       paymentId,
     });
-    return { isSuccessful: true, error: null };
+    return { error: null };
   } catch (error) {
-    return { isSuccessful: false, error: error };
+    return { error: error };
   }
 }
 
@@ -70,9 +70,9 @@ async function executeTransaction(transactionId, delay = 0) {
         delay,
       }
     );
-    return { isSuccessful: true, error: null };
+    return { error: null };
   } catch (error) {
-    return { isSuccessful: false, error: error };
+    return { error: error };
   }
 }
 
