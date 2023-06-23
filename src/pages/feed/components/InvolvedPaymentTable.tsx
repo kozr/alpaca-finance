@@ -9,6 +9,7 @@ const InvolvedPaymentTable = () => {
 
   const [payments, setPayments] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const paymentLength = payments.length
 
   useEffect(() => {
     const getPayments = async () => {
@@ -33,7 +34,7 @@ const InvolvedPaymentTable = () => {
       {(showAll ? payments : payments.slice(0, 5)).map((transaction) => (
         <PaymentRow key={transaction.id} paymentDetails={transaction} />
       ))}
-      {payments.length >= 5 && ( // ONLY SHOWS THE BUTTON IF THERE ARE MORE THAN 5 PAYMENT RECORDS
+      {paymentLength >= 5 && ( // ONLY SHOWS THE BUTTON IF THERE ARE MORE THAN 5 PAYMENT RECORDS
         <button className="w-full bg-gray-200 font-bold text-black py-2 my-2 rounded"
         onClick={() => setShowAll(!showAll)}>
           {showAll ? "Show Less" : "Show All"}

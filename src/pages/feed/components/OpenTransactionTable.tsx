@@ -5,6 +5,7 @@ import TransactionRow from "./TransactionRow";
 const OpenTransactionTable = () => {
   const [transactions, setTransactions] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const transactionLength = transactions.length;
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -29,7 +30,7 @@ const OpenTransactionTable = () => {
         <TransactionRow key={transaction.id} transactionDetails={transaction} />
       ))}
 
-      {transactions.length >= 5 && ( // ONLY SHOWS THE BUTTON IF THERE ARE MORE THAN 5 TRANSACTIONS
+      {transactionLength >= 5 && ( // ONLY SHOWS THE BUTTON IF THERE ARE MORE THAN 5 TRANSACTIONS
         <button className="w-full bg-gray-200 font-bold text-black py-2 my-2 rounded"
         onClick={() => setShowAll(!showAll)}>
           {showAll ? "Show Less" : "Show All"}
