@@ -8,6 +8,7 @@ export interface TransactionDetails {
   createdAt: Date;
   state: string;
   avatarUrl: string;
+  total_amount: number;
 }
 
 const transactionDetailsSerializer = (transaction: Transaction, user: User): TransactionDetails => {
@@ -19,6 +20,7 @@ const transactionDetailsSerializer = (transaction: Transaction, user: User): Tra
     createdAt: transaction.created_at,
     state: transaction.state,
     avatarUrl: user.avatar_url,
+    total_amount: transaction.total_amount,
   }
 }
 
