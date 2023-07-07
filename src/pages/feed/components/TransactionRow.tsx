@@ -37,7 +37,7 @@ const TransactionRow = ({ transactionDetails, onClick }: TransactionRowProps) =>
       </div>
       <div className="flex flex-col">
         <div className="text-sm font-light text-gray-600">
-          {total_amount}
+          Pending: {total_amount}
         </div>
       </div>
     </div>

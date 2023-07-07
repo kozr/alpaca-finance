@@ -6,11 +6,6 @@ import ExpandableList from "./ExpandableList";
 const OpenTransactionTable = () => {
   const [transactions, setTransactions] = useState([]);
 
-  const transaction_total_sum = transactions.reduce(
-    (sum, transaction) => sum + transaction.total_amount, 
-    0
-  );
-  
   useEffect(() => {
     const getTransactions = async () => {
       try {
@@ -30,9 +25,7 @@ const OpenTransactionTable = () => {
   return (
     <>
 
-      <div className="text-xl font-bold text-gray-800 mt-4 flex justify-between">
-        <div>All Open Transactions</div>
-        <div>Pending: {transaction_total_sum}</div>
+      <div className="text-xl font-bold text-gray-800 mt-4 flex justify-between"><div>All Open Transactions</div>
       </div>
       <ExpandableList
         items={transactions}
