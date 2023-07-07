@@ -7,6 +7,11 @@ const OpenTransactionTable = () => {
   const [showAll, setShowAll] = useState(false);
   const transactionLength = transactions.length;
 
+  const transaction_total_sum = transactions.reduce(
+    (sum, transaction) => sum + transaction.total_amount, 
+    0
+  );
+
   useEffect(() => {
     const getTransactions = async () => {
       try {
@@ -25,7 +30,10 @@ const OpenTransactionTable = () => {
 
   return (
     <>
-      <div className="text-xl font-bold text-gray-800 mt-4">All Open Transactions</div>
+      <div className="text-xl font-bold text-gray-800 mt-4 flex justify-between">
+        <div>All Open Transactions</div>
+        <div>Pending: {transaction_total_sum}</div>
+      </div>
       {(showAll ? transactions : transactions.slice(0, 5)).map((transaction) => (
         <TransactionRow key={transaction.id} transactionDetails={transaction} />
       ))}
