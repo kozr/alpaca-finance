@@ -6,6 +6,7 @@ export type Transaction = {
   type: string;
   failure_reason: string;
   user_id: number;
+  total_amount: number;
 }
 
 export default Transaction;

@@ -30,14 +30,20 @@ async function handler(req, res) {
       throw new Error(errorMessage);
     }
 
+    const expectedTotal = paymentRequests.reduce(
+      (acc, curr) => acc + curr["amount"],
+      0
+    );
+
     const transactionRes = await supabaseClient
       .from("transaction")
       .insert({
         user_id: payee.id,
         type: type,
         state: "pending",
+        total_amount: expectedTotal
       })
-      .select("id");
+      .select("id, total_amount");
 
     if (transactionRes["error"]) throw new Error(transactionRes["error"]);
 
@@ -63,11 +69,6 @@ async function handler(req, res) {
       await handleTransactionIssue(transactionId, paymentRes["error"]);
 
     const total = paymentRes["data"].reduce(
-      (acc, curr) => acc + curr["amount"],
-      0
-    );
-
-    const expectedTotal = paymentRequests.reduce(
       (acc, curr) => acc + curr["amount"],
       0
     );

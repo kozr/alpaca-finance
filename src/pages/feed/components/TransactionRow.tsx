@@ -12,7 +12,7 @@ const TransactionRow = ({ transactionDetails, onClick }: TransactionRowProps) =>
   const authContext = useAuth()
   const currentUser = authContext.user
 
-  const { id, userId, type, name, createdAt, state, avatarUrl } = transactionDetails;
+  const { id, userId, type, name, createdAt, state, avatarUrl, totalAmount} = transactionDetails;
 
   return (
     <div className="flex flex-row items-center justify-between pt-5" onClick={onClick}>
@@ -37,7 +37,7 @@ const TransactionRow = ({ transactionDetails, onClick }: TransactionRowProps) =>
       </div>
       <div className="flex flex-col">
         <div className="text-sm font-light text-gray-600">
-          {state}
+          {state}: {totalAmount}
         </div>
       </div>
     </div>

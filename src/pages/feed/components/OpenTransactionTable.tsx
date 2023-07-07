@@ -24,7 +24,9 @@ const OpenTransactionTable = () => {
 
   return (
     <>
-      <div className="text-xl font-bold text-gray-800 mt-4">All Open Transactions</div>
+
+      <div className="text-xl font-bold text-gray-800 mt-4 flex justify-between"><div>All Open Transactions</div>
+      </div>
       <ExpandableList
         items={transactions}
         limit={5}
