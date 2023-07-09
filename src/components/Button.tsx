@@ -41,7 +41,7 @@ const Button = ({
   return (
     <div className={`${disabledStyle} h-max w-max`} onClick={onClickHandler}>
       <div
-        className={`flex justify-center items-center content-center ${backgroundColor} h-14 ${BUTTON_WIDTH_ENUM[size]} rounded-lg p-2 cursor-pointer`}
+        className={`flex justify-center items-center content-center ${backgroundColor} h-14 ${BUTTON_WIDTH_ENUM[size]} rounded-lg p-2 cursor-pointer active:bg-gray-300`}
       >
         {destination ? (
           <a href={destination}>

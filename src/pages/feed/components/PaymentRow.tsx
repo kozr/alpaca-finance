@@ -31,6 +31,7 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
   const userIsPayee = currentUser?.id === payeeUserId;
   const targetName = userIsPayee ? payerName : payeeName;
   const targetAvatarUrl = userIsPayee ? payerAvatarUrl : payeeAvatarUrl;
+  const amountTwoDecimals = amount.toFixed(2);
 
   const onClickAccept = async (e) => {
     e.preventDefault();
@@ -115,7 +116,7 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
           </div>
         )}
         <div className="ml-4 text-sm font-light text-gray-600">
-          {userIsPayee ? amount : -amount}
+          {userIsPayee ? amountTwoDecimals : -amountTwoDecimals}
         </div>
       </div>
     </div>

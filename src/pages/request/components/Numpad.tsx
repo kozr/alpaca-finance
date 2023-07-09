@@ -80,7 +80,7 @@ const NumPad = ({ onChange, customClass }: NumPadProps) => {
       {buttons.map((button, index) => (
         <button
           key={index}
-          className={`numpad-button ${button.className || ""}`}
+          className={`numpad-button ${button.className || ""} active:bg-gray-300`}
           onClick={() => handleClick(button.value)}
         >
           {button.value}

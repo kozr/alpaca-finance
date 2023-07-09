@@ -13,6 +13,7 @@ const TransactionRow = ({ transactionDetails, onClick }: TransactionRowProps) =>
   const currentUser = authContext.user
 
   const { id, userId, type, name, createdAt, state, avatarUrl, totalAmount} = transactionDetails;
+  const totalTwoDecimals = totalAmount.toFixed(2);
 
   return (
     <div className="flex flex-row items-center justify-between pt-5" onClick={onClick}>
@@ -37,7 +38,7 @@ const TransactionRow = ({ transactionDetails, onClick }: TransactionRowProps) =>
       </div>
       <div className="flex flex-col">
         <div className="text-sm font-light text-gray-600">
-          {state}: {totalAmount}
+          {state}: {totalTwoDecimals}
         </div>
       </div>
     </div>
