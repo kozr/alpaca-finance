@@ -9,6 +9,7 @@ export type Payment = {
   payer_user_id: string;
   payee_user_id: string;
   transaction_id: number;
+  cancel_token: string;
   reason: string;
 }
 

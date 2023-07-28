@@ -29,7 +29,7 @@ const sendPaymentRequestedNotice = async ({
   const payerUserId = paymentData.payer_user_id;
   const payeeUserId = paymentData.payee_user_id;
   const amountOwed = paymentData.amount;
-  const cancelToken = paymentData.cancel_token;
+  const cancel_token = paymentData.cancel_token;
   const reason = paymentData.reason
 
   // get payer's email
@@ -82,7 +82,7 @@ const sendPaymentRequestedNotice = async ({
         You have <strong>${daysToCancel} days</strong> to decline this request, otherwise it will be automatically accepted.
       </p>
       <p>
-        Please click the following link to decline if this is a mistake: <a href="${process.env.APP_URL}/reject-payment/${cancelToken}">Decline Payment Request</a>.
+        Please click the following link to decline if this is a mistake: <a href="${process.env.APP_URL}/reject-payment/${cancel_token}?paymentId=${paymentId}">Decline Payment Request</a>.
       </p>
     `,
   });
