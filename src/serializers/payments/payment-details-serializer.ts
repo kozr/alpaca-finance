@@ -11,6 +11,7 @@ export interface PaymentDetails {
   state: string;
   payeeAvatarUrl: string;
   payerAvatarUrl: string;
+  cancelToken: string;
   reason: string;
 }
 
@@ -26,6 +27,7 @@ const paymentDetailsSerializer = (payment: Payment, payee: User, payer: User): P
     state: payment.state,
     payeeAvatarUrl: payee.avatar_url,
     payerAvatarUrl: payer.avatar_url,
+    cancelToken: payment.cancel_token,
     reason: payment.reason,
   }
 }
