@@ -19,6 +19,7 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
 
   const {
     id,
+    createdAt,
     payeeUserId,
     payerUserId,
     amount,
@@ -34,6 +35,9 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
   const targetName = userIsPayee ? payerName : payeeName;
   const targetAvatarUrl = userIsPayee ? payerAvatarUrl : payeeAvatarUrl;
   const amountTwoDecimals = amount.toFixed(2);
+  // Format the createdAt field to only show date, month, and year
+  const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+  const formattedDate = new Date(createdAt).toLocaleDateString(undefined, dateOptions);
 
   const onClickAccept = async (e) => {
     e.preventDefault();
@@ -149,7 +153,7 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
                     </>
                 )}
                 <div className="ml-4 text-sm font-light text-gray-600">
-                    {userIsPayee ? amount : -amount}
+                    {userIsPayee ? amountTwoDecimals : -amountTwoDecimals}
                 </div>
             </div>
         </div>

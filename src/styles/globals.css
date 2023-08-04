@@ -22,7 +22,7 @@
     padding: 10px;
     cursor: pointer;
     background-color: lightgray;
-    margin-top: 10px;
+    margin-top: 30px;
     border-bottom: 6px solid #757575;
 
     border-top-left-radius: 10px;    /* Make top left corner curved */
@@ -31,6 +31,28 @@
   
   .tab.selected {
     background-color: #757575;
+  }
+
+
+  .icon {
+    width: 50px; /* This is the default size */
+    height: 50px;
+  }
+  
+  /* If the viewport is 768px wide or less, scale the icon down */
+  @media screen and (max-width: 768px) {
+    .icon {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  
+  /* If the viewport is 480px wide or less, scale the icon down further */
+  @media screen and (max-width: 480px) {
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
   }
 
 
