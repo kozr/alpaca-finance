@@ -3,10 +3,11 @@ import Image from "next/image";
 const BUTTON_WIDTH_ENUM = Object.freeze({
   small: "w-18",
   large: "w-40",
+  request: "w-15 h-8",
 });
 
 type ButtonProps = {
-  size: "small" | "large";
+  size: "small" | "large" | "request";
   iconLink?: string;
   backgroundColor: string;
   destination?: string;
@@ -28,7 +29,22 @@ const Button = ({
 }: ButtonProps) => {
 
   const disabledStyle = disabled ? "opacity-50 cursor-not-allowed" : "";
-  const fontStyles = size === "small" ? "text-sm" : "text-lg font-bold";
+  let fontStyles;
+
+  switch (size) {
+    case "small":
+      fontStyles = "text-sm";
+      break;
+    case "large":
+      fontStyles = "text-lg font-bold";
+      break;
+    case "request":
+      fontStyles = "text-xs";
+      break;
+    default:
+      fontStyles = "text-xs"; // default styles or throw an error if an invalid size is provided
+      break;
+  }
 
   const onClickHandler = (e) => {
     if (disabled) {

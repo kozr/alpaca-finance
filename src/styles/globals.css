@@ -23,6 +23,7 @@
     cursor: pointer;
     background-color: lightgray;
     margin-top: 30px;
+    margin-bottom: 15px;
     border-bottom: 6px solid #757575;
 
     border-top-left-radius: 10px;    /* Make top left corner curved */
