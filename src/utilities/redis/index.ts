@@ -10,7 +10,7 @@ export const redisOptions = {
 };
 
 // if (process.env.NODE_ENV !== 'development') {
-redisOptions['tls'] = {};
+// redisOptions['tls'] = {};
 // }
 
 export const redisConnection = new Redis(redisOptions);
