@@ -9,8 +9,8 @@ export const redisOptions = {
   password: redisUrl.auth?.split(":")[1]
 };
 
-if (process.env.NODE_ENV !== 'development') {
-  redisOptions['tls'] = {};
-}
+// if (process.env.NODE_ENV !== 'development') {
+redisOptions['tls'] = {};
+// }
 
 export const redisConnection = new Redis(redisOptions);
