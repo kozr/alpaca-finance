@@ -6,6 +6,7 @@ import Page from "@/components/Page";
 import ActionRow from "./components/ActionRow";
 import OpenTransactionTable from "./components/OpenTransactionTable";
 import InvolvedPaymentTable from "./components/InvolvedPaymentTable";
+import HistoryTable from "./components/HistoryTable";
 
 const Feed = () => {
   const { user } = useAuth();
@@ -41,6 +42,7 @@ const Feed = () => {
 
       {selectedTab === "requests" && <InvolvedPaymentTable />}
       {selectedTab === "transactions" && <OpenTransactionTable />}
+      {selectedTab === "history" && <HistoryTable />}
     </Page>
   );
 };

@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "@/utilities/api";
+import { useAuth } from "@/components/AuthProvider";
 import TransactionRow from "./TransactionRow";
+import TabList from "./TabList";
 import ExpandableList from "./ExpandableList";
 
 const OpenTransactionTable = () => {
+  const authContext = useAuth();
+  const currentUser = authContext.user;
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -22,17 +26,11 @@ const OpenTransactionTable = () => {
     getTransactions();
   }, []);
 
+  const userTransactions = transactions.filter(transaction => transaction.state === "pending");
+
   return (
     <>
-      <ExpandableList
-        items={transactions}
-        limit={5}
-        className="w-full bg-button-grey font-semibold text-black py-2 mt-5 rounded"
-      >
-        {(transaction) => (
-          <TransactionRow key={transaction.id} transactionDetails={transaction} />
-        )}
-      </ExpandableList>
+      <TabList items={userTransactions} RowComponent={TransactionRow} />
     </>
   );
 };

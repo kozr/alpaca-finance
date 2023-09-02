@@ -1,20 +1,22 @@
 import React from "react";
 import Image from "next/image";
 import { TransactionDetails } from "@/serializers/transactions/transaction-details-serializer";
+import { PaymentDetails } from "@/serializers/payments/payment-details-serializer";
 import { useAuth } from "@/components/AuthProvider";
 
 interface TransactionRowProps {
-  transactionDetails: TransactionDetails;
+  details: TransactionDetails;
   onClick?: () => void;
 };
 
-const TransactionRow = ({ transactionDetails, onClick }: TransactionRowProps) => {
+const TransactionRow = ({ details, onClick }: TransactionRowProps) => {
   const authContext = useAuth()
   const currentUser = authContext.user
 
-  const { id, userId, type, name, createdAt, state, avatarUrl, totalAmount} = transactionDetails;
+  const { id, userId, type, name, createdAt, state, avatarUrl, totalAmount} = details;
   const totalTwoDecimals = totalAmount.toFixed(2);
 
+  
   return (
     <div className="flex flex-row items-center justify-between pt-5" onClick={onClick}>
       <div className="flex items-center">

@@ -3,6 +3,7 @@ import api from "@/utilities/api";
 import { useAuth } from "@/components/AuthProvider";
 import PaymentRow from "./PaymentRow";
 import ExpandableList from "./ExpandableList";
+import TabList from "./TabList";
 
 const InvolvedPaymentTable = () => {
   const authContext = useAuth();
@@ -27,44 +28,13 @@ const InvolvedPaymentTable = () => {
     getPayments();
   }, [currentUser]);
 
-  // Helper function to format a date
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  }
 
   // Filter out the payments with a "pending" state
   const pendingPayments = payments.filter(payment => payment.state === "pending");
 
-  // Group pending payments by date
-  const paymentsByDate = pendingPayments.reduce((groupedPayments, payment) => {
-    const date = formatDate(payment.createdAt);
-    if (!groupedPayments[date]) {
-      groupedPayments[date] = [];
-    }
-    groupedPayments[date].push(payment);
-    return groupedPayments;
-  }, {});
-
   return (
     <>
-      {Object.entries(paymentsByDate).map(([date, paymentsOnDate], idx) => (
-        <div key={idx}>
-          <h2>{date}</h2> {/* Display the date */}
-          <hr /> {/* Black bar */}
-          <ExpandableList
-            items={paymentsOnDate}
-            limit={5}
-            className="w-full bg-button-grey font-semibold text-black py-2 mt-5 rounded"
-          >
-            {(payment, paymentIdx) => (
-              <div key={payment.id} className={paymentIdx === paymentsOnDate.length - 1 ? "mb-4" : ""}>
-                <PaymentRow paymentDetails={payment} />
-              </div>
-            )}
-          </ExpandableList>
-        </div>
-      ))}
+      <TabList items={pendingPayments} RowComponent={PaymentRow} />
     </>
   );
 };

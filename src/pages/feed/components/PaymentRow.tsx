@@ -6,11 +6,11 @@ import Button from "@/components/Button";
 import api from "@/utilities/api";
 
 interface PaymentRowProps {
-  paymentDetails: PaymentDetails;
+  details: PaymentDetails;
   onClick?: () => void;
 }
 
-const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
+const PaymentRow = ({ details, onClick }: PaymentRowProps) => {
   const authContext = useAuth();
   const currentUser = authContext.user;
 
@@ -30,11 +30,11 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
     payerAvatarUrl,
     cancelToken,
     reason,
-  } = paymentDetails;
+  } = details;
   const userIsPayee = currentUser?.id === payeeUserId;
   const targetName = userIsPayee ? payerName : payeeName;
   const targetAvatarUrl = userIsPayee ? payerAvatarUrl : payeeAvatarUrl;
-  const amountTwoDecimals = amount.toFixed(2);
+  const amountTwoDecimals = Math.abs(amount).toFixed(2);
   // Format the createdAt field to only show date, month, and year
   const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
   
@@ -111,7 +111,7 @@ const PaymentRow = ({ paymentDetails, onClick }: PaymentRowProps) => {
             <div className="flex col-span-2 grid-grid-rows-2 grid-flow-col items-center justify-end">
                 <div className="grid grid-rows-2">
                     {!userIsPayee && state === "pending" && (
-                    <>  <div className="col-span-2 text-right text-sm font-light text-gray-600">
+                    <>  <div className="col-span-2 text-right text-sm font-bold text-gray-600">
                                 {userIsPayee ? amountTwoDecimals : -amountTwoDecimals}
                         </div>
 
