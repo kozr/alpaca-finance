@@ -7,6 +7,7 @@ export interface PaymentDetails {
   payerName: string;
   payeeUserId: string;
   payerUserId: string;
+  transactionId: number;
   createdAt: Date;
   state: string;
   payeeAvatarUrl: string;
@@ -23,6 +24,7 @@ const paymentDetailsSerializer = (payment: Payment, payee: User, payer: User): P
     payerName: `${payer.first_name} ${payer.last_name}`,
     payeeUserId: payee.id,
     payerUserId: payer.id,
+    transactionId: payment.transaction_id,
     createdAt: payment.created_at,
     state: payment.state,
     payeeAvatarUrl: payee.avatar_url,

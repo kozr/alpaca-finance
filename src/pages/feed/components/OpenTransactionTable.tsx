@@ -3,7 +3,6 @@ import api from "@/utilities/api";
 import { useAuth } from "@/components/AuthProvider";
 import TransactionRow from "./TransactionRow";
 import TabList from "./TabList";
-import ExpandableList from "./ExpandableList";
 
 const OpenTransactionTable = () => {
   const authContext = useAuth();
@@ -24,9 +23,9 @@ const OpenTransactionTable = () => {
     };
 
     getTransactions();
-  }, []);
+  }, [currentUser]);
 
-  const userTransactions = transactions.filter(transaction => transaction.state === "pending");
+  const userTransactions = transactions.filter(transaction => transaction.state === "pending" && transaction.userId === currentUser.id);
 
   return (
     <>

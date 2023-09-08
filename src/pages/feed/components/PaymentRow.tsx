@@ -80,9 +80,11 @@ const PaymentRow = ({ details, onClick }: PaymentRowProps) => {
 
     return (
         <div
-            className="grid grid-rows-1 grid-cols-4 grid-flow-col justify-between pt-5 gap-0"
-            onClick={onClick}
-        >
+        className="grid grid-rows-1 grid-cols-4 grid-flow-col justify-between pt-5 gap-0"
+        onClick={onClick}>
+            
+
+            {/* Icon and name */}
             <div className="">
                 <div className="mr-1 w-16 h-16 bg-gray-100">
                     <Image
@@ -93,10 +95,10 @@ const PaymentRow = ({ details, onClick }: PaymentRowProps) => {
                         height={128}
                     />
                 </div>
-                
             </div>
+
              <div className="flex flex-col">
-                    <div className="font-medium">{targetName}</div>
+                    <div className="font-medium text-sm">{targetName}</div>
                     {reason ? (
                         <div className="flex items-start text-xs font-light text-gray-600">
                             <div>{reason}</div>
@@ -105,16 +107,17 @@ const PaymentRow = ({ details, onClick }: PaymentRowProps) => {
                     ) : (
                         <div className="text-sm font-light text-gray-600">({state})</div>
                     )}
-                </div>   
+            </div>   
 
 
             <div className="flex col-span-2 grid-grid-rows-2 grid-flow-col items-center justify-end">
+                <div className="col-span-2 text-right text-sm font-bold text-gray-600">
+                            {/* Display pending amount when user is the payee */}
+                            ${amountTwoDecimals}
+                        </div>               
                 <div className="grid grid-rows-2">
-                    {!userIsPayee && state === "pending" && (
-                    <>  <div className="col-span-2 text-right text-sm font-bold text-gray-600">
-                                {userIsPayee ? amountTwoDecimals : -amountTwoDecimals}
-                        </div>
-
+                    {!userIsPayee && (
+                    <>  
                         <div className="">
                             <Button
                                 size="request"

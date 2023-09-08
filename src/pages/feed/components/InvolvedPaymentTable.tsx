@@ -30,11 +30,21 @@ const InvolvedPaymentTable = () => {
 
 
   // Filter out the payments with a "pending" state
-  const pendingPayments = payments.filter(payment => payment.state === "pending");
+  const pendingPayments = payments.filter(payment => payment.state === "pending" && payment.payerUserId === currentUser.id);
+
+  if (pendingPayments.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h2>There are no pending requests for you.</h2>
+      </div>
+    );
+  }
 
   return (
     <>
-      <TabList items={pendingPayments} RowComponent={PaymentRow} />
+      <div className="">
+        <TabList items={pendingPayments} RowComponent={PaymentRow} />
+      </div>
     </>
   );
 };

@@ -26,6 +26,7 @@ const TabList = ({ items, RowComponent}) => {
                 <div key={idx}>
                     <h2>{date}</h2>
                     <hr />
+                    <div className="bg-black h-0.5 w-full mb-5"></div> {/* Black bar separator */}
                     <ExpandableList
                         items={itemsOnDate}
                         limit={5}
@@ -39,7 +40,7 @@ const TabList = ({ items, RowComponent}) => {
                     </ExpandableList>
                 </div>
             ))}
-            <div className="h-12"></div>
+            <div className="mb-3"></div>
       </>
     );
   };
