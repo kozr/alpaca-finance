@@ -6,7 +6,7 @@ import Page from "@/components/Page";
 import ActionRow from "./components/ActionRow";
 import OpenTransactionTable from "./components/OpenTransactionTable";
 import InvolvedPaymentTable from "./components/InvolvedPaymentTable";
-import HistoryTable from "./components/HistoryTable";
+import TransactionHistoryTable from "./components/TransactionHistoryTable";
 
 const Feed = () => {
   const { user } = useAuth();
@@ -14,36 +14,38 @@ const Feed = () => {
   const [selectedTab, setSelectedTab] = useState("requests");
 
   return (
-    <Page title="Feed">
-      <div onClick={signOut}> Log out </div>
-      <div className="font-bold text-20xl">{user?.email}</div>
-      <Wallet />
-      <ActionRow />
+    <div className="feed-container">
+      <Page title="Feed">
+        <div onClick={signOut}> Log out </div>
+        <div className="font-bold text-20xl">{user?.email}</div>
+        <Wallet />
+        <ActionRow />
 
-      <div className="tabs">
-        <div 
-          className={`tab ${selectedTab === 'requests' ? 'selected' : ''}`} 
-          onClick={() => setSelectedTab('requests')}>
-          Requests
+        <div className="tabs">
+          <div 
+            className={`tab ${selectedTab === 'requests' ? 'selected' : ''}`} 
+            onClick={() => setSelectedTab('requests')}>
+            Requests
+          </div>
+          <div 
+            className={`tab ${selectedTab === 'transactions' ? 'selected' : ''}`} 
+            onClick={() => setSelectedTab('transactions')}>
+            Transactions
+          </div>
+          <div 
+            className={`tab ${selectedTab === 'history' ? 'selected' : ''}`} 
+            onClick={() => setSelectedTab('history')}>
+            History
+          </div>
         </div>
-        <div 
-          className={`tab ${selectedTab === 'transactions' ? 'selected' : ''}`} 
-          onClick={() => setSelectedTab('transactions')}>
-          Transactions
-        </div>
-        <div 
-          className={`tab ${selectedTab === 'history' ? 'selected' : ''}`} 
-          onClick={() => setSelectedTab('history')}>
-          History
-        </div>
-      </div>
 
-      <div className="tab-underline"></div>
+        <div className="tab-underline"></div>
 
-      {selectedTab === "requests" && <InvolvedPaymentTable />}
-      {selectedTab === "transactions" && <OpenTransactionTable />}
-      {selectedTab === "history" && <HistoryTable />}
-    </Page>
+        {selectedTab === "requests" && <InvolvedPaymentTable />}
+        {selectedTab === "transactions" && <OpenTransactionTable />}
+        {selectedTab === "history" && <TransactionHistoryTable />}
+      </Page>
+    </div>
   );
 };
 

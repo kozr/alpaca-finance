@@ -8,9 +8,10 @@ import api from "@/utilities/api";
 interface PaymentRowProps {
   details: PaymentDetails;
   onClick?: () => void;
+  size?: "small" | "normal";
 }
 
-const PaymentRow = ({ details, onClick }: PaymentRowProps) => {
+const PaymentRow = ({ details, onClick, size = "normal" }: PaymentRowProps) => {
   const authContext = useAuth();
   const currentUser = authContext.user;
 
@@ -80,15 +81,15 @@ const PaymentRow = ({ details, onClick }: PaymentRowProps) => {
 
     return (
         <div
-        className="grid grid-rows-1 grid-cols-4 grid-flow-col justify-between pt-5 gap-0"
+        className="grid grid-rows-1 grid-cols-4 pt-5 gap-1 border-2"
         onClick={onClick}>
             
 
             {/* Icon and name */}
             <div className="">
-                <div className="mr-1 w-16 h-16 bg-gray-100">
+                <div className={`mr-1 bg-gray-100 ${size === 'small' ? 'w-8 h-8' : 'w-16 h-16'}`}>
                     <Image
-                        className="object-cover w-16 h-16 rounded-md"
+                        className={`rounded-md  ${size === 'small' ? 'w-8 h-8' : 'w-16 h-16'}`}
                         src={targetAvatarUrl}
                         alt={`${targetName}'s avatar`}
                         width={128}
@@ -97,7 +98,7 @@ const PaymentRow = ({ details, onClick }: PaymentRowProps) => {
                 </div>
             </div>
 
-             <div className="flex flex-col">
+             <div className="flex flex-col border-2">
                     <div className="font-medium text-sm">{targetName}</div>
                     {reason ? (
                         <div className="flex items-start text-xs font-light text-gray-600">
@@ -110,15 +111,21 @@ const PaymentRow = ({ details, onClick }: PaymentRowProps) => {
             </div>   
 
 
-            <div className="flex col-span-2 grid-grid-rows-2 grid-flow-col items-center justify-end">
-                <div className="col-span-2 text-right text-sm font-bold text-gray-600">
+            <div className="flex flex-col items-end justify-end col-start-4 ">              
+                <div className="grid grid-cols-2">
+                    {/* display state if user is payee and display buttons to accept if user is not */}
+                    {userIsPayee ? (
+                            // Display state when user is the payee
+                        <div className="text-right text-sm font-bold text-gray-600 mb-2 col-start-4">
+                            ${amountTwoDecimals} {state}
+                        </div>
+                        ) : (
+                    <>  
+                        <div className="text-right text-sm font-bold text-gray-600 mb-2 col-start-4">
                             {/* Display pending amount when user is the payee */}
                             ${amountTwoDecimals}
-                        </div>               
-                <div className="grid grid-rows-2">
-                    {!userIsPayee && (
-                    <>  
-                        <div className="">
+                        </div>
+                        <div className="flex items-center justify-center">
                             <Button
                                 size="request"
                                 backgroundColor={"bg-positive-green"}
@@ -151,7 +158,7 @@ const PaymentRow = ({ details, onClick }: PaymentRowProps) => {
                             </Button>   
                         </div>
 
-                        <div className="ml-1">
+                        <div className="flex items-center justify-center col-start-4 ml-10">
                             <Button
                                 size="request"
                                 backgroundColor={"bg-negative-red"}

@@ -17,7 +17,8 @@ const TransactionRow = ({ details,  onClick }: TransactionRowProps) => {
   const currentUser = authContext.user
 
   const { id, userId, type, name, createdAt, state, avatarUrl, totalAmount} = details;
-  const totalTwoDecimals = totalAmount.toFixed(2);
+
+  const totalTwoDecimals = totalAmount ? totalAmount.toFixed(2) : '0.00';
 
   const [payments, setPayments] = useState([]);
 
@@ -38,34 +39,38 @@ const TransactionRow = ({ details,  onClick }: TransactionRowProps) => {
     getPayments();
   }, [currentUser]);
 
-  const acceptedAmount = payments.reduce((acc, payment) => {
-    if (payment.state === "accepted") {
+
+
+  const relevantPayments = payments.filter(payment => payment.transactionId === id);
+
+  const acceptedAmount = relevantPayments.reduce((acc, payment) => {
+    if (payment.state === "successful") {
       return acc + payment.amount;
     }
     return acc;
   }, 0);
 
-  const relevantPayments = payments.filter(payment => payment.transactionId === id && payment.state === "pending");
   const acceptedAmountToTwoDecimals = acceptedAmount.toFixed(2);
   const requestAmounts = relevantPayments.length;
   
   return (
     <div className="flex flex-col space-y-4">
-      <div className="flex flex-wrap items-center justify-between p-2" style={{ backgroundColor: 'lightgray' }} onClick={onClick}>
+      <div className="flex flex-wrap items-center rounded-md justify-between p-2" style={{ backgroundColor: 'lightgray' }} onClick={onClick}>
         <div className="flex items-center">     
           <div className="pl-3 flex flex-col">
             <div className="font-medium">
               {/* {name} {currentUser?.id === userId && "(You)"} */}
-              {requestAmounts} {requestAmounts === 1 ? "Request" : "Requests"} Sent
+              {/* {requestAmounts} {requestAmounts === 1 ? "Request" : "Requests"}  Sent*/}
+               id({id})
             </div>
             <div className="text-sm font-light text-gray-600">
-              {type}
+              {state}
             </div>
           </div>
         </div>
         <div className="flex flex-col">
           <div className="text-sm font-medium text-gray-600">
-            {acceptedAmountToTwoDecimals} / {totalTwoDecimals}
+            ${acceptedAmountToTwoDecimals} / ${totalTwoDecimals}
           </div>
         </div>
       </div>
@@ -74,12 +79,12 @@ const TransactionRow = ({ details,  onClick }: TransactionRowProps) => {
       <div className="flex flex-col items-center">
         <ExpandableList 
           items={relevantPayments} 
-          limit={5}
+          limit={3}
           className={"w-full bg-button-grey font-semibold text-black py-2 mt-5 rounded"}
         >
           {(payment) => (
             <div key={payment.id} className="flex flex-wrap" style={{ backgroundColor: 'white' }}>
-              <PaymentRow details={payment} />
+              <PaymentRow details={payment} size="small"/>
             </div>
           )}
         </ExpandableList>

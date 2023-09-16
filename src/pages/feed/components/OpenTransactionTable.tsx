@@ -27,6 +27,14 @@ const OpenTransactionTable = () => {
 
   const userTransactions = transactions.filter(transaction => transaction.state === "pending" && transaction.userId === currentUser.id);
 
+  if (transactions.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <h2>You have no open transactions.</h2>
+      </div>
+    );
+  }
+
   return (
     <>
       <TabList items={userTransactions} RowComponent={TransactionRow} />

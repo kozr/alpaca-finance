@@ -8,12 +8,17 @@
     box-sizing: border-box;
   }
 
-.tabs {
+  .feed-container {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .tabs {
     display: flex;
     justify-content: space-evenly;
     font-size: 0;
   }
-  
+    
   .tab {
     width: 35%;
     text-align: center;
