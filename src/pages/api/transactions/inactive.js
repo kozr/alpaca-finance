@@ -3,17 +3,20 @@ import transactionDetailsSerializer from "@/serializers/transactions/transaction
 
 export default async function handler(req, res) {
 
-  const userId = req.query.userId; // Get userId from the query parameters
+  const userId = req.query.userId;
+  const startDate = req.query.startDate;
+  const endDate = req.query.endDate;
 
-  if (!userId) {
-    return res.status(400).json({ error: "userId is required" });
+  if (!userId || !startDate || !endDate) {
+    return res.status(400).json({ error: "userId, startDate, and endDate are required" });
   }
 
   const { data, error } = await supabaseClient
     .from("transaction")
     .select("*")
-    .eq("state", "successful")
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .gte("created_at", startDate) // Assuming your date column is named "created_at"
+    .lte("created_at", endDate);
   if (error) {
     return res.status(500).json({ error })
   }

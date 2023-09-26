@@ -81,7 +81,7 @@ const PaymentRow = ({ details, onClick, size = "normal" }: PaymentRowProps) => {
 
     return (
         <div
-        className="grid grid-rows-1 grid-cols-4 pt-5 gap-1 border-2"
+        className="grid grid-rows-1 grid-cols-4 pt-5 gap-1 border-2 inline-block align-baseline"
         onClick={onClick}>
             
 
