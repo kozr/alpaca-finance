@@ -1,7 +1,7 @@
 {
-  "name": "Alpaca Finance",
-  "short_name": "Alpaca Finance",
-  "description": "My own Alpaca Finance App",
+  "name": "Turtle Finance",
+  "short_name": "Turtle Finance",
+  "description": "My own Turtle Finance App",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
