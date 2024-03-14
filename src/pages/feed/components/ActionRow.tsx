@@ -26,11 +26,10 @@ const ActionRow = () => (
       buttonName="Deposit"
     />
     <Button
-      disabled
       size="small"
       iconLink="/withdrawal.svg"
       backgroundColor="bg-button-grey"
-      destination="/"
+      destination="/withdraw"
       buttonName="Withdraw"
     />
   </div>
