@@ -7,7 +7,6 @@ import Confirm from "../withdraw/components/WithdrawalConfirmation";
 import { WithdrawProvider, WithdrawContext } from "../../contexts/withdraw/withdrawContext";
 const CurrentPage = () => {
     const { state } = React.useContext(WithdrawContext);
-    // Assuming there's only one step in the withdrawal process for simplicity
     switch (state.currentPage) {
         case WithdrawPage.InputAmount:
             return <SelectAmount />;

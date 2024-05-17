@@ -2,8 +2,9 @@ import supabaseClient from "@/utilities/supabase/backend";
 import {
   executeTransaction,
 } from "@/utilities/bullmq";
-import sendPaymentRequestedNotice from '@/utilities/jobs/emails/payments/send-payment-requested-notice'
+import sendPaymentRequestedNotice from '@/utilities/jobs/emails/payments/send-payment-requested-notice';
 import authMiddleware from "@/utilities/auth-middleware";
+import sendWithdrawDepositNotice from '@/utilities/jobs/emails/payments/send-deposit-and withdrawal-notice'; 
 
 const handleTransactionIssue = async (transactionId, error) => {
   await supabaseClient
@@ -13,19 +14,63 @@ const handleTransactionIssue = async (transactionId, error) => {
   throw new Error(error);
 };
 
-async function handler(req, res) {
+const SUPPORTED_TRANSACTION_TYPES = ["request", "withdrawal", "deposit"];
 
-    const SUPPORTED_TRANSACTION_TYPES = ["request", "withdrawal", "deposit"];
+async function handleTransaction(type, amount, userId) {
+    const transactionRes = await supabaseClient
+        .from("transaction")
+        .insert({
+            user_id: userId,
+            type: type,
+            state: "completed",
+            total_amount: amount
+        })
+        .select("id, total_amount");
+
+    if (transactionRes.error) throw new Error(transactionRes.error.message);
+
+    const userRes = await supabaseClient
+        .from("user")
+        .select("balance")
+        .eq("id", userId)
+        .single();
+
+    if (userRes.error) {
+        throw new Error(userRes.error.message);
+    }
+
+    return userRes.data.balance;
+}
+
+async function updateBalance(userId, newBalance) {
+    const updateRes = await supabaseClient
+        .from("user")
+        .update({ balance: newBalance })
+        .eq("id", userId);
+
+    if (updateRes.error) {
+        throw new Error(updateRes.error.message);
+    }
+}
+
+async function sendNotification(userId, amount, type) {
+    const result = await sendWithdrawDepositNotice({
+        userId: userId,
+        amount: amount,
+        transactionType: type
+    });
+    console.log('sendWithdrawDepositNotice result:', result);
+
+    if (result && result.error) throw new Error(result.error.message);
+}
+
+
+async function handler(req, res) {
 
   try {
     const body = req.body;
     const payee = body["payee"];
     const type = body["type"];
-    
-
-    /*if (!SUPPORTED_TRANSACTION_TYPES.includes(type)) {
-      throw new Error("Unsupported transaction type");
-    }*/
 
     switch (type) {
       case "request":
@@ -111,51 +156,22 @@ async function handler(req, res) {
       case "withdrawal":
             // Handle withdrawal transaction
             const withdrawalAmount = body["amount"];
-
-            const transactioRes = await supabaseClient
-                .from("transaction")
-                .insert({
-                    user_id: req.user.id, 
-                    type: type,
-                    state: "completed", 
-                    total_amount: withdrawalAmount
-                })
-                .select("id, total_amount");
-
-            if (transactioRes["error"]) throw new Error(transactioRes["error"].message);
-
-
-            const userRes = await supabaseClient
-                .from("user")
-                .select("balance")
-                .eq("id", req.user.id)
-                .single(); // Assuming 'id' is unique, '.single()' ensures you get one record only
-
-            if (userRes.error) {
-                throw new Error(userRes.error.message);
-            }
-
-            const currentBalance = userRes.data.balance;
-
-            const newBalance = currentBalance - withdrawalAmount;
-
-            // 3. Update the user's balance in the 'user' table
-            const updateRes = await supabaseClient
-                .from("user")
-                .update({ balance: newBalance })
-                .eq("id", req.user.id);
-
-            if (updateRes.error) {
-                throw new Error(updateRes.error.message);
-            }
-
-
-            return res.status(200).json({ newBalance });
+            const currentBalanceWithdrawal = await handleTransaction(type, withdrawalAmount, req.user.id);
+            const newBalanceWithdrawal = currentBalanceWithdrawal - withdrawalAmount;
+            await updateBalance(req.user.id, newBalanceWithdrawal);
+            await sendNotification(req.user.id, withdrawalAmount, type);
+            return res.status(200).json({ newBalance: newBalanceWithdrawal });
 
 
       case "deposit":
-        // Handle deposit transaction
-        break;
+            // Handle deposit transaction
+            const depositAmount = body["amount"];
+            const currentBalanceDeposit = await handleTransaction(type, depositAmount, req.user.id);
+            const newBalanceDeposit = currentBalanceDeposit + Number(depositAmount);
+            await updateBalance(req.user.id, newBalanceDeposit);
+            await sendNotification(req.user.id, depositAmount, type);
+            return res.status(200).json({ newBalance: newBalanceDeposit });
+
       default:
         throw new Error("Unsupported transaction type");
     }
