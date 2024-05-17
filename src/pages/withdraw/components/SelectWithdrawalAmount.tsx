@@ -23,8 +23,7 @@ const SelectAmount = () => {
         dispatch({ type: "SET_CURRENT_PAGE", page: page });
     };
 
-    //just need to check if amount is not null or 0 and do the fetch shit then
-    //sned to navigate to page confirmation
+
     
     const onClick = async () => {
 
