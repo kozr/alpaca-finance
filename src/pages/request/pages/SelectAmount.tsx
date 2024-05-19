@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import MoneyInput from "../components/MoneyInput";
-import NumPad from "../components/Numpad";
 import { RequestContext, ActionType, Page } from "../../../contexts/request/requestContext";
 import Image from "next/image";
+import MoneyInput from "@/components/transaction-components/MoneyInput";
+import NumPad from "@/components/transaction-components/Numpad";
 import Button from "@/components/Button";
 
 export default function SelectAmount({ existingReason }) {

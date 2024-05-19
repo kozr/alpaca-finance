@@ -18,19 +18,17 @@ const ActionRow = () => (
       buttonName="Send"
     />
     <Button
-      disabled
       size="small"
       iconLink="/deposit.svg"
       backgroundColor="bg-button-grey"
-      destination="/"
+      destination="/deposit"
       buttonName="Deposit"
     />
     <Button
-      disabled
       size="small"
       iconLink="/withdrawal.svg"
       backgroundColor="bg-button-grey"
-      destination="/"
+      destination="/withdraw"
       buttonName="Withdraw"
     />
   </div>
