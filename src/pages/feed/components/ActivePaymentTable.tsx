@@ -3,7 +3,7 @@ import api from "@/utilities/api";
 import { useAuth } from "@/components/AuthProvider";
 import PaymentRow from "./PaymentRow";
 
-const InvolvedPaymentTable = () => {
+const ActivePaymentTable = () => {
     const authContext = useAuth();
     const currentUser = authContext.user;
     const containerRef = useRef<HTMLDivElement>(null);
@@ -55,18 +55,22 @@ const InvolvedPaymentTable = () => {
         borderRadius: '0.375rem', 
     };
 
-    const pastPayments = payments.filter(payment => payment.state === ('successful' || 'rejected'));
+    const pendingPayments = payments.filter(payment => payment.state === 'pending');
 
     return (
         <>
-            <div className="text-xl font-bold text-gray-800 mt-4">Payments Record</div>
+            <div className="text-xl font-bold text-gray-800 mt-4">Active Payments</div>
             <div ref={containerRef} style={scrollableContainerStyle}>
-                {pastPayments.map((payment) => (
-                    <PaymentRow key={payment.id} paymentDetails={payment} />
-                ))}
+                {pendingPayments.length > 0 ? (
+                    pendingPayments.map(payment => (
+                        <PaymentRow key={payment.id} paymentDetails={payment} />
+                    ))
+                ) : (
+                    <div className="text-center text-gray-600">You have no active payments.</div>
+                )}
             </div>
         </>
     );
 };
 
-export default InvolvedPaymentTable;
+export default ActivePaymentTable;
