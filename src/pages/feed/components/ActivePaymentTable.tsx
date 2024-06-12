@@ -44,7 +44,7 @@ const ActivePaymentTable = () => {
 
     // Inline styles for the scrollable container
     const scrollableContainerStyle: React.CSSProperties = {
-        width: '100%',
+        width: 'flex-col',
         height: containerHeight, 
         overflowY: 'scroll',
         backgroundColor: '#d1d5db', 

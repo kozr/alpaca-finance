@@ -35,24 +35,24 @@ const Feed = () => {
             <ActionRow />
 
             {/* Buttons to toggle sections */}
-            <div className="flex justify-center space-x-4 my-8">
+            <div className="flex flex-row justify-center space-x-4 my-8">
                 <button
                     onClick={() => setVisibleSection('activePayments')}
-                    className={`px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 ${visibleSection === 'activePayments' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                    className={`px-4 py-3 text-sm rounded-lg shadow-md transition-transform transform hover:scale-105 ${visibleSection === 'activePayments' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
                         }`}
                 >
                     Active Payments
                 </button>
                 <button
                     onClick={() => setVisibleSection('involvedPayments')}
-                    className={`px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 ${visibleSection === 'involvedPayments' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                    className={`px-4 py-3 text-sm rounded-lg shadow-md transition-transform transform hover:scale-105 ${visibleSection === 'involvedPayments' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
                         }`}
                 >
                     Payments Record
                 </button>
                 <button
                     onClick={() => setVisibleSection('openTransactions')}
-                    className={`px-6 py-3 rounded-lg shadow-md transition-transform transform hover:scale-105 ${visibleSection === 'openTransactions' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
+                    className={`px-4 py-3 text-sm rounded-lg shadow-md transition-transform transform hover:scale-105 ${visibleSection === 'openTransactions' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
                         }`}
                 >
                     Open Transactions
@@ -60,7 +60,7 @@ const Feed = () => {
             </div>
 
             {/* Render the selected section */}
-            <div className="px-4">
+            <div className="px-0">
                 {renderSection()}
             </div>
         </Page>
