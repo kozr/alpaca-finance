@@ -2,13 +2,14 @@ import { useEffect, useState, useRef } from "react";
 import api from "@/utilities/api";
 import { useAuth } from "@/components/AuthProvider";
 import PaymentRow from "./PaymentRow";
+import { PaymentDetails } from "@/serializers/payments/payment-details-serializer";
 
 const ActivePaymentTable = () => {
     const authContext = useAuth();
     const currentUser = authContext.user;
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const [payments, setPayments] = useState([]);
+    const [payments, setPayments] = useState<PaymentDetails[]>([]);
     const [containerHeight, setContainerHeight] = useState<string>('400px'); // Default height
 
     useEffect(() => {
@@ -42,6 +43,15 @@ const ActivePaymentTable = () => {
         return () => window.removeEventListener('resize', updateHeight);
     }, []);
 
+    const pendingPayments = payments.filter(payment => payment.state === 'pending');
+    const groupedPayments = groupPaymentsByDate(pendingPayments);
+    const sortedGroupedPayments = Object.keys(groupedPayments).map(date => {
+        return {
+            date,
+            payments: sortPayments(groupedPayments[date])
+        };
+    });
+
     // Inline styles for the scrollable container
     const scrollableContainerStyle: React.CSSProperties = {
         width: 'flex-col',
@@ -55,15 +65,20 @@ const ActivePaymentTable = () => {
         borderRadius: '0.375rem', 
     };
 
-    const pendingPayments = payments.filter(payment => payment.state === 'pending');
+    
 
     return (
         <>
             <div className="text-xl font-bold text-gray-800 mt-4">Active Payments</div>
             <div ref={containerRef} style={scrollableContainerStyle}>
-                {pendingPayments.length > 0 ? (
-                    pendingPayments.map(payment => (
-                        <PaymentRow key={payment.id} paymentDetails={payment} />
+                {sortedGroupedPayments.length > 0 ? (
+                    sortedGroupedPayments.map(({ date, payments }) => (
+                        <div key={date} className="mb-4">
+                            <div className="font-bold text-lg mb-2">{date}</div>
+                            {payments.map((payment) => (
+                                <PaymentRow key={payment.id} paymentDetails={payment} />
+                            ))}
+                        </div>
                     ))
                 ) : (
                     <div className="text-center text-gray-600">You have no active payments.</div>
@@ -74,3 +89,23 @@ const ActivePaymentTable = () => {
 };
 
 export default ActivePaymentTable;
+
+
+const groupPaymentsByDate = (payments: PaymentDetails[]): { [key: string]: PaymentDetails[] } => {
+    return payments.reduce((groups, payments) => {
+        const date = new Date(payments.createdAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+        if (!groups[date]) {
+            groups[date] = [];
+        }
+        groups[date].push(payments);
+        return groups;
+    }, {});
+};
+
+const sortPayments = (payments: PaymentDetails[]): PaymentDetails[] => {
+    return payments.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+};
