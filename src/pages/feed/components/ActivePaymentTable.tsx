@@ -113,7 +113,6 @@ const ActivePaymentTable = () => {
                     <div className="text-center text-gray-600">You have no active payments.</div>
                 )}
                 {loading && <div>Loading more payments...</div>}
-                {!hasMore && <div>No more payments to load.</div>}
             </div>
         </>
     );

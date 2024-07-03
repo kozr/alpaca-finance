@@ -9,6 +9,9 @@ async function handler(req, res) {
     const offset = (page - 1) * limit;
 
     if (id !== req.user.id) {
+        console.log(
+            "Unauthorized payment get: requested user id does not match session user id"
+        );
         return res.status(403).json({ error: "Unauthorized" });
     }
 
@@ -19,6 +22,7 @@ async function handler(req, res) {
         .range(offset, offset + limit - 1);
 
     if (payeePaymentError) {
+        console.log("payeePaymentError: ", payeePaymentError);
         return res.status(500).json({ payeePaymentError });
     }
 
@@ -29,6 +33,7 @@ async function handler(req, res) {
         .range(offset, offset + limit - 1);
 
     if (payerPaymentError) {
+        console.log("payerPaymentError: ", payerPaymentError);
         return res.status(500).json({ payerPaymentError });
     }
 
