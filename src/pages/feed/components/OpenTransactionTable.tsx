@@ -74,7 +74,7 @@ const OpenTransactionTable = () => {
                             <TransactionRow key={transaction.id} transactionDetails={transaction} />
                         ))}
                     </div>
-                ))}
+                )).reverse()}
             </div>
         </>
     );
