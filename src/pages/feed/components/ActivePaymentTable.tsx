@@ -11,38 +11,28 @@ const ActivePaymentTable = () => {
 
     const [payments, setPayments] = useState<PaymentDetails[]>([]);
     const [containerHeight, setContainerHeight] = useState<string>('400px'); // Default height
-    const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
-
-    const loadPayments = async () => {
-        if (loading || !hasMore) return;
-        setLoading(true);
-        try {
-            const response = await api.fetch(`/api/payments/${currentUser.id}?page=${page}&limit=10`, {
-                method: "GET",
-            });
-            const json = await response.json();
-            if (json.data.length < 10) {
-                setHasMore(false);
-            }
-            setPayments(prevPayments => [...prevPayments, ...json.data]);
-        } catch (error) {
-            console.error(`error: ${JSON.stringify(error)}`);
-            alert(error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     useEffect(() => {
-        loadPayments();
-    }, [page, currentUser]);
+        const getPayments = async () => {
+            try {
+                const response = await api.fetch(`/api/payments/${currentUser.id}`, {
+                    method: "GET",
+                });
+                const json = await response.json();
+                setPayments(json.data);
+            } catch (error) {
+                console.error(`error: ${JSON.stringify(error)}`);
+                alert(error);
+            }
+        };
+
+        getPayments();
+    }, [currentUser]);
 
     useEffect(() => {
         const updateHeight = () => {
             if (containerRef.current) {
-                const height = window.innerHeight - 200;
+                const height = window.innerHeight - 200; 
                 setContainerHeight(`${height}px`);
             }
         };
@@ -52,27 +42,6 @@ const ActivePaymentTable = () => {
         window.addEventListener('resize', updateHeight);
         return () => window.removeEventListener('resize', updateHeight);
     }, []);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (containerRef.current) {
-                const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-                if (scrollTop + clientHeight >= scrollHeight - 100 && hasMore && !loading) {
-                    setPage(prevPage => prevPage + 1);
-                }
-            }
-        };
-
-        if (containerRef.current) {
-            containerRef.current.addEventListener('scroll', handleScroll);
-        }
-
-        return () => {
-            if (containerRef.current) {
-                containerRef.current.removeEventListener('scroll', handleScroll);
-            }
-        };
-    }, [hasMore, loading]);
 
     const pendingPayments = payments.filter(payment => payment.state === 'pending');
     const groupedPayments = groupPaymentsByDate(pendingPayments);
@@ -86,15 +55,17 @@ const ActivePaymentTable = () => {
     // Inline styles for the scrollable container
     const scrollableContainerStyle: React.CSSProperties = {
         width: 'flex-col',
-        height: containerHeight,
+        height: containerHeight, 
         overflowY: 'scroll',
-        backgroundColor: '#d1d5db',
-        fontWeight: 600,
-        color: '#000000',
-        padding: '0.5rem',
-        marginTop: '1.25rem',
-        borderRadius: '0.375rem',
+        backgroundColor: '#d1d5db', 
+        fontWeight: 600, 
+        color: '#000000', 
+        padding: '0.5rem', 
+        marginTop: '1.25rem', 
+        borderRadius: '0.375rem', 
     };
+
+    
 
     return (
         <>
@@ -112,7 +83,6 @@ const ActivePaymentTable = () => {
                 ) : (
                     <div className="text-center text-gray-600">You have no active payments.</div>
                 )}
-                {loading && <div>Loading more payments...</div>}
             </div>
         </>
     );
@@ -120,9 +90,10 @@ const ActivePaymentTable = () => {
 
 export default ActivePaymentTable;
 
+
 const groupPaymentsByDate = (payments: PaymentDetails[]): { [key: string]: PaymentDetails[] } => {
-    return payments.reduce((groups, payment) => {
-        const date = new Date(payment.createdAt).toLocaleDateString('en-US', {
+    return payments.reduce((groups, payments) => {
+        const date = new Date(payments.createdAt).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -130,7 +101,7 @@ const groupPaymentsByDate = (payments: PaymentDetails[]): { [key: string]: Payme
         if (!groups[date]) {
             groups[date] = [];
         }
-        groups[date].push(payment);
+        groups[date].push(payments);
         return groups;
     }, {});
 };
