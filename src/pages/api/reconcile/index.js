@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     AdrianLam: -6000,
     VivianXu: 400,
     AndyKwan: 650,
-    PhillipLiu: 2900,
+    PhillipLiu: 2500,
     Charlesnull: 67
   };
 
