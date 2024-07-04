@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     VivianXu: 400,
     AndyKwan: 650,
     PhillipLiu: 2500,
-    Charlesnull: 204.11
+    Charlesnull: 474.11
   };
 
   // consolidate payee amount of each user
