@@ -9,13 +9,13 @@ export default async function handler(req, res) {
     LeonLin: -12900,
     HenryShang: 3266,
     NicholasWong: 1850,
-    MatthewArinanta: 3024,
+    MatthewArinanta: 3054,
     KevinZhu: 1000,
     AdrianLam: -6000,
     VivianXu: 400,
     AndyKwan: 650,
     PhillipLiu: 2500,
-    Charlesnull: 67
+    Charlesnull: 204.11
   };
 
   // consolidate payee amount of each user
