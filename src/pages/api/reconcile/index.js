@@ -7,14 +7,15 @@ export default async function handler(req, res) {
   const deposits = {
     AndyMa: 5250,
     LeonLin: -11200,
-    HenryShang: 3216,
+    HenryShang: 3266,
     NicholasWong: 1850,
     MatthewArinanta: 3024,
     KevinZhu: 1000,
     AdrianLam: -6000,
     VivianXu: 400,
-    AndyKwan: 500,
+    AndyKwan: 650,
     PhillipLiu: 2900,
+    Charlesnull: 67
   };
 
   // consolidate payee amount of each user
