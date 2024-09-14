@@ -52,7 +52,6 @@ const OpenTransactionTable = () => {
         width: '100%',
         height: containerHeight,
         overflowY: 'scroll',
-        backgroundColor: '#d1d5db',
         fontWeight: 600,
         color: '#00000',
         padding: '0.5rem',

@@ -57,7 +57,6 @@ const ActivePaymentTable = () => {
         width: 'flex-col',
         height: containerHeight, 
         overflowY: 'scroll',
-        backgroundColor: '#d1d5db', 
         fontWeight: 600, 
         color: '#000000', 
         padding: '0.5rem', 
