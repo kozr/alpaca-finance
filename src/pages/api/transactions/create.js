@@ -14,8 +14,6 @@ const handleTransactionIssue = async (transactionId, error) => {
   throw new Error(error);
 };
 
-const SUPPORTED_TRANSACTION_TYPES = ["request", "withdrawal", "deposit"];
-
 async function handleTransaction(type, amount, userId) {
     const transactionRes = await supabaseClient
         .from("transaction")
@@ -179,7 +177,7 @@ async function handler(req, res) {
     
   } catch (error) {
     console.error(`Transaction create error: ${error}`);
-    return res.status(500).json({ error: error });
+    return res.status(500).json({ error: error.message });
   }
 }
 

@@ -13,7 +13,9 @@ const SelectPayees = () => {
   const [unselectedUser, setUnselectedUser] = useState<Array<User>>([]);
   const [selectedUser, setSelectedUser] = useState<Array<User>>([]);
   const [total, setTotal] = useState<number>(0);
-  const [defaultReason, setDefaultReason] = useState<string>(state.defaultReason);
+  const [defaultReason, setDefaultReason] = useState<string>(
+    state.defaultReason
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const authContext = useAuth();
   const currentUser = authContext.user;
@@ -31,8 +33,7 @@ const SelectPayees = () => {
       };
       getUsers();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentUser.id, dispatch, state.paymentRequests.length]);
 
   useEffect(() => {
     const unselectedUsers = state.paymentRequests.filter(
@@ -55,13 +56,15 @@ const SelectPayees = () => {
   };
 
   const onTextboxChange = (e) => {
-    const reason = e.target.value
-    setDefaultReason(reason)
+    const reason = e.target.value;
+    setDefaultReason(reason);
     dispatch({
-      type: ActionType.SET_DEFAULT_REASON, payload: {
-      reason: reason
-    }})
-  }
+      type: ActionType.SET_DEFAULT_REASON,
+      payload: {
+        reason: reason,
+      },
+    });
+  };
 
   const onClickProcessRequest = async () => {
     try {
@@ -69,7 +72,7 @@ const SelectPayees = () => {
       setIsLoading(true);
       const activePaymentRequests = state.paymentRequests.filter(
         (request) => request.amount > 0
-      )
+      );
       if (!activePaymentRequests.length) {
         alert("Please select at least one payee.");
         setIsLoading(false);
@@ -104,11 +107,11 @@ const SelectPayees = () => {
       </div>
       <div className="flex justify-center my-10">
         <input
-            className="p-2 border-2 border-gray-300 rounded"
-            type="text"
-            value={defaultReason}
-            onChange={onTextboxChange}
-            placeholder="Enter default reason"
+          className="p-2 border-2 border-gray-300 rounded"
+          type="text"
+          value={defaultReason}
+          onChange={onTextboxChange}
+          placeholder="Enter default reason"
         />
       </div>
       <div className="flex justify-center my-10">

@@ -4,33 +4,53 @@ import supabase from "@/utilities/supabase/backend";
 
 async function handler(req, res) {
   const paymentId = req.query.id;
-  
-  const { data: payment, error: paymentError } = await supabase
+
+  // Atomically update the payment state to 'processing' if it's currently 'pending'
+  const { data: payment, error: updateError } = await supabase
     .from("payment")
-    .select("*")
+    .update({ state: 'processing' })
     .eq('id', paymentId)
     .eq('payer_user_id', req.user.id)
+    .eq('state', 'pending') // Only update if state is 'pending'
+    .select('*') // Retrieve the updated row
     .single();
 
-  if (paymentError) {
-    console.log("paymentError: ", paymentError)
-    return res.status(500).json({ paymentError });
+  if (updateError) {
+    console.log("updateError: ", updateError);
+    return res.status(500).json({ error: updateError.message });
   }
 
-  // There is a case where the payment does not belong to the user so it was not found
-  // that case is sliently handled.
+  // If no payment was updated, it means it's not found or already processed
   if (!payment) {
-    return res.status(404).json({ error: "Payment not found" });
+    return res.status(404).json({ error: "Payment not found or already processed" });
   }
 
-  console.log("payment: ", payment.id)
+  console.log("Processing payment: ", payment.id);
 
+  // Proceed to execute the payment
   const { error: executionError } = await executePayment({
     payment_id: payment.id,
   });
+
   if (executionError) {
-    console.log("executionError: ", executionError)
-    return res.status(500).json({ executionError });
+    console.log("executionError: ", executionError);
+    // Update the payment state to 'failed'
+    await supabase
+      .from('payment')
+      .update({ state: 'failed' })
+      .eq('id', payment.id);
+    return res.status(500).json({ error: executionError.message });
+  }
+
+  // Update payment state to 'completed'
+  const { error: finalizeError } = await supabase
+    .from('payment')
+    .update({ state: 'successful' })
+    .eq('id', payment.id);
+
+  if (finalizeError) {
+    console.log("finalizeError: ", finalizeError);
+    return res.status(500).json({ error: finalizeError.message });
   }
 
   return res.status(200).json({ message: "Payment approved" });

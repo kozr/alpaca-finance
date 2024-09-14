@@ -1,7 +1,7 @@
 {
   "name": "Turtle Finance",
   "short_name": "Turtle Finance",
-  "description": "My own Turtle Finance App",
+  "description": "Turtle Finance is a finance platform that allows trusted users to take money from friends without implicit consent.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

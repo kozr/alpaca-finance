@@ -1,21 +1,32 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import supabase from "@/utilities/supabase/backend";
 
-export default async function handler(req, res) {
-  const { data, _error } = await supabase.from("user").select("*");
+export default async function handler(_req, res) {
+  const { data } = await supabase.from("user").select("*");
 
+  /*
+  * `deposits` is a hardcoded object represents the net financial position for each user in the MVP of a record-keeping system using Git.
+  * Each key is a string formed by concatenating the user's first and last names.
+  * Each value represents the net amount in their account:
+  *    - Positive values denote net deposits.
+  *    - Negative values denote net withdrawals.
+  * 
+  * Example Usage:
+  *    deposits["JohnDoe"] // 5250  => John Doe has a net deposit of 5250.
+  *    deposits["JaneDoe"] // -12400 => Jane Doe has a net withdrawal of 12400.
+  */
   const deposits = {
-    AndyMa: 5250,
-    LeonLin: -12400,
-    HenryShang: 3216,
-    NicholasWong: 1850,
-    MatthewArinanta: 3054,
-    KevinZhu: 1000,
-    AdrianLam: -6000,
-    VivianXu: -100,
-    AndyKwan: 650,
-    PhillipLiu: 2500,
-    Charlesnull: 474.11
+    AndyMa: 0,
+    LeonLin: 0,
+    HenryShang: 0,
+    NicholasWong: 0,
+    MatthewArinanta: 0,
+    KevinZhu: 0,
+    AdrianLam: 0,
+    VivianXu: 0,
+    AndyKwan: 0,
+    PhillipLiu: 0,
+    Charlesnull: 0
   };
 
   // consolidate payee amount of each user

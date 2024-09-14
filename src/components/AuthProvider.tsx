@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
       }
     };
     fetchUser();
-  }, []);
+  }, [throwGoogleContextToBackend, userAuthStatusHandler]);
 
   // Set up auth state listener
   useEffect(() => {

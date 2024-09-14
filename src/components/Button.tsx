@@ -26,7 +26,6 @@ const Button = ({
   disabled,
   children,
 }: ButtonProps) => {
-
   const disabledStyle = disabled ? "opacity-50 cursor-not-allowed" : "";
   const fontStyles = size === "small" ? "text-sm" : "text-lg font-bold";
 
