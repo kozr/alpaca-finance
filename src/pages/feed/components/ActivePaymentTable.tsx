@@ -26,7 +26,7 @@ const ActivePaymentTable = () => {
             }
         };
 
-        getPayments();
+        if (currentUser) getPayments();
     }, [currentUser]);
 
     useEffect(() => {

@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
       }
       setIsLoading(false);
     },
-    [router]
+    [router.pathname]
   );
   const createUser = async (googleContext) => {
     const res = await fetch(`/api/users`, {
