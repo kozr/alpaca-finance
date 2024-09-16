@@ -16,18 +16,18 @@ export default async function handler(_req, res) {
   *    deposits["JaneDoe"] // -12400 => Jane Doe has a net withdrawal of 12400.
   */
   const deposits = {
-    AndyMa: 0,
-    LeonLin: 0,
-    HenryShang: 0,
-    NicholasWong: 0,
-    MatthewArinanta: 0,
-    KevinZhu: 0,
-    AdrianLam: 0,
-    VivianXu: 0,
-    AndyKwan: 0,
-    PhillipLiu: 0,
-    Charlesnull: 0
-  };
+    AndyMa: 129.02,         // Original 0 - (-129.02) = 129.02
+    LeonLin: -1823.71,      // Original 0 - 1823.71 = -1823.71
+    HenryShang: -181.27,    // Original 0 - 181.27 = -181.27
+    NicholasWong: 35.52,    // Original 0 - (-35.52) = 35.52
+    MatthewArinanta: -36.72, // Original 0 - 36.72 = -36.72
+    KevinZhu: 825.22,       // Original 0 - (-825.22) = 825.22
+    AdrianLam: -243.07,     // Original 0 - 243.07 = -243.07
+    VivianXu: 20.56,        // Original 0 - (-20.56) = 20.56
+    AndyKwan: 225.18,       // Original 0 - (-225.18) = 225.18
+    PhillipLiu: 536.12,     // Original 0 - (-536.12) = 536.12
+    Charlesnull: 1.63       // Original 0 - (-1.63) = 1.63
+  }
 
   // consolidate payee amount of each user
   const payeeAmount = {};
