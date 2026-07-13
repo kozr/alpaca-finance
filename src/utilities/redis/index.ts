@@ -1,16 +1,24 @@
-import Redis from 'ioredis';
-import url from 'url';
+import Redis, { RedisOptions } from 'ioredis';
 
-const redisUrl = url.parse(process.env.REDIS_URL);
+const redisConnectionUrl =
+  process.env.DEMO_REDIS_REDIS_URL ?? process.env.REDIS_URL;
 
-export const redisOptions = {
+if (!redisConnectionUrl) {
+  throw new Error('A Redis connection URL is required');
+}
+
+const redisUrl = new URL(redisConnectionUrl);
+
+export const redisOptions: RedisOptions = {
   host: redisUrl.hostname,
-  port: Number(redisUrl.port),
-  password: redisUrl.auth?.split(":")[1]
+  port: Number(redisUrl.port || (redisUrl.protocol === 'rediss:' ? 6380 : 6379)),
+  username: redisUrl.username
+    ? decodeURIComponent(redisUrl.username)
+    : undefined,
+  password: redisUrl.password
+    ? decodeURIComponent(redisUrl.password)
+    : undefined,
+  tls: redisUrl.protocol === 'rediss:' ? {} : undefined
 };
-
-// if (process.env.NODE_ENV !== 'development') {
-// redisOptions['tls'] = {};
-// }
 
 export const redisConnection = new Redis(redisOptions);
